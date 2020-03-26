@@ -38,6 +38,14 @@ function mfnch_enqueue_styles()
 	wp_dequeue_style('style');
 	wp_enqueue_style('style', get_stylesheet_directory_uri() .'/style.css');
 	wp_enqueue_script( 'customjs', CHILD_THEME_URI . '/assets/js/custom.js', array('jquery'),false,false);
+	wp_enqueue_script( 'loadmorehome', CHILD_THEME_URI . '/assets/js/myloadmore.js', array('jquery'),false,false);
+	wp_localize_script( 'loadmorehome', 'ts_loadmore_params', array(
+		        'ajaxurl' => admin_url('admin-ajax.php'),
+		        'currentpaged' => get_query_var( 'page' ) ? get_query_var('page') : 1
+		    ) 
+		);
+	wp_enqueue_script( 'loadmorehome' );
+	
 }
 add_action('wp_enqueue_scripts', 'mfnch_enqueue_styles', 101);
 

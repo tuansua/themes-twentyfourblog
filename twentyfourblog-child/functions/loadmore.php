@@ -1,5 +1,5 @@
 <?php  
-	function lionel_loadmore_home(){
+	function ts_loadmore_home(){
 	$args = array(
 	    'posts_per_page'   => 5,
 	    'orderby'          => 'date',
@@ -49,6 +49,6 @@
 	  	wp_reset_postdata();
 	wp_die();
 }
-add_action('wp_ajax_loadmorehome', 'lionel_loadmore_home');
-add_action('wp_ajax_nopriv_loadmorehome', 'lionel_loadmore_home');
+add_action('wp_ajax_loadmorehome', 'ts_loadmore_home');
+add_action('wp_ajax_nopriv_loadmorehome', 'ts_loadmore_home');
 ?>

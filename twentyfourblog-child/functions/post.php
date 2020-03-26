@@ -37,7 +37,7 @@ function new_home( $temp = '',$postPerPage= '',$format = '' ) {
                           $string .= '<div class="item-fomat-1 item-'.$count.'">
                             <a href="'.$permalink.'" title="'.$posttitle.'">';
                               if ( has_post_thumbnail($idpos) ) { 
-                                $string .= get_the_post_thumbnail( $idpos, 'full', array( 'class' => 'blog-wp-post-image' ) ); 
+                                $string .= get_the_post_thumbnail( $idpos, 'large', array( 'class' => 'blog-wp-post-image' ) ); 
                             }
                 $string .= '</a>
                             <div class="blog-desc">
@@ -49,7 +49,7 @@ function new_home( $temp = '',$postPerPage= '',$format = '' ) {
                           $string .= '<div class="item-fomat-1 item-'.$count.'">
                             <a href="'.$permalink.'" title="'.$posttitle.'">';
                               if ( has_post_thumbnail($idpos) ) { 
-                                $string .= get_the_post_thumbnail( $idpos, 'large', array( 'class' => 'blog-wp-post-image' ) ); 
+                                $string .= get_the_post_thumbnail( $idpos, 'medium', array( 'class' => 'blog-wp-post-image' ) ); 
                             }
                 $string .= '</a>
                             <div class="blog-desc">
@@ -103,7 +103,7 @@ function new_home( $temp = '',$postPerPage= '',$format = '' ) {
                       endforeach; 
                       wp_reset_postdata();
         $string .= '</ul>';
-        $string .= '<div class="loadmore">Xem Thêm</div>';
+        $string .= '<div class="tsloadmore">Xem Thêm</div>';
                   $string .= '</div>';
         wp_reset_postdata();
       }

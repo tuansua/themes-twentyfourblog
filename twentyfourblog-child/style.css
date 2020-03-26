@@ -16,8 +16,12 @@ body:not(.template-slider):not(.header-simple) #Header {
 .footer-title-tt .icon-up-open.ac-block {
     display: inline-block;
 }
-
-
+.tsloadmore {
+    text-align: center;
+    background: #288ad6;
+    color: #fff;
+    padding: 10px;
+}
 
 /*####RESPONSIVE*/
 @media screen and (max-width:768px){
