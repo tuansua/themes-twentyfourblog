@@ -12,10 +12,12 @@
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
  * @package WooCommerce/Templates
- * @version 3.4.0
+ * @version 3.6.0
  */
 
 defined( 'ABSPATH' ) || exit;
+
+global $product;
 
 /**
  * Hook: woocommerce_before_single_product.
@@ -76,7 +78,7 @@ $translate['all'] = mfn_opts_get( 'translate' ) ? mfn_opts_get( 'translate-all',
 
 ?>
 
-<div id="product-<?php the_ID(); ?>" <?php post_class( $classes ); ?>>
+<div id="product-<?php the_ID(); ?>" <?php wc_product_class( $classes, $product ); ?>>
 
 	<?php
 		// single post navigation | sticky
@@ -155,7 +157,6 @@ $translate['all'] = mfn_opts_get( 'translate' ) ? mfn_opts_get( 'translate-all',
 
 	</div>
 
-
 	<?php
 		// Description | Default - wide below image
 		if( in_array( $single_product_style, array( 'wide', 'wide tabs' ) ) ) {
@@ -163,17 +164,10 @@ $translate['all'] = mfn_opts_get( 'translate' ) ? mfn_opts_get( 'translate-all',
 		}
 	?>
 
-
 	<?php
 		woocommerce_upsell_display();
 		if( mfn_opts_get( 'shop-related' ) ) woocommerce_output_related_products();
 	?>
-
-
-	<?php if( version_compare( WC_VERSION, '2.7', '<' ) ): ?>
-		<meta itemprop="url" content="<?php the_permalink(); ?>" />
-	<?php endif; ?>
-
 
 </div><!-- #product-<?php the_ID(); ?> -->
 

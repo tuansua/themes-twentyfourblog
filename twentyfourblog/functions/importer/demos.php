@@ -5,6 +5,907 @@ $demos 	= array(
 		'categories'	=> array( 'bus', 'blo', 'por' ),
 		'plugins'			=> array( 'cf7', 'rev' ),
 	),
+	'company6' => array(
+		'name'				=> 'Company 6',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'weddingservices' => array(
+		'name'				=> 'Wedding Services',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'astrology' => array(
+		'categories'	=> array( 'bus', 'blo', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'journey2' => array(
+		'name'				=> 'Journey 2',
+		'categories'	=> array( 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'loans3' => array(
+		'name'				=> 'Loans 3',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'cafe3' => array(
+		'name'				=> 'Cafe 3',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'band5' => array(
+		'name'				=> 'Band 5',
+		'categories'	=> array( 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'hotel5' => array(
+		'name'				=> 'Hotel 5',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'rallydriver' => array(
+		'name'				=> 'Rally Driver',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'foodtruck' => array(
+		'name'				=> 'Food Truck',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'mall' => array(
+		'categories'	=> array( 'bus', 'blo' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'psychologist2' => array(
+		'name'				=> 'Psychologist 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'handyman2' => array(
+		'name'				=> 'Handyman 2',
+		'categories'	=> array( 'bus', 'cre', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'security3' => array(
+		'name'				=> 'Security 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'club3' => array(
+		'name'				=> 'Club 3',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'restaurant5' => array(
+		'name'				=> 'Restaurant 5',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'tailor3' => array(
+		'name'				=> 'Tailor 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'itservice3' => array(
+		'name'				=> 'IT Service 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'app6' => array(
+		'name'				=> 'App 6',
+		'categories'	=> array( 'bus', 'one' ),
+	),
+	'swimmingpool' => array(
+		'name'				=> 'Swimming Pool',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'tutor' => array(
+		'categories'	=> array( 'bus', 'blo' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'carrental2' => array(
+		'name'				=> 'Car Rental 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'interactive2' => array(
+		'name'				=> 'Interactive 2',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'cityhall' => array(
+		'name'				=> 'City Hall',
+		'categories'	=> array( 'bus', 'blo' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'electric2' => array(
+		'name'				=> 'Electric 2',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'band4' => array(
+		'name'				=> 'Band 4',
+		'categories'	=> array( 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'weddingplanner' => array(
+		'name'				=> 'Wedding Planner',
+		'categories'	=> array( 'bus', 'oth' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'steak2' => array(
+		'name'				=> 'Steak 2',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'ecofood' => array(
+		'name'				=> 'Eco Food',
+		'categories'	=> array( 'bus', 'sho' ),
+		'plugins'			=> array( 'cf7', 'rev', 'woo' ),
+	),
+	'danceschool2' => array(
+		'name'				=> 'Dance School 2',
+		'categories'	=> array( 'bus', 'ent', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'fisher' => array(
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'eco3' => array(
+		'name'				=> 'Eco 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'xmas3' => array(
+		'name'				=> 'Xmas 3',
+		'categories'	=> array( 'ent', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'language3' => array(
+		'name'				=> 'Language 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'repair3' => array(
+		'name'				=> 'Repair 3',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'kindergarten3' => array(
+		'name'				=> 'Kindergarten 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'3dprint' => array(
+		'name'				=> '3D Print',
+		'categories'	=> array( 'bus', 'sho' ),
+		'plugins'			=> array( 'cf7', 'rev', 'woo' ),
+	),
+	'horse2' => array(
+		'name'				=> 'Horse 2',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'party2' => array(
+		'name'				=> 'Party 2',
+		'categories'	=> array( 'ent', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'callcenter2' => array(
+		'name'				=> 'Call Center 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'spa5' => array(
+		'name'				=> 'Spa 5',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'plumber2' => array(
+		'name'				=> 'Plumber 2',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'blogger3' => array(
+		'name'				=> 'Blogger 3',
+		'categories'	=> array( 'ent', 'blo' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'driving2' => array(
+		'name'				=> 'Driving 2',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'oculist2' => array(
+		'name'				=> 'Oculist 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'coach' => array(
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'halloween' => array(
+		'categories'	=> array( 'ent', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'icecream2' => array(
+		'name'				=> 'Ice Cream 2',
+		'categories'	=> array( 'bus', 'cre' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'paintball' => array(
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'carwash2' => array(
+		'name'				=> 'Car Wash 2',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'insurance3' => array(
+		'name'				=> 'Insurance 3',
+		'categories'	=> array( 'bus', 'blo' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'transport3' => array(
+		'name'				=> 'Transport 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'lawyer5' => array(
+		'name'				=> 'Lawyer 5',
+		'categories'	=> array( 'bus', 'blo' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'seo3' => array(
+		'name'				=> 'SEO 3',
+		'categories'	=> array( 'bus', 'cre' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'spa4' => array(
+		'name'				=> 'Spa 4',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'hosting3' => array(
+		'name'				=> 'Hosting 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'video3' => array(
+		'name'				=> 'Video 3',
+		'categories'	=> array( 'bus', 'cre' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'marathon' => array(
+		'categories'	=> array( 'ent', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'taxi2' => array(
+		'name'				=> 'Taxi 2',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'boxing' => array(
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'webinar' => array(
+		'categories'	=> array( 'bus', 'blo' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'factory2' => array(
+		'name'				=> 'Factory 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'seajourney' => array(
+		'name'				=> 'Sea Journey',
+		'categories'	=> array( 'ent', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'print3' => array(
+		'name'				=> 'Print 3',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'app5' => array(
+		'name'				=> 'App 5',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'biker3' => array(
+		'name'				=> 'Biker 3',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'honey' => array(
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'cleaner2' => array(
+		'name'				=> 'Cleaner 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'ebook2' => array(
+		'name'				=> 'eBook 2',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'festival' => array(
+		'categories'	=> array( 'ent', 'cre', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'garden4' => array(
+		'name'				=> 'Garden 4',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'football2' => array(
+		'name'				=> 'Football 2',
+		'categories'	=> array( 'ent', 'blo' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'architect5' => array(
+		'name'				=> 'Architect 5',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'cottage' => array(
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'company5' => array(
+		'name'				=> 'Company 5',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'catering2' => array(
+		'name'				=> 'Catering 2',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'dj2' => array(
+		'name'				=> 'DJ 2',
+		'categories'	=> array( 'ent', 'cre', 'blo', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'photography2' => array(
+		'name'				=> 'Photography 2',
+		'categories'	=> array( 'bus', 'cre', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'code2' => array(
+		'name'				=> 'Code 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'bar3' => array(
+		'name'				=> 'Bar 3',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'dentist3' => array(
+		'name'				=> 'Dentist 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'event4' => array(
+		'name'				=> 'Event 4',
+		'categories'	=> array( 'bus', 'ent', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'sitter2' => array(
+		'name'				=> 'Sitter 2',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'design3' => array(
+		'name'				=> 'Design 3',
+		'categories'	=> array( 'cre', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'photo2' => array(
+		'name'				=> 'Photo 2',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'psychologist' => array(
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'hotel4' => array(
+		'name'				=> 'Hotel 4',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'gym3' => array(
+		'name'				=> 'Gym 3',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'yoga3' => array(
+		'name'				=> 'Yoga 3',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'lab2' => array(
+		'name'				=> 'Lab 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'pizza4' => array(
+		'name'				=> 'Pizza 4',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'mechanic5' => array(
+		'name'				=> 'Mechanic 5',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'medic3' => array(
+		'name'				=> 'Medic 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'barber3' => array(
+		'name'				=> 'Barber 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'itservice2' => array(
+		'name'				=> 'IT Service 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'transport2' => array(
+		'name'				=> 'Transport 2',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'mechanic4' => array(
+		'name'				=> 'Mechanic 4',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'yacht' => array(
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'safari2' => array(
+		'name'				=> 'Safari 2',
+		'categories'	=> array( 'bus', 'ent', 'blo' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'baker2' => array(
+		'name'				=> 'Baker 2',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'hairdresser2' => array(
+		'name'				=> 'Hairdresser 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'mountainguide' => array(
+		'name'				=> 'Mountain Guide',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'extreme2' => array(
+		'name'				=> 'Extreme 2',
+		'categories'	=> array( 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'event3' => array(
+		'name'				=> 'Event 3',
+		'categories'	=> array( 'bus', 'ent', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'product4' => array(
+		'name'				=> 'Product 4',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'resort2' => array(
+		'name'				=> 'Resort 2',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'bistro3' => array(
+		'name'				=> 'Bistro 3',
+		'categories'	=> array( 'bus', 'cre', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'danceschool' => array(
+		'name'				=> 'Dance School',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'sciencecentre' => array(
+		'name'				=> 'Science Centre',
+		'categories'	=> array( 'bus', 'blo' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'polyglot' => array(
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'interior5' => array(
+		'name'				=> 'Interior 5',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'carpenter4' => array(
+		'name'				=> 'Carpenter 4',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'company4' => array(
+		'name'				=> 'Company 4',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'club2' => array(
+		'name'				=> 'Club 2',
+		'categories'	=> array( 'ent', 'blo' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'adventure2' => array(
+		'name'				=> 'Adventure 2',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'whiskey' => array(
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'product3' => array(
+		'name'				=> 'Product 3',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'organic' => array(
+		'categories'	=> array( 'bus', 'blo' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'moving3' => array(
+		'name'				=> 'Moving 3',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'architect4' => array(
+		'name'				=> 'Architect 4',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'electronics' => array(
+		'categories'	=> array( 'bus', 'blo' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'tea3' => array(
+		'name'				=> 'Tea 3',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'hosting2' => array(
+		'name'				=> 'Hosting 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'coaching2' => array(
+		'name'				=> 'Coaching 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'product2' => array(
+		'name'				=> 'Product 2',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'healthy' => array(
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'diet2' => array(
+		'name'				=> 'Diet 2',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'biker2' => array(
+		'name'				=> 'Biker 2',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'app4' => array(
+		'name'				=> 'App 4',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'carpenter3' => array(
+		'name'				=> 'Carpenter 3',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'video2' => array(
+		'name'				=> 'Video 2',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'manicure2' => array(
+		'name'				=> 'Manicure 2',
+		'categories'	=> array( 'bus', 'one' ),
+	),
+	'adagency2' => array(
+		'name'				=> 'AdAgency 2',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'print2' => array(
+		'name'				=> 'Print 2',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'pet' => array(
+		'categories'	=> array( 'one', 'oth' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'weddingphotos' => array(
+		'name'				=> 'Wedding Photos',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'restaurant4' => array(
+		'name'				=> 'Restaurant 4',
+		'categories'	=> array( 'bus', 'blo' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'catering' => array(
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'aeroclub' => array(
+		'name'				=> 'Aero Club',
+		'categories'	=> array( 'bus', 'blo' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'logistics2' => array(
+		'name'				=> 'Logistics 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'cosmetics2' => array(
+		'name'				=> 'Cosmetics 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'kids' => array(
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'asg2' => array(
+		'name'				=> 'ASG 2',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'beauty4' => array(
+		'name'				=> 'Beauty 4',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'model2' => array(
+		'name'				=> 'Model 2',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'weddingdresses' => array(
+		'name'				=> 'Wedding Dresses',
+		'categories'	=> array( 'bus', 'oth' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'spa3' => array(
+		'name'				=> 'Spa 3',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'band3' => array(
+		'name'				=> 'Band 3',
+		'categories'	=> array( 'ent' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'gunrange' => array(
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'renovate3' => array(
+		'name'				=> 'Renovate 3',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'tailor2' => array(
+		'name'				=> 'Tailor 2',
+		'categories'	=> array( 'bus', 'cre' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'cakes' => array(
+		'name'				=> 'Cakes',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'car2' => array(
+		'name'				=> 'Car 2',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'agency3' => array(
+		'name'				=> 'Agency 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'coffee3' => array(
+		'name'				=> 'Coffee 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'school2' => array(
+		'name'				=> 'School 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'burger2' => array(
+		'name'				=> 'Burger 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'internet2' => array(
+		'name'				=> 'Internet 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'restaurant3' => array(
+		'name'				=> 'Restaurant 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'clinic3' => array(
+		'name'				=> 'Clinic 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'drone' => array(
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'estate2' => array(
+		'name'				=> 'Estate 2',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'builder2' => array(
+		'name'				=> 'Builder 2',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'football' => array(
+		'categories'	=> array( 'ent', 'blo' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'insurance2' => array(
+		'name'				=> 'Insurance 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'beauty3' => array(
+		'name'				=> 'Beauty 3',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'interior4' => array(
+		'name'				=> 'Interior 4',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'rev' ),
+	),
+	'recipes2' => array(
+		'name'				=> 'Recipes 2',
+		'categories'	=> array( 'ent', 'blo' ),
+	),
+	'erp' => array(
+		'categories'	=> array( 'bus' ),
+	),
+	'lawyer4' => array(
+		'name'				=> 'Lawyer 4',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'movie2' => array(
+		'name'				=> 'Movie 2',
+		'categories'	=> array( 'ent', 'blo' ),
+	),
+	'interior3' => array(
+		'name'				=> 'Interior 3',
+		'categories'	=> array( 'bus', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'navigation' => array(
+		'categories'	=> array( 'bus', 'sho' ),
+		'plugins'			=> array( 'cf7', 'rev', 'woo' ),
+	),
+	'vet2' => array(
+		'name'				=> 'Vet 2',
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'minimal2' => array(
+		'name'				=> 'Minimal 2',
+		'categories'	=> array( 'cre', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'creative3' => array(
+		'name'				=> 'Creative 3',
+		'categories'	=> array( 'cre', 'por' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'county' => array(
+		'categories'	=> array( 'blo', 'oth' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'company3' => array(
+		'name'				=> 'Company 3',
+		'categories'	=> array( 'bus', 'cre', 'por' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'band2' => array(
+		'name'				=> 'Band 2',
+		'categories'	=> array( 'ent', 'cre' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'product' => array(
+		'categories'	=> array( 'bus', 'other' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'cryptocurrency' => array(
+		'categories'	=> array( 'bus', 'blo' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'landing2' => array(
+		'name'				=> 'Landing 2',
+		'categories'	=> array( 'bus', 'one' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'supplier' => array(
+		'categories'	=> array( 'bus' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'sportsman' => array(
+		'categories'	=> array( 'ent', 'blo' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'barman' => array(
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'kindergarten2' => array(
+		'name'				=> 'Kindergarten 2',
+		'categories'	=> array( 'bus', 'blo' ),
+		'plugins'			=> array( 'cf7' ),
+	),
+	'coffee2' => array(
+		'name'				=> 'Coffee 2',
+		'categories'	=> array( 'bus', 'ent', 'blo' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
+	'gym2' => array(
+		'name'				=> 'Gym 2',
+		'categories'	=> array( 'bus', 'ent' ),
+		'plugins'			=> array( 'cf7', 'rev' ),
+	),
 	'eco2' => array(
 		'name'				=> 'Eco 2',
 		'categories'	=> array( 'bus' ),
@@ -561,7 +1462,7 @@ $demos 	= array(
 	),
 	'moto' => array(
 		'categories'	=> array( 'ent', 'blo' ),
-		'plugins'		=> array( 'cf7' ),
+		'plugins'		=> array( 'cf7', 'rev' ),
 	),
 	'logistics' => array(
 		'categories'	=> array( 'bus' ),
@@ -885,7 +1786,6 @@ $demos 	= array(
 		'plugins'		=> array( 'cf7', 'rev' ),
 	),
 	'horse' => array(
-		'name'	=> 'Horse Riding',
 		'categories'	=> array( 'bus', 'ent' ),
 		'plugins'		=> array( 'cf7', 'rev' ),
 	),
@@ -1489,7 +2389,9 @@ $demos 	= array(
 		'categories'	=> array( 'bus', 'ent' ),
 		'plugins'		=> array( 'cf7', 'rev' ),
 	),
-	'splash' => array(
+	'splash-classic' => array(
+		'name'				=> 'Splash classic',
 		'categories'	=> array(),
+		'plugins'			=> array( 'rev' ),
 	),
 );

@@ -197,7 +197,6 @@ body.error404,body.under-construction,body.template-blank{padding-left:0!importa
 /* Header Creative | Right */
 body.header-rtl.header-creative{padding-left:0;padding-right:50px}
 .header-rtl #Header_creative{left:auto;right:-200px}
-.header-rtl.nice-scroll #Header_creative{margin-right:10px}
 .header-rtl #Header_creative .creative-wrapper{margin-left:50px;margin-right:0}
 .header-rtl #Header_creative a.creative-menu-toggle{left:8px;right:auto}
 .header-rtl #Header_creative .creative-social{left:0;right:auto}
@@ -263,24 +262,26 @@ body.header-rtl.header-creative.header-open{padding-left:0;padding-right:250px!i
 
 /* Sticky | .is-sticky ----------- */
 
-#Top_bar.is-sticky{position:fixed!important;width:100%;left:0;top:-60px;height:60px;z-index:701;background:#fff;opacity:.97;filter:alpha(opacity = 97);-webkit-box-shadow:0 2px 5px 0 rgba(0,0,0,0.1);-moz-box-shadow:0 2px 5px 0 rgba(0,0,0,0.1);box-shadow:0 2px 5px 0 rgba(0,0,0,0.1)}
+#Top_bar.is-sticky{position:fixed!important;width:100%;left:0;top:-60px;height:60px;z-index:701;background:#fff;opacity:.97;-webkit-box-shadow:0 2px 5px 0 rgba(0,0,0,0.1);-moz-box-shadow:0 2px 5px 0 rgba(0,0,0,0.1);box-shadow:0 2px 5px 0 rgba(0,0,0,0.1)}
 
-.layout-boxed.header-boxed #Top_bar.is-sticky{max-width:<?php echo $mobileMenuInitW; ?>px;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%)}
-.layout-boxed.header-boxed.nice-scroll #Top_bar.is-sticky{margin-left:-5px}
+.layout-boxed.header-boxed #Top_bar.is-sticky{max-width:1240px;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%)}
 
 #Top_bar.is-sticky .top_bar_left,#Top_bar.is-sticky .top_bar_right,#Top_bar.is-sticky .top_bar_right:before{background:none}
 #Top_bar.is-sticky .top_bar_right{top:-4px;height:auto;}
 #Top_bar.is-sticky .top_bar_right_wrapper{top:15px}
 .header-plain #Top_bar.is-sticky .top_bar_right_wrapper{top:0}
 #Top_bar.is-sticky .logo{width:auto;margin:0 30px 0 20px;padding:0}
+
 #Top_bar.is-sticky #logo{padding:5px 0!important;height:50px!important;line-height:50px!important}
 #Top_bar.is-sticky #logo img:not(.svg){max-height:35px;width:auto!important}
 #Top_bar.is-sticky #logo img.logo-main{display:none}
 #Top_bar.is-sticky #logo img.logo-sticky{display:inline}
-#Top_bar.is-sticky .menu_wrapper .menu > li > a {
-	padding: 15px 0;
-}
+
+#Top_bar.is-sticky .custom-logo-link{padding:5px 0!important;height:50px!important;line-height:50px!important}
+#Top_bar.is-sticky .custom-logo-link img{max-height:35px;}
+
 #Top_bar.is-sticky .menu_wrapper{clear:none}
+#Top_bar.is-sticky .menu_wrapper .menu > li > a{padding:15px 0}
 #Top_bar.is-sticky .menu > li > a,#Top_bar.is-sticky .menu > li > a span{line-height:30px}
 #Top_bar.is-sticky .menu > li > a:after{top:auto;bottom:-4px}
 #Top_bar.is-sticky .menu > li > a span.description{display:none}
@@ -320,7 +321,7 @@ body.header-rtl.header-creative.header-open{padding-left:0;padding-right:250px!i
 
 /* Header | Plain */
 .tr-menu.header-plain #Top_bar { position:absolute; top:0 !important;}
-.tr-menu.header-plain #Top_bar:not(.is-sticky) { background:none !important; }
+.tr-menu.header-plain #Top_bar:not(.is-sticky){background-color:transparent!important}
 .tr-menu.header-plain.ab-show #Top_bar:not(.is-sticky) { top:45px !important;}
 
 .tr-menu.header-plain.minimalist-header:not(.template-slider) #Header { min-height:125px;}
@@ -332,14 +333,14 @@ body.header-rtl.header-creative.header-open{padding-left:0;padding-right:250px!i
 
 /* Header | Split */
 .tr-menu.header-split #Top_bar { position:absolute; top:0 !important;}
-.tr-menu.header-split #Top_bar:not(.is-sticky) { background:none !important; }
+.tr-menu.header-split #Top_bar:not(.is-sticky){background-color:transparent!important}
 .tr-menu.header-split.ab-show #Top_bar:not(.is-sticky) { top:45px !important;}
 
 .tr-menu.header-split.minimalist-header:not(.template-slider) #Header { min-height:135px;}
 
 /* Header | Stack */
 .tr-menu.header-stack #Top_bar { position:absolute; top:0 !important;}
-.tr-menu.header-stack #Top_bar:not(.is-sticky) { background:none !important; }
+.tr-menu.header-stack #Top_bar:not(.is-sticky){background-color:transparent!important}
 .tr-menu.header-stack.ab-show #Top_bar:not(.is-sticky) { top:45px !important;}
 
 .tr-menu.header-stack.minimalist-header:not(.template-slider) #Header { min-height:196px;}

@@ -1,417 +1,393 @@
 <?php
-if ( ! class_exists( 'MFN_Options' ) ){
+if (! class_exists('MFN_Options')) {
 
-	if( ! defined( 'MFN_OPTIONS_DIR' ) ){
-		define( 'MFN_OPTIONS_DIR', trailingslashit( dirname( __FILE__ ) ) );
+	if (! defined('MFN_OPTIONS_DIR')) {
+		define('MFN_OPTIONS_DIR', get_template_directory() .'/muffin-options/');
 	}
 
-	if( ! defined( 'MFN_OPTIONS_URI' ) )
+	if (! defined('MFN_OPTIONS_URI')) {
+		define('MFN_OPTIONS_URI', get_template_directory_uri() .'/muffin-options/');
+	}
+
+	class MFN_Options
 	{
-		define('MFN_OPTIONS_URI', THEME_URI .'/muffin-options/');
-	}
+		public $dir = MFN_OPTIONS_DIR;
+		public $url = MFN_OPTIONS_URI;
+		public $page = '';
 
+		public $args = array();
+		public $sections = array();
 
-	class MFN_Options{
+		public $errors = array();
+		public $warnings = array();
 
-		public $dir 			= MFN_OPTIONS_DIR;
-		public $url 			= MFN_OPTIONS_URI;
-		public $page 			= '';
-		public $args 			= array();
-		public $sections 	= array();
-		public $errors 		= array();
-		public $warnings 	= array();
-		public $options 	= array();
+		public $options = array();
 
-		public $menu 			= array();
-
+		public $menu = array();
 
 		/**
 		 * Class Constructor. Defines the args for the theme options class
 		 */
-		function __construct( $menu = array(), $sections = array() ){
 
-			$this->menu = apply_filters( 'mfn-opts-menu', $menu );
+		public function __construct($menu = array(), $sections = array())
+		{
+			$this->menu = apply_filters('mfn-opts-menu', $menu);
 
 			$defaults = array();
 
-			$defaults['opt_name'] 			= 'betheme';
+			$defaults['opt_name'] = 'betheme';
 
-			$defaults['menu_icon'] 			= MFN_OPTIONS_URI .'/img/menu_icon.png';
-			$defaults['menu_title'] 		= __( 'Theme Options', 'mfn-opts' );
-			$defaults['page_title'] 		= __( 'Theme Options', 'mfn-opts' );
-			$defaults['page_slug'] 			= 'be-options';
-			$defaults['page_cap'] 			= 'edit_theme_options';
-			$defaults['page_type'] 			= 'menu';
-			$defaults['page_parent'] 		= '';
-			$defaults['page_position'] 	= 100;
+			$defaults['menu_icon'] = MFN_OPTIONS_URI .'/img/menu_icon.png';
+			$defaults['menu_title'] = __('Theme Options', 'mfn-opts');
+			$defaults['page_title'] = __('Theme Options', 'mfn-opts');
+			$defaults['page_slug'] = 'be-options';
+			$defaults['page_cap'] = 'edit_theme_options';
+			$defaults['page_type'] = 'menu';
+			$defaults['page_parent'] = '';
+			$defaults['page_position'] = 100;
 
 			// get args
+
 			$this->args = $defaults;
-			$this->args = apply_filters( 'mfn-opts-args', $this->args );
-			$this->args = apply_filters( 'mfn-opts-args-'. $this->args['opt_name'], $this->args );
+			$this->args = apply_filters('mfn-opts-args', $this->args);
+			$this->args = apply_filters('mfn-opts-args-'. $this->args['opt_name'], $this->args);
 
 			// get sections
-			$this->sections = apply_filters( 'mfn-opts-sections', $sections );
-			$this->sections = apply_filters( 'mfn-opts-sections-'. $this->args['opt_name'], $this->sections );
+
+			$this->sections = apply_filters('mfn-opts-sections', $sections);
+			$this->sections = apply_filters('mfn-opts-sections-'. $this->args['opt_name'], $this->sections);
 
 			// set option with defaults
-			add_action( 'init', array( &$this, '_set_default_options' ) );
+			add_action('init', array( $this, '_set_default_options' ));
 
 			// options page
-			add_action( 'admin_menu', array( &$this, '_options_page' ), 13 );
+			add_action('admin_menu', array( $this, '_options_page' ), 13);
 
 			// register setting
-			add_action( 'admin_init', array( &$this, '_register_setting' ) );
+			add_action('admin_init', array( $this, '_register_setting' ));
 
-			// add the js for the error handling before the form
-			add_action( 'mfn-opts-page-before-form', array( &$this, '_errors_js' ), 1 );
-
-			// add the js for the warning handling before the form
-			add_action( 'mfn-opts-page-before-form', array( &$this, '_warnings_js' ), 2 );
+			// first action hooked into the admin scripts actions
+			add_action('admin_enqueue_scripts', array( $this, '_enqueue' ));
 
 			// hook into the wp feeds for downloading the exported settings
-			add_action( 'do_feed_mfn-opts-'.$this->args['opt_name'], array( &$this, '_download_options' ), 1, 1 );
+			add_action('do_feed_mfn-opts-'.$this->args['opt_name'], array( $this, '_download_options' ), 1, 1);
+
+			// add static CSS generation before form
+			add_action('mfn-opts-page-before-form', array( $this, '_static_CSS' ), 10);
+
+			// add the js for the error handling before the form
+			// add_action('mfn-opts-page-before-form', array( $this, '_errors_js' ), 11);
+
+			// add the js for the warning handling before the form
+			// add_action('mfn-opts-page-before-form', array( $this, '_warnings_js' ), 12);
 
 			// get the options for use later on
-			$this->options = get_option( $this->args['opt_name'] );
-
+			$this->options = get_option($this->args['opt_name']);
 		}
-
 
 		/**
 		 * This is used to return and option value from the options array
-		*/
-		function get( $opt_name, $default = null ){
-
-			if( ( ! is_array($this->options) ) || ( ! key_exists($opt_name, $this->options) ) ) return $default;
-
-			return ( ( ! empty($this->options[$opt_name])) || ($this->options[$opt_name]==='0') ) ? $this->options[$opt_name] : $default;
-//			return (!empty($this->options[$opt_name])) ? $this->options[$opt_name] : $default;
-
-		}
-
-
-		/**
-		 * This is used to set an arbitrary option in the options array
 		 */
-		function set($opt_name, $value) {
-			$this->options[$opt_name] = $value;
-			update_option($this->args['opt_name'], $this->options);
-		}
 
-
-		/**
-		 * This is used to echo and option value from the options array
-		*/
-		function show($opt_name, $default = null){
-			$option = $this->get($opt_name, $default);
-			if(!is_array($option)){
-				echo $option;
+		public function get($opt_name, $default = null)
+		{
+			if ((! is_array($this->options)) || (! key_exists($opt_name, $this->options))) {
+				return $default;
 			}
-		}
 
+			return ((! empty($this->options[$opt_name])) || ($this->options[$opt_name]==='0')) ? $this->options[$opt_name] : $default;
+		}
 
 		/**
 		 * Get default options into an array suitable for the settings API
-		*/
-		function _default_values(){
+		 */
+
+		public function _default_values()
+		{
 			$defaults = array();
 
-			foreach($this->sections as $k => $section){
-
-				if(isset($section['fields'])){
-
-					foreach($section['fields'] as $fieldk => $field){
-						if(!isset($field['std'])){
+			foreach ($this->sections as $k => $section) {
+				if (isset($section['fields'])) {
+					foreach ($section['fields'] as $fieldk => $field) {
+						if (!isset($field['std'])) {
 							$field['std'] = '';
 						}
 						$defaults[$field['id']] = $field['std'];
 					}
-
 				}
-
 			}
 
-			$defaults['last_tab'] = 0;
+			$defaults['last_tab'] = false;
 			return $defaults;
 		}
 
-
 		/**
 		 * Set default options on admin_init if option doesnt exist (theme activation hook caused problems, so admin_init it is)
-		*/
-		function _set_default_options(){
-			if(!get_option($this->args['opt_name'])){
+		 */
+
+		public function _set_default_options()
+		{
+			if (!get_option($this->args['opt_name'])) {
 				add_option($this->args['opt_name'], $this->_default_values());
 			}
 			$this->options = get_option($this->args['opt_name']);
 		}
 
-
 		/**
 		 * Class Theme Options Page Function, creates main options page.
-		*/
-		function _options_page(){
+		 */
 
+		public function _options_page()
+		{
 			$this->page = add_submenu_page(
 				'betheme',
 				$this->args['page_title'],
 				$this->args['page_title'],
 				$this->args['page_cap'],
 				$this->args['page_slug'],
-				array( &$this, '_options_page_html' )
+				array( $this, '_options_page_html' )
 			);
-
-			add_action( 'admin_print_styles-'.$this->page, array( &$this, '_enqueue' ) );
 		}
 
 
 		/**
-		 * enqueue styles/js for theme page
-		*/
-		function _enqueue(){
+		 * Enqueue styles/js for theme page
+		 */
 
-			wp_register_style( 'mfn-opts-css', $this->url.'css/options.css', array('farbtastic'), time(), 'all');
-			wp_enqueue_style( 'mfn-opts-css' );
+		public function _enqueue()
+		{
 
-			// rtl
-			if( is_rtl() ) wp_enqueue_style( 'mfn-opts-rtl', $this->url.'css/options-rtl.css', false, time(), 'all');
+			// styles
 
-			wp_enqueue_style( 'mfn-opts-icons', THEME_URI. '/fonts/mfn-icons.css', false, time(), 'all');
-			wp_enqueue_style( 'mfn-opts-font', 'http'. mfn_ssl() .'://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600' );
+			wp_enqueue_style('mfn-opts-font', 'https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600', false, MFN_THEME_VERSION, 'all');
+			wp_enqueue_style('mfn-opts-icons', get_theme_file_uri('/fonts/mfn-icons.css'), false, MFN_THEME_VERSION, 'all');
+			wp_enqueue_style('mfn-opts', $this->url .'css/options.css', false, MFN_THEME_VERSION, 'all');
 
-			wp_enqueue_script( 'mfn-opts-js', $this->url.'js/options.js', array('jquery'), time(), true );
-
-			do_action('mfn-opts-enqueue');
-			do_action('mfn-opts-enqueue-'.$this->args['opt_name']);
-
-			foreach($this->sections as $k => $section){
-
-				if(isset($section['fields'])){
-
-					foreach($section['fields'] as $fieldk => $field){
-
-						if(isset($field['type'])){
-
-							$field_class = 'MFN_Options_'.$field['type'];
-
-							if(!class_exists($field_class)){
-								require_once($this->dir.'fields/'.$field['type'].'/field_'.$field['type'].'.php');
-							}
-
-							if(class_exists($field_class) && method_exists($field_class, 'enqueue')){
-								$enqueue = new $field_class( '','' );
-								$enqueue->enqueue();
-							}
-
-						}
-
-					}
-
-				}
-
+			if (is_rtl()) {
+				wp_enqueue_style('mfn-opts-rtl', $this->url .'css/options-rtl.css', false, MFN_THEME_VERSION, 'all');
 			}
 
-		}
+			// scripts
 
+			wp_enqueue_script('mfn-opts-js', $this->url .'js/options.js', array('jquery'), MFN_THEME_VERSION, true);
+
+		}
 
 		/**
 		 * Download the options file, or display it
-		*/
-		function _download_options(){
+		 */
 
-			if( ! isset( $_GET['secret'] ) || $_GET['secret'] != md5(AUTH_KEY.SECURE_AUTH_KEY)){
+		public function _download_options()
+		{
+			if (! isset($_GET['secret']) || $_GET['secret'] != md5(AUTH_KEY.SECURE_AUTH_KEY)) {
 				wp_die('Invalid Secret for options use');
 				exit;
 			}
-			if( ! isset( $_GET['feed']) ){
+			if (! isset($_GET['feed'])) {
 				wp_die('No Feed Defined');
 				exit;
 			}
 
-			$backup_options = get_option(str_replace('mfn-opts-','',$_GET['feed']));
+			$backup_options = get_option(str_replace('mfn-opts-', '', $_GET['feed']));
 			$backup_options['mfn-opts-backup'] = '1';
-			$content = '###'.serialize($backup_options).'###';
 
-			if( isset( $_GET['action'] ) && $_GET['action'] == 'download_options' ){
+			if (isset($_GET['action']) && $_GET['action'] == 'download_options') {
 				header('Content-Description: File Transfer');
 				header('Content-type: application/txt');
-				header('Content-Disposition: attachment; filename="'.str_replace('mfn-opts-','',$_GET['feed']).'_options_'.date('d-m-Y').'.txt"');
+				header('Content-Disposition: attachment; filename="'. str_replace('mfn-opts-', '', $_GET['feed']) .'_options_'. date('d-m-Y') .'.txt"');
 				header('Content-Transfer-Encoding: binary');
 				header('Expires: 0');
 				header('Cache-Control: must-revalidate');
 				header('Pragma: public');
-				echo $content;
+				echo '###'. serialize($backup_options) .'###';
 				exit;
 			} else {
-				echo $content;
+				echo '###'. serialize($backup_options) .'###';
 				exit;
 			}
 		}
 
-
 		/**
 		 * Register Option for use
-		*/
-		function _register_setting(){
+		 */
 
-			register_setting($this->args['opt_name'].'_group', $this->args['opt_name'], array(&$this,'_validate_options'));
+		public function _register_setting()
+		{
+			register_setting($this->args['opt_name'].'_group', $this->args['opt_name'], array($this, '_validate_options'));
 
-			foreach($this->sections as $k => $section){
+			foreach ($this->sections as $k => $section) {
+				add_settings_section($k.'_section', $section['title'], array($this, '_section_desc'), $k.'_section_group');
 
-				add_settings_section($k.'_section', $section['title'], array(&$this, '_section_desc'), $k.'_section_group');
-
-				if(isset($section['fields'])){
-
-					foreach($section['fields'] as $fieldk => $field){
-
-						if(isset($field['title'])){
+				if (isset($section['fields'])) {
+					foreach ($section['fields'] as $fieldk => $field) {
+						if (isset($field['title'])) {
 							$th = (isset($field['sub_desc']))?$field['title'].'<span class="description">'.$field['sub_desc'].'</span>':$field['title'];
-						}else{
+						} else {
 							$th = '';
 						}
 
-						add_settings_field($fieldk.'_field', $th, array(&$this,'_field_input'), $k.'_section_group', $k.'_section', $field); // checkbox
-
+						add_settings_field($fieldk.'_field', $th, array($this,'_field_input'), $k.'_section_group', $k.'_section', $field); // checkbox
 					}
-
 				}
-
 			}
 
 			do_action('mfn-opts-register-settings');
 			do_action('mfn-opts-register-settings-'.$this->args['opt_name']);
-
 		}
 
+		/**
+		 * Static CSS
+		 */
+
+		public function _static_CSS(){
+
+			if( empty($_GET['settings-updated']) || empty($this->options['static-css']) ){
+				return false;
+			};
+
+			$wp_filesystem = Mfn_Helper::filesystem();
+
+			$upload_dir = wp_upload_dir();
+			$path_be = wp_normalize_path( $upload_dir['basedir'] .'/betheme' );
+			$path_css = wp_normalize_path( $path_be .'/css' );
+			$path = wp_normalize_path( $path_css .'/static.css' );
+
+			if( ! file_exists( $path_be ) ){
+				wp_mkdir_p( $path_be );
+			}
+
+			if( ! file_exists( $path_css ) ){
+				wp_mkdir_p( $path_css );
+			}
+
+			$css = "/* theme options */\n";
+			$css .= mfn_styles_dynamic();
+
+			$wp_filesystem->put_contents( $path, $css, FS_CHMOD_FILE );
+		}
 
 		/**
 		 * Validate the Options options before insertion
-		*/
-		function _validate_options($plugin_options){
+		 */
 
-			set_transient('mfn-opts-saved', '1', 1000 );
+		public function _validate_options($plugin_options)
+		{
+			set_transient('mfn-opts-saved', '1', 1000);
 
+			// options | import
 
-			// Options | Import -----------------------------------------------
-			if( ! empty( $plugin_options['import'] ) ){
+			if (! empty($plugin_options['import'])) {
 
-				if( $plugin_options['import_code'] != '' ){
+				if ($plugin_options['import_code'] != '') {
 
-					// Import from File
+					// import from file
 					$import = $plugin_options['import_code'];
 
-				} elseif( $plugin_options['import_link'] != '' ){
+				} elseif ($plugin_options['import_link'] != '') {
 
-					// Import from URL
-					$import = wp_remote_retrieve_body( wp_remote_get($plugin_options['import_link']) );
+					// import from URL
+					$import = wp_remote_retrieve_body(wp_remote_get($plugin_options['import_link']));
 
 				}
 
-
-				$imported_options = @unserialize( trim( $import,'###' ) );
-
+				$imported_options = @unserialize(trim($import, '###'));
 
 				// FIX | Import 1-click Demo Data encoded options file
-				if( $imported_options === false ){
+
+				if ($imported_options === false) {
 					$import_tmp_fn = 'base'.'64_decode'; // it will return FALSE if NOT base64
-					$import = call_user_func( $import_tmp_fn , trim( $import ) );
-					$imported_options = unserialize( $import );
+					$import = call_user_func($import_tmp_fn, trim($import));
+					$imported_options = unserialize($import);
 				}
 
-
-				if( is_array( $imported_options ) ){
-
+				if (is_array($imported_options)) {
 					$imported_options['imported'] = 1;
 					$imported_options['last_tab'] = false;
-
 					return $imported_options;
-
 				}
+
 			}
 
+			// options | defaults
 
-			// Options | Defaults ---------------------------------------------
-			if( isset( $plugin_options['defaults'] ) && ( $plugin_options['defaults'] == 'Resetting...' ) ){
-
+			if (isset($plugin_options['defaults']) && ($plugin_options['defaults'] == 'Resetting...')) {
 				$plugin_options = $this->_default_values();
 				return $plugin_options;
-
 			}
-
 
 			// validate fields (if needed)
+
 			$plugin_options = $this->_validate_values($plugin_options, $this->options);
 
+			// JS error handling
 
-			if($this->errors){
-				set_transient('mfn-opts-errors', $this->errors, 1000 );
+			if ($this->errors) {
+				set_transient('mfn-opts-errors', $this->errors, 1000);
 			}
 
-			if($this->warnings){
-				set_transient('mfn-opts-warnings', $this->warnings, 1000 );
+			if ($this->warnings) {
+				set_transient('mfn-opts-warnings', $this->warnings, 1000);
 			}
+
+			// after validate hooks
 
 			do_action('mfn-opts-options-validate', $plugin_options, $this->options);
 			do_action('mfn-opts-options-validate-'.$this->args['opt_name'], $plugin_options, $this->options);
 
-			unset( $plugin_options['defaults'] );
-			unset( $plugin_options['import'] );
-			unset( $plugin_options['import_code'] );
-			unset( $plugin_options['import_link'] );
+			// unset unwanted attributes
+
+			unset($plugin_options['defaults']);
+			unset($plugin_options['import']);
+			unset($plugin_options['import_code']);
+			unset($plugin_options['import_link']);
 
 			return $plugin_options;
-
 		}
-
 
 		/**
 		 * Validate values from options form (used in settings api validate function)
 		 * calls the custom validation class for the field so authors can override with custom classes
-		*/
-		function _validate_values($plugin_options, $options){
+		 */
 
-			foreach( $this->sections as $k => $section ){
-
-				if( isset( $section['fields'] ) ){
-
-					foreach( $section['fields'] as $fieldk => $field ){
+		public function _validate_values($plugin_options, $options)
+		{
+			foreach ($this->sections as $k => $section) {
+				if (isset($section['fields'])) {
+					foreach ($section['fields'] as $fieldk => $field) {
 
 						$field['section_id'] = $k;
 
-						if( isset( $field['type'] ) && $field['type'] == 'multi_text' ){
-							continue; //we cant validate this yet
-						}
-
-						if( ! isset( $plugin_options[$field['id']] ) || $plugin_options[$field['id']] == '' ){
+						if ( empty( $plugin_options[$field['id']] ) ) {
 							continue;
 						}
 
 						// force validate of custom filed types
-						if( isset( $field[ 'type' ] ) && ! isset( $field[ 'validate' ] ) ){
-							if( $field[ 'type' ] == 'color' || $field[ 'type' ] == 'color_gradient' ){
+
+						if (isset($field[ 'type' ]) && ! isset($field[ 'validate' ])) {
+							if ($field[ 'type' ] == 'color' || $field[ 'type' ] == 'color_gradient') {
 								$field[ 'validate' ] = 'color';
 							}
 						}
 
-						if( isset( $field[ 'validate' ] ) ){
+						if (isset($field[ 'validate' ])) {
+
 							$validate = 'MFN_Validation_'.$field[ 'validate' ];
 
-							if( ! class_exists( $validate ) ){
-								require_once( $this->dir .'validation/'. $field[ 'validate' ] .'/validation_'. $field[ 'validate' ] .'.php');
+							if (! class_exists($validate)) {
+								require_once($this->dir .'validation/'. $field[ 'validate' ] .'/validation_'. $field[ 'validate' ] .'.php');
 							}
 
-							if( class_exists( $validate ) ){
+							if (class_exists($validate)) {
 
-								$validation = new $validate( $field, $plugin_options[ $field['id'] ], $options[ $field['id'] ] );
+								$validation = new $validate($field, $plugin_options[ $field['id'] ], $options[ $field['id'] ]);
 
 								$plugin_options[ $field['id'] ] = $validation->value;
 
-								if( isset( $validation->error ) ){
+								if (isset($validation->error)) {
 									$this->errors[] = $validation->error;
 								}
 
-								if( isset( $validation->warning ) ){
+								if (isset($validation->warning)) {
 									$this->warnings[] = $validation->warning;
 								}
 
@@ -419,41 +395,48 @@ if ( ! class_exists( 'MFN_Options' ) ){
 							}
 						}
 
-						if( isset( $field['validate_callback'] ) && function_exists( $field['validate_callback'] ) ){
-
+						if (isset($field['validate_callback']) && function_exists($field['validate_callback'])) {
 							$callbackvalues = call_user_func($field['validate_callback'], $field, $plugin_options[$field['id']], $options[$field['id']]);
 
 							$plugin_options[$field['id']] = $callbackvalues['value'];
 
-							if( isset($callbackvalues['error']) ){
+							if (isset($callbackvalues['error'])) {
 								$this->errors[] = $callbackvalues['error'];
 							}
 
-							if( isset($callbackvalues['warning']) ){
+							if (isset($callbackvalues['warning'])) {
 								$this->warnings[] = $callbackvalues['warning'];
 							}
-
 						}
 
-
 					}
-
 				}
-
 			}
+
 			return $plugin_options;
 		}
 
-
 		/**
-		 * HTML OUTPUT.
-		*/
+		 * HTML OUTPUT
+		 */
+
 		function _options_page_html(){
 
-			echo '<div id="mfn-wrapper">';
-				echo '<form method="post" action="options.php" enctype="multipart/form-data" id="mfn-form-wrapper">';
+			$form_class = '';
 
-					settings_fields($this->args['opt_name'].'_group');
+			// Plugin: Muffin Header Builder
+
+			if( class_exists( 'Mfn_HB_Admin' ) && get_site_option( 'mfn_header_builder' ) ){
+				$form_class = 'mhb-active';
+			}
+
+			echo '<div id="mfn-wrapper">';
+
+				do_action('mfn-opts-page-before-form');
+
+				echo '<form id="mfn-form-wrapper" class="'. esc_attr( $form_class ) .'" method="post" action="options.php" enctype="multipart/form-data" >';
+
+					settings_fields( $this->args['opt_name'].'_group' );
 
 					$this->options['last_tab'] = isset( $this->options['last_tab'] ) ? $this->options['last_tab'] : false;
 					echo '<input type="hidden" id="last_tab" name="'.$this->args['opt_name'].'[last_tab]" value="'.$this->options['last_tab'].'" />';
@@ -461,8 +444,10 @@ if ( ! class_exists( 'MFN_Options' ) ){
 					echo '<div id="mfn-aside">';
 						echo '<div class="mfn-logo">Theme Options - Powered by Muffin Group</div>';
 
-						// menu items -----------------------------------------------
+						// menu items
+
 						echo '<ul class="mfn-menu">';
+
 							foreach($this->menu as $k => $menu_item)
 							{
 								echo '<li class="mfn-menu-li mfn-menu-li-'. $k .'">';
@@ -482,7 +467,7 @@ if ( ! class_exists( 'MFN_Options' ) ){
 								echo '</li>';
 							}
 
-							// import -------------------------------------------------
+							// import
 							echo '<li class="mfn-menu-li mfn-menu-li-import">';
 								echo '<a href="javascript:void(0);" class="mfn-menu-a"><span class="icon"></span>'. __('Backup & Reset', 'mfn-opts'). '</a>';
 								echo '<ul class="mfn-submenu">';
@@ -493,10 +478,10 @@ if ( ! class_exists( 'MFN_Options' ) ){
 							echo '</li>';
 
 						echo '</ul>';
-						// end: menu items -------------------------------------------
 
-						echo '<div class="mfn-theme-version">'. __('Theme Version', 'mfn-opts') .' <span>'. THEME_VERSION .'</span></div>';
+						echo '<div class="mfn-theme-version">'. __('Theme Version', 'mfn-opts') .' <span>'. MFN_THEME_VERSION .'</span></div>';
 						echo '<div class="mfn-link"><a href="admin.php?page=be-support">'. __('Manual & Support', 'mfn-opts') .'</a></div>';
+
 					echo '</div>';
 
 					echo '<div id="mfn-main">';
@@ -505,28 +490,40 @@ if ( ! class_exists( 'MFN_Options' ) ){
 							echo '<input type="submit" name="submit" value="'.__('Save Changes', 'mfn-opts').'" class="mfn-popup-save" />';
 						echo '</div>';
 
-						// sections -------------------------------------------------
+						// sections
+
 						echo '<div class="mfn-sections">';
 
 							foreach($this->sections as $k => $section){
 								echo '<div id="'.$k.'-mfn-section'.'" class="mfn-section">';
+
+									if( $form_class ){
+										echo '<div class="mfn-message plugin first">';
+											echo 'BeTheme <a target="_blank" href="admin.php?page=be-header">Header Builder plugin is active</a>. Header related options are hidden.';
+										echo '</div>';
+									}
+
 									do_settings_sections($k.'_section_group');
+
 									echo '<div class="mfn-sections-footer">';
 										echo '<input type="submit" name="submit" value="'.__('Save Changes', 'mfn-opts').'" class="mfn-popup-save" tabindex="-1"/>';
 									echo '</div>';
+
 								echo '</div>';
 							}
 
-							// import -------------------------------------------------
+							// import
+
 							echo '<div id="import-mfn-section" class="mfn-section">';
 								echo '<h3>'. __('Import & Export', 'mfn-opts'). '</h3>';
 
 								echo '<div class="mfn-import-wrapper">';
 
-									// export -------------------------------------------------
+									// export
+
 									echo '<div class="mfn-import-box mfn-import-exp">';
-										echo '<h4>'.__('Export Options', 'nhp-opts').'</h4>';
-										echo '<p class="description">'. __('Here you can copy/download your themes current option settings. Keep this safe as you can use it as a backup should anything go wrong. Or you can use it to restore your settings on this site (or any other site). You also have the handy option to copy the link to yours sites settings. Which you can then use to duplicate on another site.', 'nhp-opts') .'</p>';
+										echo '<h4>'.__('Export Options', 'mfn-opts').'</h4>';
+										echo '<p class="description">'. __('Here you can copy/download your themes current option settings. Keep this safe as you can use it as a backup should anything go wrong. Or you can use it to restore your settings on this site (or any other site). You also have the handy option to copy the link to yours sites settings. Which you can then use to duplicate on another site.', 'mfn-opts') .'</p>';
 
 										echo '<p>';
 											echo '<a href="javascript:void(0);" class="mfn-btn mfn-import-exp-code-btn">'.__('Copy', 'mfn-opts').'</a>&nbsp;';
@@ -545,8 +542,8 @@ if ( ! class_exists( 'MFN_Options' ) ){
 
 									echo '</div>';
 
+									// import
 
-									// import -------------------------------------------------
 									echo '<div class="mfn-import-box mfn-import-imp">';
 										echo '<h4>'.__('Import Options', 'mfn-opts').'</h4>';
 
@@ -572,7 +569,8 @@ if ( ! class_exists( 'MFN_Options' ) ){
 
 									echo '</div>';
 
-									// reset -------------------------------------------------
+									// reset
+
 									echo '<div class="mfn-import-box mfn-import-res">';
 										echo '<h4>'.__('Reset Options', 'mfn-opts').'</h4>';
 
@@ -588,7 +586,6 @@ if ( ! class_exists( 'MFN_Options' ) ){
 
 									echo '</div>';
 
-
 								echo '</div>';
 
 								echo '<div class="mfn-sections-footer">';
@@ -597,7 +594,6 @@ if ( ! class_exists( 'MFN_Options' ) ){
 							echo '</div>';
 
 						echo '</div>';
-						// end: sections --------------------------------------------
 
 					echo '</div>';
 
@@ -608,19 +604,22 @@ if ( ! class_exists( 'MFN_Options' ) ){
 
 		/**
 		 * JS to display the errors on the page
-		*/
+		 */
 		function _errors_js(){
 
-			if(isset($_GET['settings-updated']) && $_GET['settings-updated'] == 'true' && get_transient('mfn-opts-errors')){
+			if( isset($_GET['settings-updated']) && $_GET['settings-updated'] == 'true' && get_transient('mfn-opts-errors') ){
+
 				$errors = get_transient('mfn-opts-errors');
 				$section_errors = array();
+
 				foreach($errors as $error){
-					$section_errors[$error['section_id']] = (isset($section_errors[$error['section_id']]))?$section_errors[$error['section_id']]:0;
+					$section_errors[$error['section_id']] = isset($section_errors[$error['section_id']]) ? $section_errors[$error['section_id']] : 0;
 					$section_errors[$error['section_id']]++;
 				}
 
 				echo '<script type="text/javascript">';
 					echo 'jQuery(document).ready(function(){';
+
 						echo 'jQuery("#mfn-opts-field-errors span").html("'.count($errors).'");';
 						echo 'jQuery("#mfn-opts-field-errors").show();';
 
@@ -632,51 +631,54 @@ if ( ! class_exists( 'MFN_Options' ) ){
 							echo 'jQuery("#'.$error['id'].'").addClass("mfn-opts-field-error");';
 							echo 'jQuery("#'.$error['id'].'").closest("td").append("<span class=\"mfn-opts-th-error\">'.$error['msg'].'</span>");';
 						}
+
 					echo '});';
 				echo '</script>';
+
 				delete_transient('mfn-opts-errors');
 			}
 		}
 
-
 		/**
 		 * JS to display the warnings on the page
-		*/
+		 */
 		function _warnings_js(){
 
-			if(isset($_GET['settings-updated']) && $_GET['settings-updated'] == 'true' && get_transient('mfn-opts-warnings')){
-					$warnings = get_transient('mfn-opts-warnings');
-					$section_warnings = array();
-					foreach($warnings as $warning){
-						$section_warnings[$warning['section_id']] = (isset($section_warnings[$warning['section_id']]))?$section_warnings[$warning['section_id']]:0;
-						$section_warnings[$warning['section_id']]++;
-					}
+			if( isset($_GET['settings-updated']) && $_GET['settings-updated'] == 'true' && get_transient('mfn-opts-warnings') ){
 
+				$warnings = get_transient('mfn-opts-warnings');
+				$section_warnings = array();
 
-					echo '<script type="text/javascript">';
-						echo 'jQuery(document).ready(function(){';
-							echo 'jQuery("#mfn-opts-field-warnings span").html("'.count($warnings).'");';
-							echo 'jQuery("#mfn-opts-field-warnings").show();';
-
-							foreach($section_warnings as $sectionkey => $section_warning){
-								echo 'jQuery("#'.$sectionkey.'_section_group_li_a").append("<span class=\"mfn-opts-menu-warning\">'.$section_warning.'</span>");';
-							}
-
-							foreach($warnings as $warning){
-								echo 'jQuery("#'.$warning['id'].'").addClass("mfn-opts-field-warning");';
-								echo 'jQuery("#'.$warning['id'].'").closest("td").append("<span class=\"mfn-opts-th-warning\">'.$warning['msg'].'</span>");';
-							}
-						echo '});';
-					echo '</script>';
-					delete_transient('mfn-opts-warnings');
+				foreach($warnings as $warning){
+					$section_warnings[$warning['section_id']] = isset($section_warnings[$warning['section_id']]) ? $section_warnings[$warning['section_id']] : 0;
+					$section_warnings[$warning['section_id']]++;
 				}
 
+				echo '<script type="text/javascript">';
+					echo 'jQuery(document).ready(function(){';
+						echo 'jQuery("#mfn-opts-field-warnings span").html("'.count($warnings).'");';
+						echo 'jQuery("#mfn-opts-field-warnings").show();';
+
+						foreach($section_warnings as $sectionkey => $section_warning){
+							echo 'jQuery("#'.$sectionkey.'_section_group_li_a").append("<span class=\"mfn-opts-menu-warning\">'.$section_warning.'</span>");';
+						}
+
+						foreach($warnings as $warning){
+							echo 'jQuery("#'.$warning['id'].'").addClass("mfn-opts-field-warning");';
+							echo 'jQuery("#'.$warning['id'].'").closest("td").append("<span class=\"mfn-opts-th-warning\">'.$warning['msg'].'</span>");';
+						}
+
+					echo '});';
+				echo '</script>';
+
+				delete_transient('mfn-opts-warnings');
+			}
 		}
 
-
 		/**
-		 * Section HTML OUTPUT +
+		 * Section HTML OUTPUT
 		 */
+
 		function _section_desc( $section ){
 
 			$id = str_replace( '_section', '', $section['id'] );
@@ -687,30 +689,27 @@ if ( ! class_exists( 'MFN_Options' ) ){
 
 		}
 
-
 		/**
-		 * Field HTML OUTPUT +
+		 * Field HTML OUTPUT
 		 */
+
 		function _field_input( $field ){
-
-			if( isset( $field['callback'] ) && function_exists( $field['callback'] ) ){
-
-				$value = ( isset( $this->options[$field['id']] ) ) ? $this->options[ $field['id'] ] : '';
-
-				call_user_func( $field['callback'], $field, $value );
-
-				return true;
-			}
 
 			if( isset( $field['type'] ) ){
 
-				$field_class = 'MFN_Options_' .$field['type'];
+				$field_class = 'MFN_Options_'. $field['type'];
+
+				if ( ! class_exists( $field_class ) ) {
+					require_once( $this->dir .'fields/'. $field['type'] .'/field_'. $field['type'] .'.php' );
+				}
 
 				if( class_exists( $field_class ) ){
 
-					require_once( $this->dir .'fields/'. $field['type'] .'/field_'. $field['type'] .'.php' );
-
-					$value = ( isset( $this->options[$field['id']] ) ) ? $this->options[$field['id']] : '';
+					if( isset( $this->options[$field['id']] ) ){
+						$value = $this->options[$field['id']];
+					} else {
+						$value = '';
+					}
 
 					$render = new $field_class( $field, $value, $this->args['opt_name'] );
 					$render->render();

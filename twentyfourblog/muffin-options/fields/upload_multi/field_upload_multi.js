@@ -1,251 +1,268 @@
-/**
- * MfnMultiupload - closure thats describe behaviour of Image Gallery
- *
- * @param  {Object} $     - jQuery reference
- * @return {Object} .init - Method to start the closure
- */
-var Mfn_Upload_Multi = ( function( $ ){
+(function($) {
 
-	
-	/**
-	 * Global variables
-	 */
-	var multi_file_frame		= null,
-		multi_file_frame_open	= null,
-		multi_file_frame_select	= null;
+  /* globals jQuery, wp */
 
-	var selector = '.mfnf-upload.multi';
-	
+  "use strict";
 
-	/**
-	 * Attach events to buttons. Runs whole script.
-	 */
-	function init() {
-		
-		open_media_gallery();
-		attach_remove_action();
-		attach_remove_all_action();
-		
-		ui_sortable();
-		
-	}
-	
-	
-	/**
-	 * UI Sortable Init
-	 */
-	function ui_sortable(){
+  var MfnUploadMulti = (function() {
 
-		$( '.gallery-container', selector ).hover( function(){
-			
-			var el = $( this ),
-				parent = el.closest( selector );
+    /**
+     * Global variables
+     */
 
-			if( $( '.image-container', el ).length ){
-				
-				// init sortable
-				if( ! el.hasClass( 'ui-sortable' ) ){
-					el.sortable({
-						opacity	: 0.9,
-						update	: function(){
-							fill_input( parent, find_all_ids( parent ) );
-						}
-					});
-				}
-				
-				// enable inactive sortable
-				if( el.hasClass( 'ui-sortable-disabled' ) ){
-					el.sortable( 'enable' );
-				}
-			}
+    var multiFileFrame, multiFileFrameOpen, multiFileFrameSelect, handle,
+      selector = '.mfnf-upload.multi';
 
-		});
-	}
-	
+    /**
+     * Attach events to buttons. Runs whole script.
+     */
 
-	/**
-	 * Click | Add
-	 */
-	function open_media_gallery(){
-		$( '.upload-add', selector ).click( function( event ) {
-	    	event.preventDefault();
+    function init() {
 
-	        // Create the media frame
-	        multi_file_frame = wp.media.frames.mfnGallery = wp.media({
-	        	title   	: $( this ).data( 'button' ),
-				multiple	: 'add',
-	        	library 	: {
-					type : 'image',
-	        	},
-	            button		: {
-	                text : $( this ).data( 'button' )
-	            }
-	        });     
+      openMediaGallery();
+      attachRemoveAction();
+      attachRemoveAllAction();
 
-			// Attach hooks to the events
-	        
-	        multi_file_frame.on( 'open'		, multi_file_frame_open   );
-	        multi_file_frame.on( 'select'	, multi_file_frame_select );
+      uiSortable();
 
-			multi_file_frame.open();
-	    });
-	}
+    }
 
-	
-	/**
-	 * WP Media Frame | Open
-	 */
-	 multi_file_frame_open = function(){
-		 
-		var handle 		= $( multi_file_frame.modal.clickedOpenerEl ),
-			parent 		= handle.closest( selector ),
-			library		= multi_file_frame.state().get( 'selection' ),
-			images 		= $( '.upload-input', parent ).val(),
-			image_ids;
+    /**
+     * UI Sortable Init
+     */
 
-		if( ! images ){
-			return true;
-		}
+    function uiSortable() {
 
-		image_ids = images.split( ',' );
+      $('body').on('mouseenter', '.mfnf-upload.multi .gallery-container', function(e) {
 
-		image_ids.forEach( function( id ){
-			var attachment = wp.media.attachment( id );
-			attachment.fetch();
-			library.add( attachment ? [ attachment ] : [] );
-		});
-	};
+        var el = $(this),
+          parent = el.closest(selector);
 
+        if ($('.image-container', el).length) {
 
-	/**
-	 * WP Media Frame | Select
-	 */
-	multi_file_frame_select = function () {
-		
-		var handle 		= $( multi_file_frame.modal.clickedOpenerEl ),
-		 	parent 		= handle.closest( selector ),
-		 	gallery 	= $( '.gallery-container', parent ),
-		 	library		= multi_file_frame.state().get( 'selection' ),
-	    	image_urls	= [],
-	    	image_ids	= [],
-	    	image_url, output_html, joined_ids;
+          // init sortable
 
-	    	gallery.html( '' );
+          if (!el.hasClass('ui-sortable')) {
+            el.sortable({
+              opacity: 0.9,
+              update: function() {
+                fillInput(parent, findAllIDs(parent));
+              }
+            });
+          }
 
-	        library.map( function( image ){
+          // enable inactive sortable
 
-	    		image = image.toJSON();
-	     		image_urls.push( image.url );
-	      		image_ids.push( image.id );
-	      		
-	      		if( image.sizes.thumbnail ){
-	      			image_url = image.sizes.thumbnail.url;
-	      		} else {
-	      			image_url = image.url;
-	      		}
+          if (el.hasClass('ui-sortable-disabled')) {
+            el.sortable('enable');
+          }
+        }
 
-	      		output_html  = 	'<div class="image-container">' +
-									'<img class="screenshot image" src="'+ image_url +'" data-pic-id="'+ image.id +'" />' +
-									'<a href="#" class="upload-remove single dashicons dashicons-no"></a>' +
-								'</div>';
+      });
 
-				gallery.append( output_html );
-	        });
+    }
 
-		joined_ids = image_ids.join( ',' ).replace(/^,*/, '' );
-		if ( joined_ids.length !== 0 ) {
-			$( 'a.upload-remove.all', parent ).fadeIn( 300 );
-		}
-		
-		fill_input( parent, joined_ids );
-		
-		attach_remove_action();
-	};
-	
-	
-	/**
-	 * Click | Remove single
-	 */
-	function attach_remove_action() {
-	    $( 'a.upload-remove.single', selector ).click( function( event ){
-	    	event.preventDefault();
+    /**
+     * Click | Add
+     */
 
-	        var handle = $( this ),
-				parent = handle.closest( selector ),
-				joined_ids;
-			 
-			handle.closest( '.image-container' ).remove();
+    function openMediaGallery() {
 
-			joined_ids = find_all_ids( parent );
-			if( joined_ids === '' ) {
-				$( 'a.upload-remove.all', parent ).fadeOut( 300 );
-			}
+      $('body').on('click', '.mfnf-upload.multi .upload-add', function(event) {
 
-			fill_input( parent, joined_ids );
-	    });
-	}
+        event.preventDefault();
 
+        handle = this;
 
-	/**
-	 * Click | Remove all
-	 */
-	function attach_remove_all_action() {
-	    $( '.upload-remove.all', selector ).click( function( event ) {
-	    	event.preventDefault();
-	    	
-	    	var handle = $( this ),
-	    		parent = handle.closest( selector );
+        // Create the media frame
 
-	        $( this ).fadeOut( 300 );
-	        
-	        $( 'input', parent ).val( '' );
-	        $( '.gallery-container', parent ).html( '' );
+        multiFileFrame = wp.media.frames.mfnGallery = wp.media({
+          title: $(this).data('button'),
+          multiple: 'add',
+          library: {
+            type: 'image',
+          },
+          button: {
+            text: $(this).data('button')
+          }
+        });
 
-	    });
-	}
+        // Attach hooks to the events
 
+        multiFileFrame.on('open', multiFileFrameOpen);
+        multiFileFrame.on('select', multiFileFrameSelect);
 
-	/**
-	 * Helper method. Find all IDs of added images.
-	 * @method find_all_ids
-	 * @return {String}		joined ids separated by `;`
-	 */
-	function find_all_ids( parent ) {
-		var image_ids = [],
-			id;
+        multiFileFrame.open();
 
-		$( '.gallery-container img.screenshot', parent ).each( function(){
-			id =  $( this ).attr( 'data-pic-id' );
-			image_ids.push( id );
-		});
+      });
 
-		return image_ids.join( "," );
-	}
+    }
 
+    /**
+     * WP Media Frame | Open
+     */
 
-	/**
-	 * Helper method. Set the value of image_gallery input.
-	 * @method fill_input
-	 * @param  {String} joined_ids - string to be set into input
-	 */
-	function fill_input( parent, joined_ids ){
-		
-        $( '.upload-input', parent )
-    		.val( joined_ids )
-    		.trigger( 'change' );
-	}
+    multiFileFrameOpen = function() {
 
-	
-	/**
-	 * Return
-	 * Method to start the closure
-	 */
-	return {
-		init: init
-	};
+      var parent = handle.closest(selector),
+        library = multiFileFrame.state().get('selection'),
+        images = $('.upload-input', parent).val(),
+        imageIDs;
 
-})( jQuery );
+      if (!images) {
+        return true;
+      }
 
-jQuery( document ).ready( function(){
-	var mfn_upload_multi = Mfn_Upload_Multi.init();
-});
+      imageIDs = images.split(',');
+
+      imageIDs.forEach(function(id) {
+        var attachment = wp.media.attachment(id);
+        attachment.fetch();
+        library.add(attachment ? [attachment] : []);
+      });
+    };
+
+    /**
+     * WP Media Frame | Select
+     */
+
+    multiFileFrameSelect = function() {
+
+      var parent = handle.closest(selector),
+        gallery = $('.gallery-container', parent),
+        library = multiFileFrame.state().get('selection'),
+        imageURLs = [],
+        imageIDs = [],
+        imageURL, outputHTML, joinedIDs;
+
+      gallery.html('');
+
+      library.map(function(image) {
+
+        image = image.toJSON();
+        imageURLs.push(image.url);
+        imageIDs.push(image.id);
+
+        if (image.sizes.thumbnail) {
+          imageURL = image.sizes.thumbnail.url;
+        } else {
+          imageURL = image.url;
+        }
+
+        outputHTML = '<div class="image-container">' +
+          '<img class="screenshot image" src="' + imageURL + '" data-pic-id="' + image.id + '" />' +
+          '<a href="#" class="upload-remove single dashicons dashicons-no"></a>' +
+          '</div>';
+
+        gallery.append(outputHTML);
+      });
+
+      joinedIDs = imageIDs.join(',').replace(/^,*/, '');
+      if (joinedIDs.length !== 0) {
+        $('a.upload-remove.all', parent).fadeIn(300);
+      }
+
+      fillInput(parent, joinedIDs);
+
+      attachRemoveAction();
+    };
+
+    /**
+     * Click | Remove single
+     */
+
+    function attachRemoveAction() {
+
+      $('body').on('click', '.mfnf-upload.multi .upload-remove.single', function(event) {
+
+        event.preventDefault();
+
+        var parent = $(this).closest(selector),
+          joinedIDs;
+
+        $(this).closest('.image-container').remove();
+
+        joinedIDs = findAllIDs(parent);
+        if (joinedIDs === '') {
+          $('a.upload-remove.all', parent).fadeOut(300);
+        }
+
+        fillInput(parent, joinedIDs);
+
+      });
+
+    }
+
+    /**
+     * Click | Remove all
+     */
+
+    function attachRemoveAllAction() {
+
+      $('body').on('click', '.mfnf-upload.multi .upload-remove.all', function(event) {
+
+        event.preventDefault();
+
+        var parent = $(this).closest(selector);
+
+        $(this).fadeOut(300);
+
+        $('input', parent).val('');
+        $('.gallery-container', parent).html('');
+
+      });
+
+    }
+
+    /**
+     * Helper method. Find all IDs of added images.
+     * @method findAllIDs
+     * @return {String}		joined ids separated by `;`
+     */
+
+    function findAllIDs(parent) {
+      var imageIDs = [],
+        id;
+
+      $('.gallery-container img.screenshot', parent).each(function() {
+        id = $(this).attr('data-pic-id');
+        imageIDs.push(id);
+      });
+
+      return imageIDs.join(",");
+    }
+
+    /**
+     * Helper method. Set the value of image gallery input.
+     * @method fillInput
+     * @param  {String} joinedIDs - string to be set into input
+     */
+
+    function fillInput(parent, joinedIDs) {
+
+      $('.upload-input', parent)
+        .val(joinedIDs)
+        .trigger('change');
+    }
+
+    /**
+     * Return
+     * Method to start the closure
+     */
+
+    return {
+      init: init
+    };
+
+  })(jQuery);
+
+  /**
+   * $(document).ready
+   * Specify a function to execute when the DOM is fully loaded.
+   */
+
+  $(function() {
+    MfnUploadMulti.init();
+  });
+
+})(jQuery);

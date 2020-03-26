@@ -19,11 +19,13 @@
 $shop_classes = array();
 
 if( is_woocommerce() ){
-	// Shop Layout aplies ONLY for archives page (Shop)
+
+	// shop layout aplies ONLY for archives page (Shop)
 
 	if( ! is_product() ){
 
 		// layout
+
 		if( $_GET && key_exists( 'mfn-shop', $_GET ) ){
 			$shop_layout = esc_html( $_GET[ 'mfn-shop' ] ); // demo
 		} else {
@@ -32,6 +34,7 @@ if( is_woocommerce() ){
 		$shop_classes[] = $shop_layout;
 
 		// isotope
+		
 		if( $shop_layout == 'masonry' ) $shop_classes[] = 'isotope';
 
 	}
@@ -42,4 +45,4 @@ $shop_classes = implode( ' ', $shop_classes );
 ?>
 
 <div class="products_wrapper isotope_wrapper">
-	<ul class="products <?php echo $shop_classes; ?>">
+	<ul class="products <?php echo esc_attr($shop_classes); ?>">

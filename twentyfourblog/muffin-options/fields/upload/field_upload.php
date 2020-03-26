@@ -1,84 +1,94 @@
 <?php
-class MFN_Options_upload extends MFN_Options{
+class MFN_Options_upload // extends MFN_Options
+{
+
+	protected $field = array();
+	protected $value = '';
+	protected $prefix = false;
 
 	/**
 	 * Constructor
 	 */
-	function __construct( $field = array(), $value = '', $prefix = false ){
 
+	public function __construct($field = array(), $value = '', $prefix = false)
+	{
 		$this->field = $field;
 		$this->value = $value;
-
-		// theme options 'opt_name'
 		$this->prefix = $prefix;
 
+		$this->enqueue();
 	}
 
 	/**
 	 * Render
 	 */
-	function render( $meta = false ){
 
-		// class ----------------------------------------------------
-		if( isset( $this->field['class']) ){
-			$class = $this->field['class'];
-		} else {
-			$class = 'image';
-		}
+	public function render($meta = false)
+	{
 
-		// name -----------------------------------------------------
-		if( $meta == 'new' ){
+		// data
+
+		$data = isset($this->field[ 'data' ]) ? $this->field[ 'data' ] : 'image';
+
+		// name
+
+		if ($meta == 'new') {
 
 			// builder new
-			$name = 'data-name="'. $this->field['id'] .'"';
+			$name_escaped = 'data-name="'. esc_attr($this->field['id']) .'"';
 
-		} elseif( $meta ){
+		} elseif ($meta) {
 
 			// page mata & builder existing items
-			$name = 'name="'. $this->field['id'] .'"';
+			$name_escaped = 'name="'. esc_attr($this->field['id']) .'"';
 
 		} else {
 
 			// theme options
-			$name = 'name="'. $this->prefix .'['. $this->field['id'] .']"';
+			$name_escaped = 'name="'. esc_attr($this->prefix.'['.$this->field['id'].']') .'"';
 
 		}
 
-		// value is empty -------------------------------------------
-		if( $this->value == '' ){
-			$remove = 'style="display:none;"';
-			$upload = '';
+		// value is empty
+
+		if ($this->value == '') {
+			$remove_escaped = 'style="display:none;"';
+			$upload_escaped = false;
 		} else {
-			$remove = '';
-			$upload = 'style="display:none;"';
+			$remove_escaped = '';
+			$upload_escaped = 'style="display:none;"';
 		}
 
-		// echo -----------------------------------------------------
+		// output -----
+
 		echo '<div class="mfn-upload-field">';
 
-			echo '<input type="text" '. $name .' value="'. $this->value .'" class="'.$class.'" />';
+			// This variable has been safely escaped above in this function
+			echo '<input type="text" '. $name_escaped .' value="'. esc_attr($this->value) .'" class="'. esc_attr($data) .'" />';
 
-			echo ' <a href="javascript:void(0);" data-choose="Choose a File" data-update="Select File" class="mfn-opts-upload" '. $upload .'><span></span>'. __('Browse', 'mfn-opts') .'</a>';
-			echo ' <a href="javascript:void(0);" class="mfn-opts-upload-remove" '. $remove .'>'.__('Remove Upload', 'mfn-opts').'</a>';
+			echo '&nbsp;<a href="javascript:void(0);" data-choose="Choose a File" data-update="Select File" class="mfn-opts-upload" '. $upload_escaped .'><span></span>'. esc_html__('Browse', 'mfn-opts') .'</a>';
+			echo ' <a href="javascript:void(0);" class="mfn-opts-upload-remove" '. $remove_escaped .'>'. esc_html__('Remove Upload', 'mfn-opts') .'</a>';
 
-			if( $class == 'image' ) echo '<img class="mfn-opts-screenshot '.$class.'" src="'.$this->value.'" />';
+			if ('image' == $data) {
+				echo '<img class="mfn-opts-screenshot '. esc_attr($data) .'" src="'. esc_url($this->value) .'" />';
+			}
 
-			if( isset( $this->field['desc'] ) ){
-				echo '<span class="description '. $class .'">'. $this->field['desc'] .'</span>';
+			if (isset($this->field['desc'])) {
+				echo '<span class="description '. esc_attr($data) .'">'. wp_kses($this->field['desc'], mfn_allowed_html('desc')) .'</span>';
 			}
 
 		echo '</div>';
+
 	}
 
-    /**
-     * Enqueue
-     */
-    function enqueue() {
+	/**
+	 * Enqueue
+	 */
 
-			wp_enqueue_media();
+	public function enqueue()
+	{
+		wp_enqueue_media();
+		wp_enqueue_script('mfn-opts-field-upload', MFN_OPTIONS_URI .'fields/upload/field_upload.js', array('jquery'), MFN_THEME_VERSION, true);
+	}
 
-			wp_enqueue_script( 'mfn-opts-field-upload-js', MFN_OPTIONS_URI .'fields/upload/field_upload.js', array( 'jquery' ), THEME_VERSION, true );
-
-      wp_localize_script( 'mfn-opts-field-upload-js', 'mfn_upload', array( 'url' => $this->url .'fields/upload/blank.png' ) );
-    }
 }

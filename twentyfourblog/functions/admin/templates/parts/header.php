@@ -7,7 +7,7 @@ if( ! defined( 'ABSPATH' ) ){
 <?php if( WHITE_LABEL ): ?>
 	<h1><?php esc_html_e( 'Welcome to WordPress', 'mfn-opts' ); ?></h1>
 <?php else: ?>
-	<h1><?php esc_html_e( 'Welcome to BeTheme', 'mfn-opts' ); ?></h1>
+	<h1><?php esc_html_e( 'Welcome to Betheme', 'mfn-opts' ); ?></h1>
 <?php endif; ?>
 
 <p class="about-text">
@@ -63,9 +63,9 @@ if( ! defined( 'ABSPATH' ) ){
 			c-0.4-1.5-1.1-2.9-2-4.1c-0.9-1.2-2.2-2.2-3.7-2.9C114,41.1,112.1,40.8,109.9,40.8z"/>
 	</svg>
 
-	<span class="version"><?php echo THEME_VERSION; ?></span>
+	<span class="version"><?php echo MFN_THEME_VERSION; ?></span>
 
-	<?php if( mfn_is_registered() && version_compare( $this->version, THEME_VERSION, '>' )): ?>
+	<?php if( mfn_is_registered() && version_compare( $this->version, MFN_THEME_VERSION, '>' )): ?>
 
 		<a href="update-core.php" class="button"><?php esc_html_e( 'Update to', 'mfn-opts' ); ?> <?php echo esc_html( $this->version ); ?></a>
 
@@ -73,7 +73,14 @@ if( ! defined( 'ABSPATH' ) ){
 
 </div>
 
-<?php settings_errors( 'betheme_registration' ); ?>
+<?php
+	settings_errors('betheme_registration');
+	if( ! empty($this->error) ){
+		echo '<div id="setting-error-registration_error" class="error inline mfn-dashboard-error settings-error notice">';
+			echo '<p><strong>'. esc_html($this->error) .'</strong></p>';
+		echo '</div>';
+	}
+?>
 
 <?php
 	$current_screen = get_current_screen();

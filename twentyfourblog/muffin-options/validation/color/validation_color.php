@@ -6,10 +6,8 @@ class MFN_Validation_color extends MFN_Options{
 	 */
 	function __construct( $field, $value, $current ){
 
-		parent::__construct();
-
 		$this->field = $field;
-		$this->field['msg'] = ( isset( $this->field['msg'] ) ) ? $this->field['msg'] : __( 'This field must be a valid color value.', 'mfn-opts' );
+		$this->field['msg'] = isset( $this->field['msg'] ) ? $this->field['msg'] : __( 'This field must be a valid color value.', 'mfn-opts' );
 
 		// set value + sanitize
 		$this->value = str_replace( ' ', '', $value );
@@ -39,23 +37,10 @@ class MFN_Validation_color extends MFN_Options{
 				return false;
 			}
 
-			/*
-			if( $this->value[0] != '#' ){
-				$this->value = ( isset( $this->current ) ) ? $this->current : '';
-				$this->error = $this->field;
-				return false;
-			}
-
-			if( strlen( $this->value ) != 7 ){
-				$this->value = ( isset ( $this->current ) ) ? $this->current : '';
-				$this->error = $this->field;
-			}
-			*/
-
 		}
 
 		// gradient
-		// TODO: only HEX validation
+		// only HEX validation
 
 		if( is_array( $this->value ) ){
 

@@ -9,7 +9,8 @@ body{direction:rtl;unicode-bidi:embed}
 .the_content_wrapper{float:right;width:98%;direction:ltr}
 .the_content_wrapper > * {direction:rtl}
 
-/* Base ------------------------------------------------------------------------------ */
+/* Base ----- */
+
 a.button,a.tp-button,button,input[type="submit"],input[type="reset"],input[type="button"]{margin-left:7px;margin-right:0}
 
 .fixed-nav.fixed-nav-prev{left:auto;right:0;}
@@ -34,16 +35,21 @@ a.button,a.tp-button,button,input[type="submit"],input[type="reset"],input[type=
 .image_frame .image_wrapper .image_links.double a{float:right}
 .image_frame .image_wrapper .image_links.double a:first-child{box-shadow:inset 1px 0 0 0 rgba(255,255,255,.2);-webkit-box-shadow:inset 1px 0 0 0 rgba(255,255,255,.2)}
 
-/* Action Bar ------------------------------------------------------------------------ */
+/* Action Bar ----- */
+
 #Action_bar .contact_details{float:right}
 #Action_bar .contact_details li:last-child{margin-left:0}
 #Action_bar .contact_details li{margin-right:0;margin-left:10px}
 #Action_bar .social{float:left}
 #Action_bar .social li{margin-left:6px;margin-right:0}
 #Action_bar .social li:last-child{margin-left:0}
+#Action_bar .social-menu{float:left}
+#Action_bar .social-menu li:first-child{margin-right:0;padding-right:0;border-right-width:0}
+#Action_bar .social-menu li:last-child{margin-right:6px;padding-right:6px;border-right-width:1px}
 #Action_bar .contact_details li > i{margin-right:0;margin-left:2px}
 
-/* Top bar --------------------------------------------------------------------------- */
+/* Top bar ----- */
+
 #Top_bar .logo{float:right;margin:0 20px 0 30px}
 #Top_bar.is-sticky .logo{margin:0 20px 0 30px}
 
@@ -84,7 +90,7 @@ a.button,a.tp-button,button,input[type="submit"],input[type="reset"],input[type=
 #Top_bar .search_wrapper .icon_close,#Top_bar .search_wrapper .icon_close:hover{left:18px;right:auto}
 #Top_bar .search_wrapper .icon_search{left:auto;right:18px}
 
-/* Header ---------------------------------------------------------------------------- */
+/* Header ----- */
 
 /* Header | Fixed */
 .header-fixed #Top_bar .logo{margin:0 20px 0 30px}
@@ -106,35 +112,57 @@ a.button,a.tp-button,button,input[type="submit"],input[type="reset"],input[type=
 .header-magazine #Top_bar .logo{text-align:right}
 .header-magazine #Top_bar .banner_wrapper{left:20px;right:auto}
 
-/* Subheader ------------------------------------------------------------------------- */
+/* Side slide menu ----- */
+
+#Side_slide #menu ul li a{padding-left:5px;padding-right:20px;margin-left:50px;margin-right:0}
+#Side_slide #menu ul li.submenu .menu-toggle{left:5px;right:auto}
+
+#Side_slide #menu ul li ul li a{padding-left:0;padding-right:35px}
+#Side_slide #menu ul li ul li ul li a{padding-left:0;padding-right:50px}
+
+#Side_slide .extras .lang-active i{margin-right:4px}
+
+/* Subheader ----- */
+
 #Subheader .title{float:right}
 #Subheader ul.breadcrumbs{float:left;text-align:left}
 #Subheader ul.breadcrumbs li{margin-left:10px;margin-right:0}
 #Subheader ul.breadcrumbs li span{margin-left:0;margin-right:10px}
 #Subheader ul.breadcrumbs .icon-right-open:before{content:'\e8b7'}
 
-/* Footer ---------------------------------------------------------------------------- */
+/* Footer ----- */
+
+#back_to_top{float:left}
+#Footer .footer_copy .copyright{float:right}
+#Footer .footer_copy .social{float:left;margin-left:20px;margin-right:0}
 #Footer .footer_copy .social li:first-child{margin-right:0}
 #Footer .footer_copy .social li:last-child{margin-right:6px}
+#Footer .footer_copy .social-menu{float:left;margin-left:20px;margin-right:0}
+#Footer .footer_copy .social-menu li:first-child{border-right-width:0;margin-right:0;padding-right:0}
+#Footer .footer_copy .social-menu li:last-child{border-right-width:1px;margin-right:6px;padding-right:6px}
 
-/* Lists ----------------------------------------------------------------------------- */
+/* Lists ----- */
+
 ul.list_mixed li,ul.list_check li,ul.list_star li,ul.list_idea li{padding-right:50px;padding-left:0;margin-right:0}
 ul.list_check li,li.list_check{background-position:right 5px}
 ul.list_star li,li.list_star{background-position:right 5px}
 ul.list_idea li,li.list_idea{background-position:right 6px}
+ul.list_mixed li:before, ul.list_check li:before, ul.list_star li:before, ul.list_idea li:before{left:auto;right:20px}
 ul.list_mixed li:after,ul.list_check li:after,ul.list_star li:after,ul.list_idea li:after{left:auto;right:0}
 
 dl > dt{float:right}
 dl > dd{margin-right:110px;margin-left:0}
 
-/* Pager ----------------------------------------------------------------------------- */
+/* Pager ----- */
+
 .pager .next_page .icon-right-open:before{content:'\e8b7'}
 .pager .prev_page .icon-left-open:before{content:'\e915'}
 
-/* Error 404 ------------------------------------------------------------------------- */
+/* Error 404 ----- */
+
 #Error_404 .error_desk p .button{margin:0 20px 0 0}
 
-/* Blog ------------------------------------------------------------------------------ */
+/* Blog ----- */
 
 /* Blog | List */
 .post-item{float:right}
@@ -169,7 +197,7 @@ dl > dd{margin-right:110px;margin-left:0}
 .author-box .desc-wrapper{margin-right:105px;margin-left:0}
 .author-box .desc-wrapper:after{left:auto;right:-6px;border-width:6px 0 6px 6px;border-color:transparent transparent transparent rgba(0,0,0,.02)}
 
-/* Portfolio ------------------------------------------------------------------------- */
+/* Portfolio ----- */
 
 /* Portfolio | List */
 .portfolio_group .portfolio-item{float:right}
@@ -192,7 +220,7 @@ dl > dd{margin-right:110px;margin-left:0}
 /* Portfolio | Single */
 .project-description li.one-third{float:right;padding-left:15px;padding-right:10px;border-width:0 0 1px 1px}
 
-/* Blog & Portfolio | Helpers -------------------------------------------------------- */
+/* Blog & Portfolio | Helpers ----- */
 
 /* Comments */
 #comments .commentlist > li .comment-body{margin-left:0;margin-right:105px}
@@ -223,7 +251,7 @@ dl > dd{margin-right:110px;margin-left:0}
 .section-post-related .simple .post-related .image_frame{margin-right:0;}
 .section-post-related .simple .post-related a.button{margin-right:0;}
 
-/* Widgets --------------------------------------------------------------------------- */
+/* Widgets ----- */
 
 /* Widget | Archive & Menu */
 .widget_archive ul,.widget_nav_menu ul{padding:5px 30px 5px 10px}
@@ -265,7 +293,7 @@ dl > dd{margin-right:110px;margin-left:0}
 /* Widget | Text */
 .widget_text .get_in_touch ul li:after{right:-20px}
 
-/* Shortcodes ------------------------------------------------------------------------ */
+/* Shortcodes ----- */
 
 /* Accordion */
 .accordion .question .title{font-weight:300;font-size:16px;padding:14px 60px 14px 14px;background-position:right top}
@@ -317,6 +345,9 @@ ul.clients li{float:right}
 /* Dropcap */
 .dropcap{float:right;margin:0 0 5px 10px}
 
+/* Feature box */
+.feature_box .feature_box_wrapper .desc_wrapper{padding-left:0;padding-right:4%}
+
 /* Feature list */
 .feature_list ul li{float:right}
 
@@ -330,9 +361,13 @@ ul.clients li{float:right}
 
 /* Flat box */
 .flat_box .photo_wrapper .icon{left:auto;right:0}
-.flat_box a:hover .photo_wrapper .icon{-webkit-transform:translateX(90px);transform:translateX(90px)}
-.flat_box .photo_wrapper img{transform:translateX(-15px)}
-.flat_box .desc_wrapper{margin-left:0;margin-right:90px}
+.flat_box:hover .photo_wrapper .icon,.flat_box a:hover .photo_wrapper .icon{transform:translateX(90px)}
+.flat_box .photo_wrapper img.photo{transform:translateX(-15px)}
+.flat_box .desc_wrapper{margin-left:0!important;margin-right:90px}
+
+@media only screen and (min-width: 960px) {
+	.one-fourth .flat_box .desc_wrapper{margin-right:60px}
+}
 
 /* Get in touch */
 .get_in_touch ul li{padding:13px 50px 13px 0}
@@ -410,7 +445,7 @@ ul.portfolio_grid li{float:right}
 .timeline_items li:nth-child(odd) .desc{text-align:left}
 .date_label:after,.timeline_items li h3 span:after{left:-5px;right:auto;transform:rotate(180deg);-webkit-transform:rotate(180deg)}
 
-/* Plugins --------------------------------------------------------------------------- */
+/* Plugins ----- */
 
 /* Prettyphoto */
 div.pp_pic_holder{direction:ltr}
@@ -443,7 +478,7 @@ form.wpcf7-form .column,form.wpcf7-form .columns{float:right}
 
 .woocommerce .product div.entry-summary .accordion p.stars a{margin-left:10px;margin-right:0}
 .woocommerce .product div.entry-summary .price{float:right;margin:0 0 0 10px}
-.woocommerce .product .product_wrapper .product_image_wrapper .images{direction:ltr}
+/* .woocommerce .product .product_wrapper .product_image_wrapper .images{direction:ltr} */
 .woocommerce .product div.entry-summary h1.product_title:after{right:0;left:auto}
 .woocommerce .woocommerce-product-rating .star-rating{float:left}
 .woocommerce .product div.entry-summary .woocommerce-product-rating{float:left}
@@ -509,10 +544,11 @@ form.wpcf7-form .column,form.wpcf7-form .columns{float:right}
 .woocommerce .product.modern .product_wrapper .summary .variations_button{float:left}
 .woocommerce .product.modern .product_wrapper .summary .product_meta{text-align:left}
 
+.woocommerce span.onsale{left:auto!important;right:0!important;border-width:70px 0 0 70px}
+.woocommerce span.onsale i{left:auto;right:8px}
 
+/* Style Simple ----- */
 
-
-/* Style Simple ---------------------------------------------------------------------- */
 .style-simple .accordion .question:after{right:0;left:auto}
 .style-simple .accordion .question{border-width:0 1px 0 0}
 .style-simple .accordion .question .title{padding-right:50px;padding-left:14px}
@@ -529,7 +565,8 @@ form.wpcf7-form .column,form.wpcf7-form .columns{float:right}
 .style-simple .tabs_vertical.ui-tabs .ui-tabs-panel{border-width:0 1px 0 0 !important}
 .style-simple .tabs_vertical.ui-tabs .ui-tabs-nav li a{padding-left:20px!important;padding-right:10px!important}
 
-/* Responsive ----------------------------------------------------------------- > 1240 */
+/* Responsive ----- > 1240 */
+
 @media only screen and (min-width: 1240px) {
 
 	#Top_bar .menu > li > ul.mfn-megamenu-bg{padding:20px 20px 20px 166px;background-position:bottom left}
@@ -538,7 +575,8 @@ form.wpcf7-form .column,form.wpcf7-form .columns{float:right}
 
 }
 
-/* Responsive ------------------------------------------------------------------ > 960 */
+/* Responsive ----- > 960 */
+
 @media only screen and (min-width: 960px) {
 
 	.Recent_posts ul li .photo .c{left:-8px;right:auto}
@@ -547,7 +585,8 @@ form.wpcf7-form .column,form.wpcf7-form .columns{float:right}
 
 }
 
-/* Responsive ------------------------------------------------------------------ > 768 */
+/* Responsive ----- > 768 */
+
 @media only screen and (min-width: 768px) {
 
 	.offer_thumb .slider_pagination{right:0;left:auto}
@@ -559,7 +598,8 @@ form.wpcf7-form .column,form.wpcf7-form .columns{float:right}
 	.tabs_vertical.ui-tabs .ui-tabs-panel{float:right;-webkit-border-radius:5px 0 5px 5px!important;border-radius:5px 0 5px 5px!important}
 }
 
-/* Responsive -------------------------------------------------------------- 768 - 959 */
+/* Responsive ----- 768 - 959 */
+
 @media only screen and (max-width: 959px) and (min-width: 768px) {
 
 	.offer_thumb.bottom .offer_thumb_ul li.offer_thumb_li .desc_wrapper{margin-left:0}
@@ -570,7 +610,8 @@ form.wpcf7-form .column,form.wpcf7-form .columns{float:right}
 
 }
 
-/* Responsive ------------------------------------------------------------------ < 768 */
+/* Responsive ----- < 768 */
+
 @media only screen and (max-width: 767px) {
 
 	#Action_bar .contact_details{float:none;text-align:center}
@@ -579,6 +620,25 @@ form.wpcf7-form .column,form.wpcf7-form .columns{float:right}
 	#Top_bar .logo{float:none;margin:0}
 	#Top_bar .top_bar_right{float:none}
 	#Top_bar .top_bar_left{float:none}
+
+	.mobile-header-mini.mobile-mini-mr-ll #Top_bar .logo{float:right;margin-left:0;margin-right:15px}
+	.mobile-header-mini.mobile-mini-mr-ll #Top_bar .top_bar_right{left:54px;right:auto}
+
+	.rtl.mobile-header-mini.mobile-mini-mr-lc #Top_bar .top_bar_right{left:auto;right:20px}
+
+	.rtl.mobile-header-mini.mobile-mini-mr-lr #Top_bar .logo{float:left;margin-left:70px;margin-right:0}
+	.rtl.mobile-header-mini.mobile-mini-mr-lr #Top_bar .top_bar_right{left:auto;right:25px}
+
+	.rtl.mobile-header-mini.mobile-mini-ml-ll #Top_bar a.responsive-menu-toggle{left:auto;right:10px}
+	.rtl.mobile-header-mini.mobile-mini-ml-ll #Top_bar .logo{float:right;margin-left:0;margin-right:54px}
+	.rtl.mobile-header-mini.mobile-mini-ml-ll #Top_bar .top_bar_right{left:0;right:auto}
+
+	.rtl.mobile-header-mini.mobile-mini-ml-lc #Top_bar a.responsive-menu-toggle{left:auto;right:10px}
+	.rtl.mobile-header-mini.mobile-mini-ml-lc #Top_bar .top_bar_right{left:0;right:auto}
+
+	.rtl.mobile-header-mini.mobile-mini-ml-lr #Top_bar a.responsive-menu-toggle{left:auto;right:10px}
+	.rtl.mobile-header-mini.mobile-mini-ml-lr #Top_bar .logo{float:left;margin-left:20px;margin-right:0}
+	.rtl.mobile-header-mini.mobile-mini-ml-lr #Top_bar .top_bar_right{left:auto;right:60px}
 
 	.offer_thumb_ul li.offer_thumb_li{padding-right:0}
 	.offer_thumb_ul li.offer_thumb_li .desc_wrapper{float:none}

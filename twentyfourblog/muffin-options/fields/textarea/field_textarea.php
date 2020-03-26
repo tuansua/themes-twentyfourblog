@@ -1,62 +1,69 @@
 <?php
-class MFN_Options_textarea extends MFN_Options{
+class MFN_Options_textarea extends MFN_Options
+{
 
 	/**
 	 * Constructor
 	 */
-	function __construct( $field = array(), $value = '', $prefix = false ){
 
+	public function __construct($field = array(), $value = '', $prefix = false)
+	{
 		$this->field = $field;
 		$this->value = $value;
 
 		// theme options 'opt_name'
 		$this->prefix = $prefix;
-
 	}
 
 	/**
 	 * Render
 	 */
-	function render( $meta = false ){
 
-		// class ----------------------------------------------------
-		if( isset( $this->field['class']) ){
+	public function render($meta = false)
+	{
+
+		// class
+
+		if (isset($this->field['class'])) {
 			$class = $this->field['class'];
 		} else {
 			$class = false;
 		}
 
-		$param = $class_field = isset( $this->field['param'] ) ? $this->field['param'] : '';
+		$param = $class_field = isset($this->field['param']) ? $this->field['param'] : '';
 
 		// title
-		if( strpos( $this->field['id'] , 'content' ) ){
+
+		if (strpos($this->field['id'], 'content')) {
 			$class_field .= ' mfn-item-excerpt';
 		}
 
-		// name -----------------------------------------------------
-		if( $meta == 'new' ){
+		// name
+
+		if ($meta == 'new') {
 
 			// builder new
-			$name = 'data-name="'. $this->field['id'] .'"';
+			$name_escaped = 'data-name="'. esc_attr($this->field['id']) .'"';
 
-		} elseif( $meta ){
+		} elseif ($meta) {
 
 			// page mata & builder existing items
-			$name = 'name="'. $this->field['id'] .'"';
+			$name_escaped = 'name="'. esc_attr($this->field['id']) .'"';
 
 		} else {
 
 			// theme options
-			$name = 'name="'. $this->prefix .'['. $this->field['id'] .']"';
+			$name_escaped = 'name="'. esc_attr($this->prefix.'['.$this->field['id'].']') .'"';
 
 		}
 
-		// echo -----------------------------------------------------
-		echo '<div class="textarea-wrapper '. $class .'">';
+		// output -----
 
-			if( strpos( $class, 'sc' ) !== false ){
+		echo '<div class="textarea-wrapper '. esc_attr($class) .'">';
 
+			if (strpos($class, 'sc') !== false) {
 				echo '<div class="mfn-textarea-header">';
+
 					echo '<div class="mfn-sc-add">';
 						echo '<a class="mfn-sc-add-btn" href="javascript:void(0);">Add Content Shortcode</a>';
 						echo '<ul class="mfn-sc-add-list">';
@@ -65,6 +72,7 @@ class MFN_Options_textarea extends MFN_Options{
 							echo '<li><a href="javascript:void(0);" data-rel="button">Button</a></li>';
 							echo '<li><a href="javascript:void(0);" data-rel="code">Code</a></li>';
 							echo '<li><a href="javascript:void(0);" data-rel="content_link">Content Link</a></li>';
+							echo '<li><a href="javascript:void(0);" data-rel="counter_inline">Counter Inline</a></li>';
 							echo '<li><a href="javascript:void(0);" data-rel="dropcap">Dropcap</a></li>';
 							echo '<li><a href="javascript:void(0);" data-rel="fancy_link">Fancy Link</a></li>';
 							echo '<li><a href="javascript:void(0);" data-rel="google_font">Google Font</a></li>';
@@ -86,8 +94,8 @@ class MFN_Options_textarea extends MFN_Options{
 					echo '</div>';
 
 					echo '<div class="mfn-sc-tools">';
-						echo '<a class="dashicons dashicons-editor-bold" href="javascript:void(0);" data-open="b" data-close="b"></a>';
-						echo '<a class="dashicons dashicons-editor-italic" href="javascript:void(0);" data-open="i" data-close="i"></a>';
+						echo '<a class="dashicons dashicons-editor-bold" href="javascript:void(0);" data-open="strong" data-close="strong"></a>';
+						echo '<a class="dashicons dashicons-editor-italic" href="javascript:void(0);" data-open="em" data-close="em"></a>';
 						echo '<a class="dashicons dashicons-editor-underline" href="javascript:void(0);" data-open="u" data-close="u"></a>';
 						echo '<a class="" href="javascript:void(0);" data-open="h1" data-close="h1">H1</a>';
 						echo '<a class="" href="javascript:void(0);" data-open="h2" data-close="h2">H2</a>';
@@ -105,14 +113,11 @@ class MFN_Options_textarea extends MFN_Options{
 				echo '</div>';
 			}
 
-			echo '<textarea '. $name .' class="'. $class_field .'" rows="8">' .esc_attr( $this->value ). '</textarea>';
+			// This variable has been safely escaped above in this function
+			echo '<textarea '. $name_escaped .' class="'. esc_attr($class_field) .'" rows="8">'. esc_attr($this->value) .'</textarea>';
 
-			if( isset( $this->field['desc'] ) ){
-				echo '<span class="description '. $class .'">'. $this->field['desc'] .'</span>';
-			}
-
-			if( $param == 'editor' ){
-				echo '<div class="mfn-message info small" style="display:none;">'. __( 'If you have experienced editor scroll issues please <b>uncheck</b> <i>Full-height editor and distraction-free functionality</i> in Screen Options in the right top corner of page and <b>click Publish/Update button</b>', 'mfn-opts' ) .'</div>';
+			if (isset($this->field['desc'])) {
+				echo '<span class="description '. esc_attr($class) .'">'. wp_kses($this->field['desc'], mfn_allowed_html('desc')) .'</span>';
 			}
 
 		echo '</div>';

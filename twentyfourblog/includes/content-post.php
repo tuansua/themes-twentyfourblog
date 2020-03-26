@@ -4,7 +4,7 @@
  *
  * @package Betheme
  * @author Muffin group
- * @link http://muffingroup.com
+ * @link https://muffingroup.com
  */
 
 if( ! function_exists( 'mfn_content_post' ) ){
@@ -13,18 +13,22 @@ if( ! function_exists( 'mfn_content_post' ) ){
 		global $wp_query;
 		$output = '';
 
-		$translate['published'] 	= mfn_opts_get('translate') ? mfn_opts_get('translate-published','Published by') : __('Published by','betheme');
-		$translate['at'] 			= mfn_opts_get('translate') ? mfn_opts_get('translate-at','at') : __('at','betheme');
-		$translate['categories'] 	= mfn_opts_get('translate') ? mfn_opts_get('translate-categories','Categories') : __('Categories','betheme');
-		$translate['like'] 			= mfn_opts_get('translate') ? mfn_opts_get('translate-like','Do you like it?') : __('Do you like it?','betheme');
-		$translate['readmore'] 		= mfn_opts_get('translate') ? mfn_opts_get('translate-readmore','Read more') : __('Read more','betheme');
+		$translate['published'] = mfn_opts_get('translate') ? mfn_opts_get('translate-published','Published by') : __('Published by','betheme');
+		$translate['at'] = mfn_opts_get('translate') ? mfn_opts_get('translate-at','at') : __('at','betheme');
+		$translate['categories'] = mfn_opts_get('translate') ? mfn_opts_get('translate-categories','Categories') : __('Categories','betheme');
+		$translate['like'] = mfn_opts_get('translate') ? mfn_opts_get('translate-like','Do you like it?') : __('Do you like it?','betheme');
+		$translate['readmore'] = mfn_opts_get('translate') ? mfn_opts_get('translate-readmore','Read more') : __('Read more','betheme');
 
 		extract( shortcode_atts( array(
-			'featured_image' 	=> false,
-			'filters' 				=> false,
+			'featured_image' => false,
+			'filters' => false,
+			'title_tag' => false,
 		), $attr ) );
 
-		if( ! $query ) $query = $wp_query;
+		if( ! $query ){
+			$query = $wp_query;
+		}
+
 		if( ! $style ){
 			if( $_GET && key_exists('mfn-b', $_GET) ){
 				$style = esc_html( $_GET['mfn-b'] ); // demo
@@ -37,12 +41,16 @@ if( ! function_exists( 'mfn_content_post' ) ){
 			while ( $query->have_posts() ){
 				$query->the_post();
 
-
 				// classes
 
 				$post_class =  array('post-item','isotope-item','clearfix');
-				if( ! mfn_post_thumbnail( get_the_ID() ) ) $post_class[] = 'no-img';
-				if( post_password_required() ) $post_class[] = 'no-img';
+
+				if( ! mfn_post_thumbnail( get_the_ID() ) ){
+					$post_class[] = 'no-img';
+				}
+				if( post_password_required() ){
+					$post_class[] = 'no-img';
+				}
 
 				if( in_array( $filters, array( 1, 'only-authors' ) ) ){
 					$post_class[] = 'author-'. mfn_slug( get_the_author_meta( 'user_login' ) );
@@ -50,19 +58,23 @@ if( ! function_exists( 'mfn_content_post' ) ){
 
 				$post_class = implode(' ', get_post_class( $post_class ));
 
-				// background color | Style - Masonry Tiles
+				// background color | style: Masonry Tiles
 
 				$bg_color = get_post_meta( get_the_ID(), 'mfn-post-bg', true );
-				if( $bg_color && $style == 'masonry tiles' ){
-					$bg_color = 'style="background-color:'. $bg_color .';"';
+
+				if( $bg_color && 'masonry tiles' == $style ){
+					$bg_color = 'background-color:'. $bg_color .';';
+				} else {
+					$bg_color = false;
 				}
 
+				// output -----
 
-				$output .= '<div class="'. $post_class .'" '. $bg_color .'>';
+				$output .= '<div class="'. esc_attr($post_class) .'" style="'. esc_attr($bg_color) .'">';
 
+					// icon | style: Masonry Tiles
 
-					// icon | Style == Masonry Tiles
-					if( $style == 'masonry tiles' ){
+					if( 'masonry tiles' == $style ){
 
 						if( get_post_format() == 'video' ){
 
@@ -93,17 +105,17 @@ if( ! function_exists( 'mfn_content_post' ) ){
 
 					}
 
+					// date | style: Timeline
 
-					// date | Style == Timeline
-					$output .= '<div class="date_label">'. get_the_date() .'</div>';
+					$output .= '<div class="date_label">'. esc_html(get_the_date()) .'</div>';
 
+					// photo
 
-					// photo --------------------------------------------------------------------------
 					if( ! post_password_required() ){
 
-						if( $style == 'masonry tiles' ){
+						if( 'masonry tiles' == $style ){
 
-							// photo | Style != Masonry Tiles
+							// photo | style: Masonry Tiles
 
 							$output .= '<div class="post-photo-wrapper scale-with-grid">';
 								$output .= '<div class="image_wrapper_tiles">';
@@ -113,16 +125,23 @@ if( ! function_exists( 'mfn_content_post' ) ){
 
 						} else {
 
-							// photo | Style == *
+							// photo | style: default
 
-							// Post Image
+							// post image
+
 							$post_format = mfn_post_thumbnail_type( get_the_ID() );
-							if( $featured_image == 'image' ){
+
+							if( 'photo2' == $style ){
+								$featured_image = 'image';
+
+								$output .= '<div class="button-love">'. mfn_love() .'</div>';
+							}
+
+							if( 'image' == $featured_image ){
 								$post_format = 'images_only';
 							}
 
-
-							$output .= '<div class="image_frame post-photo-wrapper scale-with-grid '. $post_format .'">';
+							$output .= '<div class="image_frame post-photo-wrapper scale-with-grid '. esc_attr($post_format) .'">';
 								$output .= '<div class="image_wrapper">';
 									$output .= mfn_post_thumbnail( get_the_ID(), 'blog', $style, $featured_image );
 								$output .= '</div>';
@@ -132,14 +151,25 @@ if( ! function_exists( 'mfn_content_post' ) ){
 
 					}
 
-					// desc ---------------------------------------------------------------------------
-					$output .= '<div class="post-desc-wrapper">';
+					// desc
+
+					$bg_color = get_post_meta( get_the_ID(), 'mfn-post-bg', true );
+					$item_bg_class = 'bg-'. mfn_brightness( $bg_color );
+
+					if( $bg_color &&  'photo2' == $style ){
+						$bg_color = 'background-color:'. $bg_color .';';
+					} else {
+						$bg_color = false;
+					}
+
+					$output .= '<div class="post-desc-wrapper '. $item_bg_class .'" style="'. esc_attr($bg_color) .'">';
 						$output .= '<div class="post-desc">';
 
-							// head -------------------------------------
+							// head
+
 							$output .= '<div class="post-head">';
 
-								// meta -------------------------------------
+								// meta
 
 								$show_meta = false;
 								$list_meta = mfn_opts_get( 'blog-meta' );
@@ -151,57 +181,61 @@ if( ! function_exists( 'mfn_content_post' ) ){
 								}
 
 								if( $show_meta ){
+
 									$output .= '<div class="post-meta clearfix">';
 
 										$output .= '<div class="author-date">';
 
 											if( isset( $list_meta['author'] ) ){
 												$output .= '<span class="vcard author post-author">';
-													$output .= '<span class="label">'. $translate['published'] .' </span>';
+													$output .= '<span class="label">'. esc_html($translate['published']) .' </span>';
 													$output .= '<i class="icon-user"></i> ';
-													$output .= '<span class="fn"><a href="'. get_author_posts_url( get_the_author_meta( 'ID' ) ) .'">'. get_the_author_meta( 'display_name' ) .'</a></span>';
+													$output .= '<span class="fn"><a href="'. esc_url(get_author_posts_url(get_the_author_meta('ID'))) .'">'. esc_html(get_the_author_meta('display_name')) .'</a></span>';
 												$output .= '</span> ';
 											}
 
 											if( isset( $list_meta['date'] ) ){
 												$output .= '<span class="date">';
-													if( isset( $list_meta['author'] ) ) $output .= '<span class="label">'. $translate['at'] .' </span>';
+													if( isset( $list_meta['author'] ) ){
+														$output .= '<span class="label">'. esc_html($translate['at']) .' </span>';
+													}
 													$output .= '<i class="icon-clock"></i> ';
-													$output .= '<span class="post-date updated">'. get_the_date() .'</span>';
+													$output .= '<span class="post-date updated">'. esc_html(get_the_date()) .'</span>';
 												$output .= '</span>';
 											}
 
+											// .post-comments | style: Masonry Tiles
 
-											// .post-comments | Style == Masonry Tiles
-											if( $style == 'masonry tiles' && comments_open() && mfn_opts_get( 'blog-comments' ) ){
+											if( 'masonry tiles' == $style && comments_open() && mfn_opts_get( 'blog-comments' ) ){
 												$output .= '<div class="post-links">';
-													$output .= '<i class="icon-comment-empty-fa"></i> <a href="'. get_comments_link() .'" class="post-comments">'. get_comments_number() .'</a>';
+													$output .= '<i class="icon-comment-empty-fa"></i> <a href="'. esc_url(get_comments_link()) .'" class="post-comments">'. esc_html(get_comments_number()) .'</a>';
 												$output .= '</div>';
 											}
-
 
 										$output .= '</div>';
 
 										if( isset( $list_meta['categories'] ) ){
 											$output .= '<div class="category">';
-												$output .= '<span class="cat-btn">'. $translate['categories'] .' <i class="icon-down-dir"></i></span>';
+												$output .= '<span class="cat-btn">'. esc_html($translate['categories']) .' <i class="icon-down-dir"></i></span>';
 												$output .= '<div class="cat-wrapper">'. get_the_category_list() .'</div>';
 											$output .= '</div>';
 										}
 
 									$output .= '</div>';
+
 								}
 
-								// .post-footer | Style == Photo
-								if( $style == 'photo' ){
+								// .post-footer | style: Photo
+
+								if( 'photo' == $style ){
 									$output .= '<div class="post-footer">';
 
 										$output .= '<div class="button-love"><span class="love-text">'. $translate['like'] .'</span>'. mfn_love() .'</div>';
 										$output .= '<div class="post-links">';
-											if( comments_open() && mfn_opts_get( 'blog-comments' ) ){
-												$output .= '<i class="icon-comment-empty-fa"></i> <a href="'. get_comments_link() .'" class="post-comments">'. get_comments_number() .'</a>';
+											if( comments_open() && mfn_opts_get('blog-comments') ){
+												$output .= '<i class="icon-comment-empty-fa"></i> <a href="'. esc_url(get_comments_link()) .'" class="post-comments">'. esc_html(get_comments_number()) .'</a>';
 											}
-											$output .= '<i class="icon-doc-text"></i> <a href="'. get_permalink() .'" class="post-more">'. $translate['readmore'] .'</a>';
+											$output .= '<i class="icon-doc-text"></i> <a href="'. esc_url(get_permalink()) .'" class="post-more">'. esc_html($translate['readmore']) .'</a>';
 										$output .= '</div>';
 
 									$output .= '</div>';
@@ -209,46 +243,84 @@ if( ! function_exists( 'mfn_content_post' ) ){
 
 							$output .= '</div>';
 
-							// title -------------------------------------
+							// title
+
 							$output .= '<div class="post-title">';
 
 								if( get_post_format() == 'quote' ){
-									// quote ----------------------------
-									$output .= '<blockquote><a href="'. get_permalink() .'">'. get_the_title() .'</a></blockquote>';
+
+									// quote
+
+									$output .= '<blockquote><a href="'. esc_url(get_permalink()) .'">'. wp_kses(get_the_title(), mfn_allowed_html()) .'</a></blockquote>';
 
 								} elseif( get_post_format() == 'link' ){
-									// link ----------------------------
+
+									// link
+
+									$link = get_post_meta(get_the_ID(), 'mfn-post-link', true);
+
 									$output .= '<i class="icon-link"></i>';
 									$output .= '<div class="link-wrapper">';
-										$output .= '<h4>'. get_the_title() .'</h4>';
-										$link = get_post_meta(get_the_ID(), 'mfn-post-link', true);
-										$output .= '<a target="_blank" href="'. $link .'">'. $link .'</a>';
+										$output .= '<h4>'. wp_kses(get_the_title(), mfn_allowed_html()) .'</h4>';
+										$output .= '<a target="_blank" href="'. esc_url($link) .'">'. esc_html($link) .'</a>';
 									$output .= '</div>';
 
 								} else {
-									// default ----------------------------
-									$output .= '<h2 class="entry-title" itemprop="headline"><a href="'. get_permalink() .'">'. get_the_title() .'</a></h2>';
+
+									// default
+
+									if( ! $title_tag ){
+										$title_tag = mfn_opts_get('blog-title-tag', 2);
+									}
+									$output .= '<h'. esc_attr($title_tag) .' class="entry-title" itemprop="headline"><a href="'. esc_url(get_permalink()) .'">'. wp_kses(get_the_title(), mfn_allowed_html()) .'</a></h'. esc_attr($title_tag) .'>';
+
 								}
 
 							$output .= '</div>';
 
-							// content -------------------------------------
+							// content
+
 							$output .= '<div class="post-excerpt">'. get_the_excerpt() .'</div>';
 
+							// .post-footer | style NOT: Photo, Masonry Tiles
 
-							// .post-footer | Style != Photo, Masonry Tiles
-							if( ! in_array( $style, array('photo','masonry tiles') ) ){
+							if( ! in_array( $style, array('photo','photo2','masonry tiles') ) ){
 								$output .= '<div class="post-footer">';
 
-									$output .= '<div class="button-love"><span class="love-text">'. $translate['like'] .'</span>'. mfn_love() .'</div>';
+									$output .= '<div class="button-love"><span class="love-text">'. esc_html($translate['like']) .'</span>'. mfn_love() .'</div>';
 									$output .= '<div class="post-links">';
 										if( comments_open() && mfn_opts_get( 'blog-comments' ) ){
-											$output .= '<i class="icon-comment-empty-fa"></i> <a href="'. get_comments_link() .'" class="post-comments">'. get_comments_number() .'</a>';
+											$output .= '<i class="icon-comment-empty-fa"></i> <a href="'. esc_url(get_comments_link()) .'" class="post-comments">'. esc_html(get_comments_number()) .'</a>';
 										}
-										$output .= '<i class="icon-doc-text"></i> <a href="'. get_permalink() .'" class="post-more">'. $translate['readmore'] .'</a>';
+										$output .= '<i class="icon-doc-text"></i> <a href="'. esc_url(get_permalink()) .'" class="post-more">'. esc_html($translate['readmore']) .'</a>';
 									$output .= '</div>';
 
 								$output .= '</div>';
+							}
+
+							// .post-footer | style: Photo 2
+
+							if( 'photo2' == $style ){
+								if( isset( $list_meta['author'] ) || isset( $list_meta['date'] ) ){
+									$output .= '<div class="post-footer">';
+
+										if( isset( $list_meta['author'] ) ){
+											$output .= '<span class="vcard author post-author">';
+												global $user;
+												$output .= get_avatar(get_the_author_meta('email'), '24', false, get_the_author_meta('display_name', $user['ID']));
+												$output .= '<span class="fn"><a href="'. esc_url(get_author_posts_url(get_the_author_meta('ID'))) .'">'. esc_html(get_the_author_meta('display_name')) .'</a></span>';
+											$output .= '</span> ';
+										}
+
+										if( isset( $list_meta['date'] ) ){
+											$output .= '<span class="date">';
+												$output .= '<i class="icon-clock"></i> ';
+												$output .= '<span class="post-date updated">'. esc_html(get_the_date()) .'</span>';
+											$output .= '</span>';
+										}
+
+									$output .= '</div>';
+								}
 							}
 
 

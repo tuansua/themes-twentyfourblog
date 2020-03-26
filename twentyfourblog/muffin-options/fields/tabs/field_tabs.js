@@ -1,45 +1,70 @@
-jQuery(document).ready(function($){
+(function($) {
 
-	// sortable init
-	$('.tabs-ul').hover(function(){
-		$('.tabs-ul').sortable({ 
-			cursor	: 'move',
-			opacity	: 0.9
-		});
-	});
-	
-	
-	// add
-	$('.mfn-add-tab').click(function(){
-		
-		// increase tabs counter
-		var tabs_counter = $(this).siblings('.mfn-tabs-count');
-		tabs_counter.val(tabs_counter.val()*1 + 1);
-		
-		var name = $(this).attr('rel-name');
-		var tabs_wrapper = $(this).siblings('.tabs-ul');
-		var new_tab = tabs_wrapper.children('li.tabs-default').clone(true);
+  /* globals jQuery */
 
-		new_tab.removeClass('tabs-default');	
-		new_tab.children('input').attr('name',name+'[title][]');
-		new_tab.children('textarea').attr('name',name+'[content][]');
+  "use strict";
 
-		tabs_wrapper
-			.append( new_tab )
-			.children('li:last')
-				.fadeIn(500);
-		
-	});
-	
-	// delete
-	$('.mfn-remove-tab').click(function(e){
-		e.preventDefault();
-		
-		// decrease tabs counter
-		var tabs_counter = $(this).parents('td').children('.mfn-tabs-count');
-		tabs_counter.val(tabs_counter.val()*1 - 1);
-		
-		$(this).parent().fadeOut(300, function(){$(this).remove();});
-	});
-	
-});
+  function mfnFieldTabs() {
+
+    // sortable init
+
+    $('#mfn-builder').on('mouseenter', '.tabs-ul', function(e) {
+      $('.tabs-ul').sortable({
+        handle: 'label',
+        cursor: 'move',
+        opacity: 0.9
+      });
+    });
+
+    // add new tab
+
+    $('#mfn-builder').on('click', '.mfn-add-tab', function(e) {
+
+      // increase tabs counter
+
+      var count = $(this).siblings('.mfn-tabs-count');
+      count.val(count.val() * 1 + 1);
+
+      var name = $(this).attr('rel-name');
+      var wrapper = $(this).siblings('.tabs-ul');
+      var newTab = wrapper.children('li.tabs-default').clone(true);
+
+      newTab.removeClass('tabs-default');
+      newTab.children('input').attr('name', name + '[title][]');
+      newTab.children('textarea').attr('name', name + '[content][]');
+
+      wrapper
+        .append(newTab)
+        .children('li:last')
+        .fadeIn(500);
+
+    });
+
+    // remove tab
+
+    $('#mfn-builder').on('click', '.mfn-remove-tab', function(e) {
+      e.preventDefault();
+
+      // decrease tabs counter
+
+      var count = $(this).parents('td').children('.mfn-tabs-count');
+      count.val(count.val() * 1 - 1);
+
+      $(this).parent().fadeOut(300, function() {
+        $(this).remove();
+      });
+
+    });
+
+  }
+
+  /**
+   * $(document).ready
+   * Specify a function to execute when the DOM is fully loaded.
+   */
+
+  $(function($) {
+    mfnFieldTabs();
+  });
+
+})(jQuery);

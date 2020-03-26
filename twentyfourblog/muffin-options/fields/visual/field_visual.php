@@ -1,63 +1,62 @@
 <?php
-class MFN_Options_visual extends MFN_Options{
+class MFN_Options_visual extends MFN_Options
+{
+
+	protected $field = array();
+	protected $value = '';
+	protected $prefix = false;
 
 	/**
 	 * Constructor
 	 */
-	function __construct( $field = array(), $value = '', $prefix = false ){
 
+	public function __construct($field = array(), $value = '', $prefix = false)
+	{
 		$this->field = $field;
 		$this->value = $value;
-
-		// theme options 'opt_name'
 		$this->prefix = $prefix;
 
+		$this->enqueue();
 	}
 
 	/**
 	 * Render
 	 */
-	function render( $meta = false ){
 
-		// class ----------------------------------------------------
-		if( isset( $this->field['class']) ){
+	public function render($meta = false)
+	{
+
+		// class
+
+		if (isset($this->field['class'])) {
 			$class = $this->field['class'];
 		} else {
 			$class = 'image';
 		}
 
-		// name -----------------------------------------------------
-		if( $meta == 'new' ){
+		// name
+
+		if ($meta == 'new') {
 
 			// builder new
-			$name = 'data-name="'. $this->field['id'] .'"';
+			$name_escaped = 'data-name="'. esc_attr($this->field['id']) .'"';
 
-		} elseif( $meta ){
+		} elseif ($meta) {
 
 			// page mata & builder existing items
-			$name = 'name="'. $this->field['id'] .'"';
+			$name_escaped = 'name="'. esc_attr($this->field['id']) .'"';
 
 		} else {
 
 			// theme options
-			$name = 'name="'. $this->prefix .'['. $this->field['id'] .']"';
+			$name_escaped = 'name="'. esc_attr($this->prefix.'['.$this->field['id'].']') .'"';
 
 		}
 
-		// value is empty -------------------------------------------
-		if( $this->value == '' ){
-			$remove = 'style="display:none;"';
-			$visual = '';
-		} else {
-			$remove = '';
-			$visual = 'style="display:none;"';
-		}
+		// output -----
 
-		// echo -----------------------------------------------------
 		echo '<div class="mfnf-visual">';
-
-		    echo '<div class="wp-core-ui wp-editor-wrap tmce-active">';
-
+			echo '<div class="wp-core-ui wp-editor-wrap tmce-active">';
 				echo '<div class="wp-editor-tools hide-if-no-js">';
 
 					echo '<div class="wp-media-buttons">';
@@ -73,21 +72,28 @@ class MFN_Options_visual extends MFN_Options{
 
 				echo '<div class="wp-editor-container">';
 
-					echo '<textarea '. $name .' class="editor wp-editor-area" rows="8">' .esc_attr( $this->value ). '</textarea>';
+					// This variable has been safely escaped above in this function
+					echo '<textarea '. $name_escaped .' class="editor wp-editor-area" rows="8">'. esc_textarea($this->value) .'</textarea>';
 
 				echo '</div>';
-
 			echo '</div>';
-
 		echo '</div>';
+
 	}
 
-  /**
-   * Enqueue
-   */
-  function enqueue() {
+	/**
+	 * Enqueue
+	 */
 
-  	wp_enqueue_media();
+	public function enqueue()
+	{
+		$localize = array(
+			'mfnsc' => get_theme_file_uri('/functions/tinymce/plugin.js'),
+		);
 
-  }
+		wp_enqueue_media();
+		wp_enqueue_script('mfn-opts-field-visual', MFN_OPTIONS_URI .'fields/visual/field_visual.js', array('jquery'), MFN_THEME_VERSION, true);
+		wp_localize_script('mfn-opts-field-visual', 'fieldVisualJS', $localize);
+	}
+
 }

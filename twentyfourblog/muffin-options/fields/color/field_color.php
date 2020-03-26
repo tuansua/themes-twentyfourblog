@@ -1,51 +1,73 @@
 <?php
-class MFN_Options_color extends MFN_Options{
+class MFN_Options_color extends MFN_Options
+{
+
+	protected $field = array();
+	protected $value = '';
+	protected $prefix = false;
 
 	/**
 	 * Constructor
 	 */
-	function __construct( $field = array(), $value = '', $prefix = false ){
 
+	public function __construct($field = array(), $value = '', $prefix = false)
+	{
 		$this->field = $field;
 		$this->value = $value;
-
-		// theme options 'opt_name'
 		$this->prefix = $prefix;
 
+		$this->enqueue();
 	}
 
 	/**
 	 * Render
 	 */
-	function render( $meta = false ){
 
-		// name ----------------------------------------------------
-		if( $meta ){
-			$name = $this->field['id'];
+	public function render($meta = false)
+	{
+
+		// name
+
+		if ($meta == 'new') {
+
+			// builder new
+			$name_escaped = 'data-name="'. esc_attr($this->field['id']) .'"';
+
+		} elseif ($meta) {
+
+			// page mata & builder existing items
+			$name_escaped = 'name="'. esc_attr($this->field['id']) .'"';
+
 		} else {
-			$name = $this->prefix .'['. $this->field['id'] .']';
+
+			// theme options
+			$name_escaped = 'name="'. esc_attr($this->prefix) .'['. esc_attr($this->field['id']) .']"';
+
 		}
 
-		// value ----------------------------------------------------
-		if( $this->value ){
+		// value
+
+		if ($this->value) {
 			$value = $this->value;
 		} else {
-			$value = isset( $this->field['std'] ) ? $this->field['std'] : '';
+			$value = isset($this->field['std']) ? $this->field['std'] : '';
 		}
 
-		// alpha ----------------------------------------------------
-		if( isset( $this->field[ 'alpha' ] ) ){
-			$alpha = ' data-alpha="true"';
+		// alpha
+
+		if (isset($this->field[ 'alpha' ])) {
+			$alpha_escaped = ' data-alpha="true"';
 		} else {
-			$alpha = false;
+			$alpha_escaped = false;
 		}
 
 		echo '<div class="mfn-field-color">';
 
-			echo '<input type="text" id="'. $this->field['id'] .'" name="'. $name .'" value="'. $value .'" class="has-colorpicker"'. $alpha .'/>';
+			// This variable has been safely escaped above in this function
+			echo '<input type="text" id="'. esc_attr($this->field['id']) .'" '. $name_escaped .' value="'. esc_attr($value) .'" class="has-colorpicker"'. $alpha_escaped .'/>';
 
-			if( isset( $this->field['desc'] ) ){
-				echo '<span class="description">'. $this->field['desc'] .'</span>';
+			if (isset($this->field['desc'])) {
+				echo '<span class="description">'. wp_kses($this->field['desc'], mfn_allowed_html('desc')) .'</span>';
 			}
 
 		echo '</div>';
@@ -54,14 +76,13 @@ class MFN_Options_color extends MFN_Options{
 	/**
 	 * Enqueue
 	 */
-	function enqueue(){
+	public function enqueue()
+	{
 
 		// Add the color picker css file
-		wp_enqueue_style( 'wp-color-picker' );
+		wp_enqueue_style('wp-color-picker');
 
 		// Include our custom jQuery file with WordPress Color Picker dependency
-		wp_enqueue_script( 'mfn-opts-field-color-js', MFN_OPTIONS_URI .'fields/color/field_color.js', array( 'wp-color-picker' ), THEME_VERSION, true );
-
+		wp_enqueue_script('mfn-opts-field-color', MFN_OPTIONS_URI .'fields/color/field_color.js', array('wp-color-picker'), MFN_THEME_VERSION, true);
 	}
-
 }

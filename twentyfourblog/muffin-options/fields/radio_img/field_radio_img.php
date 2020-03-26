@@ -1,78 +1,88 @@
 <?php
-class MFN_Options_radio_img extends MFN_Options{
+class MFN_Options_radio_img extends MFN_Options
+{
+
+	protected $field = array();
+	protected $value = '';
+	protected $prefix = false;
 
 	/**
 	 * Constructor
 	 */
-	function __construct( $field = array(), $value ='', $prefix = false ){
 
+	public function __construct($field = array(), $value = '', $prefix = false)
+	{
 		$this->field = $field;
 		$this->value = $value;
-
-		// theme options 'opt_name'
 		$this->prefix = $prefix;
 
+		$this->enqueue();
 	}
 
 	/**
 	 * Render
 	 */
-	function render( $meta = false ){
 
-		// class ----------------------------------------------------
-		if( isset( $this->field['class']) ){
+	public function render($meta = false)
+	{
+
+		// class
+
+		if (isset($this->field['class'])) {
 			$class = $this->field['class'];
 		} else {
 			$class = 'regular-text';
 		}
 
-		// name -----------------------------------------------------
-		if( $meta ){
+		// name
+
+		if ($meta) {
 
 			// page mata & builder existing items
-			$name = 'name="'. $this->field['id'] .'"';
+			$name_escaped = 'name="'. $this->field['id'] .'"';
 
 		} else {
 
 			// theme options
-			$name = 'name="'. $this->prefix .'['. $this->field['id'] .']"';
+			$name_escaped = 'name="'. $this->prefix .'['. $this->field['id'] .']"';
 
 		}
 
-		// echo -----------------------------------------------------
-		echo '<fieldset '. $class .'>';
+		// output -----
 
-			foreach( $this->field['options'] as $k => $v ){
+		echo '<fieldset '. esc_attr($class) .'>';
 
+			foreach ($this->field['options'] as $k => $v) {
 				echo '<div class="mfn-radio-item">';
 
-					$selected = ( checked( $this->value, $k, false ) != '') ? ' mfn-radio-img-selected' : '';
+					$selected_escaped = (checked($this->value, $k, false) != '') ? ' mfn-radio-img-selected' : '';
 
-					echo '<label class="mfn-radio-img'. $selected .'" for="'. $this->field['id'] .'_'. $k .'">';
-						echo '<input type="radio" id="'. $this->field['id'] .'_'. $k .'" '. $name . ' value="'. $k .'" '. checked( $this->value, $k, false ) .'/>';
-						echo '<img src="'. $v['img'] .'" alt="'. $v['title'] .'" />';
+					echo '<label class="mfn-radio-img'. $selected_escaped .'" for="'. esc_attr($this->field['id'] .'_'. $k) .'">';
+						// This variable has been safely escaped above in this function
+						echo '<input type="radio" id="'. esc_attr($this->field['id'] .'_'. $k) .'" '. $name_escaped . ' value="'. esc_attr($k) .'" '. checked($this->value, $k, false) .'/>';
+						echo '<img src="'. esc_url($v['img']) .'" alt="'. esc_attr($v['title']) .'" />';
 					echo '</label>';
 
-					echo '<span class="description">'. $v['title'] .'</span>';
+					echo '<span class="description">'. wp_kses($v['title'], mfn_allowed_html('desc')) .'</span>';
 
 				echo '</div>';
-
 			}
 
-			if( isset( $this->field['desc'] ) ){
+			if (isset($this->field['desc'])) {
 				echo '<br style="clear:both;"/>';
-				echo '<span class="description">'. $this->field['desc'] .'</span>';
+				echo '<span class="description">'. wp_kses($this->field['desc'], mfn_allowed_html('desc')) .'</span>';
 			}
 
 		echo '</fieldset>';
-
 	}
 
 	/**
 	 * Enqueue
 	 */
-	function enqueue(){
-		wp_enqueue_script( 'mfn-opts-field-radio_img-js', MFN_OPTIONS_URI .'fields/radio_img/field_radio_img.js', array( 'jquery' ), THEME_VERSION, true );
+
+	public function enqueue()
+	{
+		wp_enqueue_script('mfn-opts-field-radio_img', MFN_OPTIONS_URI .'fields/radio_img/field_radio_img.js', array('jquery'), MFN_THEME_VERSION, true);
 	}
 
 }

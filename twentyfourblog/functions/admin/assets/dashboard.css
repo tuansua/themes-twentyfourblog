@@ -1,9 +1,11 @@
-Ķ/* admin notices */
+/* admin notices */
+
 #wpbody-content > .updated,
 #wpbody-content > #message{display:none!important}
 #mfn-dashboard > .mfn-dashboard-error{display:block!important}
 
 /* buttons */
+
 #mfn-dashboard .mfn-button{display:inline-block;padding:10px 20px;box-sizing:border-box;margin-bottom:1em;font-size:14px;line-height:20px;text-align:center;text-decoration:none;background:#DCDCDE;color:#313133;border:none;border-radius:3px;box-shadow: 0 2px 0 #C5C5C7;cursor:pointer}
 #mfn-dashboard .mfn-button:hover{background:#D5D5D5}
 
@@ -16,11 +18,13 @@
 #mfn-dashboard .mfn-button-fw{width:100%;box-sizing:border-box;}
 
 /* dashboard */
+
 #mfn-dashboard .about-text{margin-bottom:50px;}
 #mfn-dashboard p.box{background:#fff;padding:15px 20px;}
 #mfn-dashboard .mb-30{margin-bottom:30px}
 
 /* logo */
+
 #mfn-dashboard .logo{position:absolute;top:0;right:0;width:140px;margin-top:10px;text-align:center;}
 #mfn-dashboard .logo .version{position:absolute;top:-5px;right:0;font-size:14px;line-height:14px;font-weight:300;color:#777}
 #mfn-dashboard .logo .button{margin-top:15px;width:100%}
@@ -28,6 +32,7 @@
 .white-label #mfn-dashboard .logo{display:none}
 
 /* .dashboard-tab */
+
 #mfn-dashboard .dashboard-tab{margin-top:30px;}
 
 #mfn-dashboard .dashboard-tab h3{font-size:20px;margin-top:0}
@@ -46,10 +51,16 @@
 #mfn-dashboard .dashboard-tab .question{display:none;min-height:56px}
 #mfn-dashboard .dashboard-tab .question span{margin-right:10px}
 
+#mfn-dashboard .dashboard-tab .check-licenses{margin-bottom:30px}
+
 #mfn-dashboard .dashboard-tab ol,
-#mfn-dashboard .dashboard-tab ul{margin-bottom:40px;}
+#mfn-dashboard .dashboard-tab ul{margin-bottom:30px;}
+
+#mfn-dashboard .dashboard-tab .data-collection{margin-bottom:30px}
+#mfn-dashboard .dashboard-tab .data-collection ul{margin-bottom:20px;margin-left:2em;list-style:disc;list-style-position:inside}
 
 /* system status */
+
 #mfn-dashboard .system-status li{margin-bottom:10px}
 #mfn-dashboard .system-status li.info{font-size:12px;line-height:14px;color:#aaa;font-weight:300}
 
@@ -73,11 +84,12 @@
 #mfn-dashboard .system-status li .status-notice{margin:5px 0 0;font-size:12px;line-height:15px;opacity:.8}
 
 /* system status | mini */
-#mfn-dashboard .system-status.mini li{margin-bottom:12px} 
 
+#mfn-dashboard .system-status.mini li{margin-bottom:12px}
 #mfn-dashboard .system-status.mini li .label{width:165px}
 
 /* .dashboard-tab.status */
+
 #mfn-dashboard .status .col-left{width:49.5%;width:calc(50% - 1px)}
 #mfn-dashboard .status .col-right{width:50%}
 
@@ -86,6 +98,7 @@
 #mfn-dashboard .status .system-status li:last-child{padding:0;margin:0;border-width:0;}
 
 /* .dashboard-tab.manual */
+
 #mfn-dashboard .support .videos{margin-bottom:0}
 #mfn-dashboard .support .videos li{display:inline-block;width:48%;width:calc(50% - 15px);margin-bottom:20px;}
 #mfn-dashboard .support .videos li:nth-child(2n+1){padding-right:20px}
@@ -107,16 +120,17 @@
 #mfn-dashboard .support .forum li .status.no{color:red}
 
 /* .dashboard-tab.changelog */
-#mfn-dashboard .changes .version{padding:15px 20px;margin-bottom:30px;background:#fff} 
 
-#mfn-dashboard .changes .version div ul{margin:15px 0 20px;padding:0 0 15px 35px;border-bottom:1px solid #ddd;list-style:disc inside;font-size:90%;font-weight:300} 
-#mfn-dashboard .changes .version div:last-child ul{margin-bottom:0;padding-bottom:0;border-bottom:0} 
+#mfn-dashboard .changes .version{padding:15px 20px;margin-bottom:30px;background:#fff}
 
-#mfn-dashboard .changes .version .dashicons{width:1.5em} 
-#mfn-dashboard .changes .version .new .dashicons{color:green} 
+#mfn-dashboard .changes .version div ul{margin:15px 0 20px;padding:0 0 15px 35px;border-bottom:1px solid #ddd;list-style:disc inside;font-size:90%;font-weight:300}
+#mfn-dashboard .changes .version div:last-child ul{margin-bottom:0;padding-bottom:0;border-bottom:0}
+
+#mfn-dashboard .changes .version .dashicons{width:1.5em}
+#mfn-dashboard .changes .version .new .dashicons{color:green}
 #mfn-dashboard .changes .version .fix .dashicons{color:red}
-#mfn-dashboard .changes .version .update .dashicons{color:orange}
-
+#mfn-dashboard .changes .version .improve .dashicons{color:orange}
+#mfn-dashboard .changes .version .update .dashicons{color:steelblue}
 
 /* RTL */
 
@@ -130,7 +144,6 @@
 .rtl #mfn-dashboard .support .manual ul:first-of-type{margin-right:0}
 
 .rtl #mfn-dashboard .support .videos li:nth-child(2n+1){padding-left:20px;padding-right:0}
-
 
 /* RESPONSIVE */
 

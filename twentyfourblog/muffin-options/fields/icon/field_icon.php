@@ -185,6 +185,7 @@ class MFN_Options_icon extends MFN_Options{
 		'icon-help-circled',
 		'icon-home',
 		'icon-hourglass',
+		'icon-houzz',
 		'icon-html5',
 		'icon-ie',
 		'icon-inbox',
@@ -243,6 +244,7 @@ class MFN_Options_icon extends MFN_Options{
 		'icon-mail',
 		'icon-mail-line',
 		'icon-map',
+		'icon-medium',
 		'icon-meetup',
 		'icon-megaphone',
 		'icon-megaphone-line',
@@ -341,6 +343,7 @@ class MFN_Options_icon extends MFN_Options{
 		'icon-skype-circled',
 		'icon-smashing',
 		'icon-smashmag',
+		'icon-snapchat',
 		'icon-songkick',
 		'icon-sound',
 		'icon-sound-line',
@@ -422,48 +425,53 @@ class MFN_Options_icon extends MFN_Options{
 		'icon-youtube',
 	);
 
+	protected $field = array();
+	protected $value = '';
+	protected $prefix = false;
+
 	/**
 	 * Constructor
 	 */
-	function __construct( $field = array(), $value = '', $prefix = false ){
 
+	public function __construct($field = array(), $value = '', $prefix = false)
+	{
 		$this->field = $field;
 		$this->value = $value;
-
-		// theme options 'opt_name'
 		$this->prefix = $prefix;
 
+		$this->enqueue();
 	}
 
 	/**
 	 * Render
 	 */
+
 	function render( $meta = false ){
 
-		$value = esc_attr( $this->value );
+		// class
 
-		// class ----------------------------------------------------
 		if( isset( $this->field['class']) ){
 			$class = $this->field['class'];
 		} else {
 			$class = 'regular-text';
 		}
 
-		// name -----------------------------------------------------
+		// name
+
 		if( $meta == 'new' ){
 
 			// builder new
-			$name = 'data-name="'. $this->field['id'] .'"';
+			$name_escaped = 'data-name="'. esc_attr($this->field['id']) .'"';
 
 		} elseif( $meta ){
 
 			// page mata & builder existing items
-			$name = 'name="'. $this->field['id'] .'"';
+			$name_escaped = 'name="'. esc_attr($this->field['id']) .'"';
 
 		} else {
 
 			// theme options
-			$name = 'name="'. $this->prefix .'['. $this->field['id'] .']"';
+			$name_escaped = 'name="'. esc_attr($this->prefix) .'['. esc_attr($this->field['id']) .']"';
 
 		}
 
@@ -472,10 +480,11 @@ class MFN_Options_icon extends MFN_Options{
 
 			echo '<div class="mfn-icon-header">';
 
-				echo '<input type="text" '. $name .' value="'. $value .'" class="mfn-icon-input '. $class .'"/>';
+				// This variable has been safely escaped above in this function
+				echo '<input type="text" '. $name_escaped .' value="'. esc_attr($this->value) .'" class="mfn-icon-input '. esc_attr($class) .'"/>';
 
 				if( isset( $this->field['desc'] ) ){
-					echo ' <span class="description '. $class .'">'. $this->field['desc'] .'</span>';
+					echo ' <span class="description '. esc_attr($class) .'">'. wp_kses($this->field['desc'], mfn_allowed_html('desc')) .'</span>';
 				}
 
 			echo '</div>';
@@ -483,8 +492,8 @@ class MFN_Options_icon extends MFN_Options{
 			echo '<div class="mfn-icon-select">';
 
 				foreach( $this->icons as $icon ){
-					$iclass = ( $value == $icon ) ? ' active' : '';
-					echo '<span class="mfn-icon'. $iclass .'" data-rel="'. $icon .'"><i class="'. $icon .'"></i></span>';
+					$iclass = ( $this->value == $icon ) ? ' active' : '';
+					echo '<span class="mfn-icon'. esc_attr($iclass) .'" data-rel="'. esc_attr($icon) .'"><i class="'. esc_attr($icon) .'"></i></span>';
 				}
 
 			echo '</div>';
@@ -495,8 +504,9 @@ class MFN_Options_icon extends MFN_Options{
 	/**
 	 * Enqueue Function.
 	*/
+
 	function enqueue(){
-		wp_enqueue_script( 'mfn-opts-field-icos-js', MFN_OPTIONS_URI.'fields/icon/field_icon.js', array( 'jquery' ), THEME_VERSION, true );
+		wp_enqueue_script( 'mfn-opts-field-icos', MFN_OPTIONS_URI.'fields/icon/field_icon.js', array('jquery'), MFN_THEME_VERSION, true );
 	}
 
 }

@@ -1,10 +1,10 @@
 @font-face{
   font-family:'mfn-icons';
-  src:url(mfn-icons.eot?93978679);
-  src:url(mfn-icons.eot?93978679#iefix) format("embedded-opentype"),
-    url(mfn-icons.woff?93978679) format("woff"),
-    url(mfn-icons.ttf?93978679) format("truetype"),
-    url(mfn-icons.svg?93978679#mfn-icons) format("svg");
+  src:url(mfn-icons.eot?31690507);
+  src:url(mfn-icons.eot?31690507#iefix) format("embedded-opentype"),
+    url(mfn-icons.woff?31690507) format("woff"),
+    url(mfn-icons.ttf?31690507) format("truetype"),
+    url(mfn-icons.svg?31690507#mfn-icons) format("svg");
   font-weight:400;
   font-style:normal
 }
@@ -386,6 +386,7 @@
 .icon-paypal:before{content:'\f1ed'}
 .icon-stripe:before{content:'\f1f5'}
 .icon-whatsapp:before{content:'\f232'}
+.icon-medium:before{content:'\f23a'}
 .icon-tripadvisor:before{content:'\f262'}
 .icon-chrome:before{content:'\f268'}
 .icon-scribd:before{content:'\f28a'}
@@ -429,3 +430,5 @@
 .icon-db-shape:before{content:'\f600'}
 .icon-sweden:before{content:'\f601'}
 .icon-logo-db:before{content:'\f603'}
+.icon-houzz:before{content:'\f27c'}
+.icon-snapchat:before{content:'\f2ac'}

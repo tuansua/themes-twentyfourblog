@@ -12,40 +12,33 @@
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
  * @package WooCommerce/Templates
- * @version 3.4.0
+ * @version 3.6.0
  */
 
 defined( 'ABSPATH' ) || exit;
 
 global $product;
 
-// Ensure visibility.
+// ensure visibility
+
 if ( empty( $product ) || ! $product->is_visible() ) {
 	return;
 }
 
-// Extra post classes ----------
+// extra post classes
+
 $classes = array( 'isotope-item' );
 
-// Product type - Buttons ----------
-if( ! $product->is_in_stock() || mfn_opts_get( 'shop-catalogue' ) || in_array( $product->get_type(), array( 'external', 'grouped', 'variable' ) ) ){
+// product type - buttons
 
-	$add_to_cart = false;
-	$image_frame = false;
-
-} else {
-
-	if( $product->supports( 'ajax_add_to_cart' ) ){
-		$add_to_cart = '<a rel="nofollow" href="'. apply_filters( 'add_to_cart_url', esc_url( $product->add_to_cart_url() ) ) .'" data-quantity="1" data-product_id="'. esc_attr( $product->get_id() ) .'" class="add_to_cart_button ajax_add_to_cart product_type_simple"><i class="icon-basket"></i></a>';
-	} else {
-		$add_to_cart = '<a rel="nofollow" href="'. apply_filters( 'add_to_cart_url', esc_url( $product->add_to_cart_url() ) ) .'" data-quantity="1" data-product_id="'. esc_attr( $product->get_id() ) .'" class="add_to_cart_button product_type_simple"><i class="icon-basket"></i></a>';
-	}
-
+if( $product->is_in_stock() && (! mfn_opts_get('shop-catalogue')) && (! in_array($product->get_type(), array('external', 'grouped', 'variable'))) ){
 	$image_frame = 'double';
+} else {
+	$image_frame = false;
 }
 
 ?>
-<li <?php post_class( $classes ); ?>>
+<li <?php wc_product_class( $classes, $product ); ?>>
 
 	<?php
 		/**
@@ -126,9 +119,15 @@ if( ! $product->is_in_stock() || mfn_opts_get( 'shop-catalogue' ) || in_array( $
 
 				echo '</a>';
 
-				echo '<div class="image_links '. $image_frame .'">';
-					echo $add_to_cart;
-					echo '<a class="link" href="'. apply_filters( 'the_permalink', get_permalink() ) .'"><i class="icon-link"></i></a>';
+				echo '<div class="image_links '. esc_attr($image_frame) .'">';
+					if( $product->is_in_stock() && (! mfn_opts_get('shop-catalogue')) && (! in_array($product->get_type(), array('external', 'grouped', 'variable'))) ){
+						if( $product->supports( 'ajax_add_to_cart' ) ){
+							echo '<a rel="nofollow" href="'. apply_filters('add_to_cart_url', esc_url($product->add_to_cart_url())) .'" data-quantity="1" data-product_id="'. esc_attr($product->get_id()) .'" class="add_to_cart_button ajax_add_to_cart product_type_simple"><i class="icon-basket"></i></a>';
+						} else {
+							echo'<a rel="nofollow" href="'. apply_filters('add_to_cart_url', esc_url($product->add_to_cart_url())) .'" data-quantity="1" data-product_id="'. esc_attr($product->get_id()) .'" class="add_to_cart_button product_type_simple"><i class="icon-basket"></i></a>';
+						}
+					}
+					echo '<a class="link" href="'. apply_filters('the_permalink', get_permalink()) .'"><i class="icon-link"></i></a>';
 				echo '</div>';
 
 				echo '</div>';

@@ -1,58 +1,70 @@
-function MfnUpload(){
-	(function($) {
+(function($) {
 
-		jQuery( 'img[src=""]' ).attr( 'src', mfn_upload.url );
+  /* globals jQuery, wp */
 
-		jQuery( '.mfn-opts-upload' ).click( function( event ) {   
-        	event.preventDefault();
-        	
-        	var activeFileUploadContext = jQuery( this ).parent();
-        	var type = jQuery( 'input', activeFileUploadContext ).attr( 'class' );
-        	
-        	custom_file_frame = null;
+  "use strict";
 
-            // Create the media frame.
-            custom_file_frame = wp.media.frames.customHeader = wp.media({
-            	title: jQuery(this).data( 'choose' ),
-            	library: {
-            		type: type
-            	},
-                button: {
-                    text: jQuery(this).data( 'update' )
-                }
-            });
+  function mfnFieldUpload() {
 
-            custom_file_frame.on( "select", function() {
-            	var attachment = custom_file_frame.state().get( "selection" ).first();
+    $('body').on('click', '.mfn-opts-upload', function(e) {
 
-                // Update value of the targetfield input with the attachment url.
-                jQuery( '.mfn-opts-screenshot', activeFileUploadContext ).attr( 'src', attachment.attributes.url );
-                jQuery( 'input', activeFileUploadContext )
-            		.val( attachment.attributes.url )
-            		.trigger( 'change' );
+      e.preventDefault();
 
-                jQuery( '.mfn-opts-upload', activeFileUploadContext ).hide();
-                jQuery( '.mfn-opts-screenshot', activeFileUploadContext ).show();
-                jQuery( '.mfn-opts-upload-remove', activeFileUploadContext ).show();
-            });
+      var activeFileUploadContext = $(this).parent();
+      var type = $('input', activeFileUploadContext).attr('class');
 
-            custom_file_frame.open();
-        });
+      // Create the media frame
 
-	    jQuery( '.mfn-opts-upload-remove' ).click( function( event ) {
-	    	event.preventDefault();
-	    	
-	        var activeFileUploadContext = jQuery( this ).parent();
-	
-	        jQuery( 'input', activeFileUploadContext ).val('');
-	        jQuery( this ).prev().fadeIn( 'slow' );
-	        jQuery( '.mfn-opts-screenshot', activeFileUploadContext ).fadeOut( 'slow' );
-	        jQuery( this ).fadeOut( 'slow' );
-	    });
+      var customFileFrame = wp.media.frames.customHeader = wp.media({
+        title: $(this).data('choose'),
+        library: {
+          type: type
+        },
+        button: {
+          text: $(this).data('update')
+        }
+      });
 
-	})(jQuery);
-}
-	
-jQuery(document).ready(function($){
-	var mfn_upload = new MfnUpload();
-});
+      customFileFrame.on('select', function() {
+
+        var attachment = customFileFrame.state().get("selection").first();
+
+        // Update value of the targetfield input with the attachment url
+
+        $('.mfn-opts-screenshot', activeFileUploadContext).attr('src', attachment.attributes.url);
+        $('input', activeFileUploadContext)
+          .val(attachment.attributes.url)
+          .trigger('change');
+
+        $('.mfn-opts-upload', activeFileUploadContext).hide();
+        $('.mfn-opts-screenshot', activeFileUploadContext).show();
+        $('.mfn-opts-upload-remove', activeFileUploadContext).show();
+      });
+
+      customFileFrame.open();
+    });
+
+		$('body').on('click', '.mfn-opts-upload-remove', function(e) {
+
+      e.preventDefault();
+
+      var activeFileUploadContext = $(this).parent();
+
+      $('input', activeFileUploadContext).val('');
+      $(this).prev().fadeIn('slow');
+      $('.mfn-opts-screenshot', activeFileUploadContext).fadeOut('slow');
+      $(this).fadeOut('slow');
+    });
+
+  }
+
+  /**
+   * $(document).ready
+   * Specify a function to execute when the DOM is fully loaded.
+   */
+
+  $(function() {
+    mfnFieldUpload();
+  });
+
+})(jQuery);

@@ -4,87 +4,88 @@
  *
  * @package Betheme
  * @author Muffin group
- * @link http://muffingroup.com
+ * @link https://muffingroup.com
  */
 
 get_header();
 
-// Class
-$blog_classes 	= array();
-$section_class 	= array();
+// class
 
+$blog_classes	= array();
+$section_class = array();
 
-// Class | Layout
-if( $_GET && key_exists( 'mfn-b', $_GET ) ){
-	$blog_layout = esc_html( $_GET['mfn-b'] ); // demo
+// class | layout
+
+if ($_GET && key_exists('mfn-b', $_GET)) {
+	$blog_layout = esc_html($_GET['mfn-b']); // demo
 } else {
-	$blog_layout = mfn_opts_get( 'blog-layout', 'classic' );
+	$blog_layout = mfn_opts_get('blog-layout', 'classic');
 }
 $blog_classes[] = $blog_layout;
 
-// Layout | Masonry Tiles | Quick Fix
-if( $blog_layout == 'masonry tiles' ){
+// layout | masonry tiles
+
+if ($blog_layout == 'masonry tiles') {
 	$blog_layout = 'masonry';
 }
 
+// class | columns
 
-// Class | Columns
-if( $_GET && key_exists( 'mfn-bc', $_GET ) ){
-	$blog_classes[] = 'col-'. esc_html( $_GET['mfn-bc'] ); // demo
+if ($_GET && key_exists('mfn-bc', $_GET)) {
+	$blog_classes[] = 'col-'. esc_html($_GET['mfn-bc']); // demo
 } else {
-	$blog_classes[] = 'col-'. mfn_opts_get( 'blog-columns', 3 );
+	$blog_classes[] = 'col-'. mfn_opts_get('blog-columns', 3);
 }
 
-
-// Full width
-if( $_GET && key_exists( 'mfn-bfw', $_GET ) ){
+// full width
+if ($_GET && key_exists('mfn-bfw', $_GET)) {
 	$section_class[] = 'full-width'; // demo
 }
-if( mfn_opts_get( 'blog-full-width' ) && ( $blog_layout == 'masonry' ) ){
+if (mfn_opts_get('blog-full-width') && ($blog_layout == 'masonry')) {
 	$section_class[] = 'full-width';
 }
-$section_class = implode( ' ', $section_class );
 
+$section_class = implode(' ', $section_class);
 
-// Isotope
-if( $_GET && key_exists( 'mfn-iso', $_GET ) ){
-	$isotope = true; // demo
-} elseif(  mfn_opts_get( 'blog-isotope' ) ) {
+// isotope
+
+if ($_GET && key_exists('mfn-iso', $_GET)) {
+	$isotope = true;
+} elseif (mfn_opts_get('blog-isotope')) {
 	$isotope = true;
 } else {
 	$isotope = false;
 }
 
-if( $isotope || ( $blog_layout == 'masonry' ) ){
+if ($isotope || ($blog_layout == 'masonry')) {
 	$blog_classes[] = 'isotope';
 }
 
+// load more
 
-// Ajax | load more
-$load_more = mfn_opts_get( 'blog-load-more' );
+$load_more = mfn_opts_get('blog-load-more');
 
+// translate
 
-// Translate
-$translate['filter'] 		= mfn_opts_get('translate') ? mfn_opts_get('translate-filter','Filter by') : __('Filter by','betheme');
-$translate['tags'] 			= mfn_opts_get('translate') ? mfn_opts_get('translate-tags','Tags') : __('Tags','betheme');
-$translate['authors'] 		= mfn_opts_get('translate') ? mfn_opts_get('translate-authors','Authors') : __('Authors','betheme');
-$translate['all'] 			= mfn_opts_get('translate') ? mfn_opts_get('translate-all','Show all') : __('Show all','betheme');
-$translate['categories'] 	= mfn_opts_get('translate') ? mfn_opts_get('translate-categories','Categories') : __('Categories','betheme');
-$translate['item-all'] 		= mfn_opts_get('translate') ? mfn_opts_get('translate-item-all','All') : __('All','betheme');
+$translate['filter'] = mfn_opts_get('translate') ? mfn_opts_get('translate-filter', 'Filter by') : __('Filter by', 'betheme');
+$translate['tags'] = mfn_opts_get('translate') ? mfn_opts_get('translate-tags', 'Tags') : __('Tags', 'betheme');
+$translate['authors'] = mfn_opts_get('translate') ? mfn_opts_get('translate-authors', 'Authors') : __('Authors', 'betheme');
+$translate['all'] = mfn_opts_get('translate') ? mfn_opts_get('translate-all', 'Show all') : __('Show all', 'betheme');
+$translate['categories'] = mfn_opts_get('translate') ? mfn_opts_get('translate-categories', 'Categories') : __('Categories', 'betheme');
+$translate['item-all'] = mfn_opts_get('translate') ? mfn_opts_get('translate-item-all', 'All') : __('All', 'betheme');
 ?>
 
-<!-- #Content -->
 <div id="Content">
 	<div class="content_wrapper clearfix">
 
-		<!-- .sections_group -->
 		<div class="sections_group">
-
 
 			<div class="extra_content">
 				<?php
-					if( get_option( 'page_for_posts' ) || mfn_opts_get( 'blog-page' ) ){
-						if( category_description() ){
+					if (get_option('page_for_posts') || mfn_opts_get('blog-page')) {
+
+						if (category_description()) {
+
 							echo '<div class="section the_content category_description">';
 								echo '<div class="section_wrapper">';
 									echo '<div class="the_content_wrapper">';
@@ -92,15 +93,19 @@ $translate['item-all'] 		= mfn_opts_get('translate') ? mfn_opts_get('translate-i
 									echo '</div>';
 								echo '</div>';
 							echo '</div>';
+
 						} else {
-							mfn_builder_print( mfn_ID(), true );
+
+							$mfn_builder = new Mfn_Builder_Front(mfn_ID(), true);
+							$mfn_builder->show();
+
 						}
+
 					}
 				?>
 			</div>
 
-
-			<?php if( ( $filters = mfn_opts_get( 'blog-filters' ) ) && ( is_home() || is_category() || is_tag() || is_author() ) ): ?>
+			<?php if (($filters = mfn_opts_get('blog-filters')) && (is_home() || is_category() || is_tag() || is_author())): ?>
 
 				<div class="section section-filters">
 					<div class="section_wrapper clearfix">
@@ -108,37 +113,37 @@ $translate['item-all'] 		= mfn_opts_get('translate') ? mfn_opts_get('translate-i
 						<?php
 							$filters_class = '';
 
-							if( $isotope ){
+							if ($isotope) {
 								$filters_class .= ' isotope-filters';
 							}
 
-							if( $filters != 1 ){
+							if ($filters != 1) {
 								$filters_class .= ' only '. $filters;
 							}
 						?>
 
 						<!-- #Filters -->
-						<div id="Filters" class="column one <?php echo $filters_class; ?>">
+						<div id="Filters" class="column one <?php echo esc_attr($filters_class); ?>">
 
 							<ul class="filters_buttons">
-								<li class="label"><?php echo $translate['filter']; ?></li>
-								<li class="categories"><a class="open" href="#"><i class="icon-docs"></i><?php echo $translate['categories']; ?><i class="icon-down-dir"></i></a></li>
-								<li class="tags"><a class="open" href="#"><i class="icon-tag"></i><?php echo $translate['tags']; ?><i class="icon-down-dir"></i></a></li>
-								<li class="authors"><a class="open" href="#"><i class="icon-user"></i><?php echo $translate['authors']; ?><i class="icon-down-dir"></i></a></li>
-								<li class="reset"><a class="close" data-rel="*" href="<?php echo get_permalink( mfn_ID() ); ?>"><i class="icon-cancel"></i><?php echo $translate['all']; ?></a></li>
+								<li class="label"><?php echo esc_html($translate['filter']); ?></li>
+								<li class="categories"><a class="open" href="#"><i class="icon-docs"></i><?php echo esc_html($translate['categories']); ?><i class="icon-down-dir"></i></a></li>
+								<li class="tags"><a class="open" href="#"><i class="icon-tag"></i><?php echo esc_html($translate['tags']); ?><i class="icon-down-dir"></i></a></li>
+								<li class="authors"><a class="open" href="#"><i class="icon-user"></i><?php echo esc_html($translate['authors']); ?><i class="icon-down-dir"></i></a></li>
+								<li class="reset"><a class="close" data-rel="*" href="<?php echo esc_url(get_permalink(mfn_ID())); ?>"><i class="icon-cancel"></i><?php echo esc_html($translate['all']); ?></a></li>
 							</ul>
 
 							<div class="filters_wrapper">
 								<ul class="categories">
 									<?php
-										echo '<li class="reset-inner"><a data-rel="*" href="'. get_permalink( mfn_ID() ) .'">'. $translate['item-all'] .'</a></li>';
-										if( $categories = get_categories() ){
+										echo '<li class="reset-inner"><a data-rel="*" href="'. esc_url(get_permalink(mfn_ID())) .'">'. esc_html($translate['item-all']) .'</a></li>';
+										if ($categories = get_categories()) {
 											$exclude = mfn_get_excluded_categories();
-											foreach( $categories as $category ){
-												if( $exclude && in_array( $category->slug, $exclude ) ){
+											foreach ($categories as $category) {
+												if ($exclude && in_array($category->slug, $exclude)) {
 													continue;
 												}
-												echo '<li><a data-rel=".category-'. $category->slug .'" href="'. get_term_link($category) .'">'. $category->name .'</a></li>';
+												echo '<li><a data-rel=".category-'. esc_attr($category->slug) .'" href="'. esc_url(get_term_link($category)) .'">'. esc_html($category->name) .'</a></li>';
 											}
 										}
 									?>
@@ -146,10 +151,10 @@ $translate['item-all'] 		= mfn_opts_get('translate') ? mfn_opts_get('translate-i
 								</ul>
 								<ul class="tags">
 									<?php
-										echo '<li class="reset-inner"><a data-rel="*" href="'. get_permalink( mfn_ID() ) .'">'. $translate['item-all'] .'</a></li>';
-										if( $tags = get_tags() ){
-											foreach( $tags as $tag ){
-												echo '<li><a data-rel=".tag-'. $tag->slug .'" href="'. get_tag_link($tag) .'">'. $tag->name .'</a></li>';
+										echo '<li class="reset-inner"><a data-rel="*" href="'. esc_url(get_permalink(mfn_ID())) .'">'. esc_html($translate['item-all']) .'</a></li>';
+										if ($tags = get_tags()) {
+											foreach ($tags as $tag) {
+												echo '<li><a data-rel=".tag-'. esc_attr($tag->slug) .'" href="'. esc_url(get_tag_link($tag)) .'">'. esc_html($tag->name) .'</a></li>';
 											}
 										}
 									?>
@@ -157,14 +162,13 @@ $translate['item-all'] 		= mfn_opts_get('translate') ? mfn_opts_get('translate-i
 								</ul>
 								<ul class="authors">
 									<?php
-										echo '<li class="reset-inner"><a data-rel="*" href="'. get_permalink( mfn_ID() ) .'">'. $translate['item-all'] .'</a></li>';
+										echo '<li class="reset-inner"><a data-rel="*" href="'. esc_url(get_permalink(mfn_ID())) .'">'. esc_html($translate['item-all']) .'</a></li>';
 
 										$authors = mfn_get_authors();
-										if( is_array( $authors ) ){
-											foreach( $authors as $auth ){
-												echo '<li><a data-rel=".author-'. mfn_slug( $auth->data->user_login ) .'" href="'. get_author_posts_url($auth->ID) .'">'. $auth->data->display_name .'</a></li>';
+										if (is_array($authors)) {
+											foreach ($authors as $auth) {
+												echo '<li><a data-rel=".author-'. esc_attr(mfn_slug($auth->data->user_login)) .'" href="'. esc_url(get_author_posts_url($auth->ID)) .'">'. esc_html($auth->data->display_name) .'</a></li>';
 											}
-
 										}
 									?>
 									<li class="close"><a href="#"><i class="icon-cancel"></i></a></li>
@@ -178,38 +182,35 @@ $translate['item-all'] 		= mfn_opts_get('translate') ? mfn_opts_get('translate-i
 
 			<?php endif; ?>
 
-
-			<div class="section <?php echo $section_class; ?>">
+			<div class="section <?php echo esc_attr($section_class); ?>">
 				<div class="section_wrapper clearfix">
 
 					<div class="column one column_blog">
 						<div class="blog_wrapper isotope_wrapper">
 
-							<div class="posts_group lm_wrapper <?php echo implode( ' ', $blog_classes ); ?>">
+							<div class="posts_group lm_wrapper <?php echo esc_attr(implode(' ', $blog_classes)); ?>">
 								<?php
 
-									// Loop attributes
 									$attr = array(
-										'featured_image' 	=> false,
-										'filters' 				=> $filters,
+										'featured_image' => false,
+										'filters' => $filters,
 									);
 
-									if( $load_more ){
-										$attr['featured_image'] = 'no_slider';	// no slider if load more
+									if ($load_more) {
+										$attr['featured_image'] = 'no_slider';
 									}
-									if( mfn_opts_get( 'blog-images' ) ){
-										$attr['featured_image'] = 'image';	// images only option
+									if (mfn_opts_get('blog-images')) {
+										$attr['featured_image'] = 'image';
 									}
 
-									echo mfn_content_post( false, false, $attr );
+									echo mfn_content_post(false, false, $attr);
 								?>
 							</div>
 
 							<?php
-								// pagination
-								if( function_exists( 'mfn_pagination' ) ):
+								if (function_exists('mfn_pagination')):
 
-									echo mfn_pagination( false, $load_more );
+									echo mfn_pagination(false, $load_more);
 
 								else:
 									?>
@@ -228,12 +229,9 @@ $translate['item-all'] 		= mfn_opts_get('translate') ? mfn_opts_get('translate-i
 
 		</div>
 
-		<!-- .four-columns - sidebar -->
-		<?php get_sidebar( 'blog' ); ?>
+		<?php get_sidebar(); ?>
 
 	</div>
 </div>
 
 <?php get_footer();
-
-// Omit Closing PHP Tags

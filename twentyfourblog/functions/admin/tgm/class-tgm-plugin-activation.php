@@ -2531,7 +2531,7 @@ if ( ! class_exists( 'TGMPA_List_Table' ) ) {
 		public function column_cb( $item ) {
 
 			// not registered and bundled premium plugin
-			if( ! mfn_is_registered() && $item[ 'minimum_version' ] ){
+			if( $item[ 'minimum_version' ] && ( ! mfn_is_registered() || version_compare( $item[ 'minimum_version' ], '1.0', '<' ) ) ){
 				$disabled = 'disabled="disabled"';
 			} else {
 				$disabled = '';

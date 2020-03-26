@@ -1,104 +1,127 @@
-function MfnOptions(){
-			
-	// show 1st at start	
-	if( jQuery('#last_tab').val() == 0 ){
-		this.tabid = jQuery('.mfn-submenu-a:first').attr('data-rel');
-	} else {
-		this.tabid = jQuery('#last_tab').val();
-	}
+(function($) {
 
-	jQuery('#'+this.tabid+'-mfn-section').show();
-	jQuery('#'+this.tabid+'-mfn-submenu-li').addClass('active').parent('ul').show().parent('li').addClass('active');
-	
-	// parent manu click - show childrens and select 1st
-	jQuery('.mfn-menu-a').click(function(){
-		
-		if( ! jQuery(this).parent().hasClass('active') ) {
-			
-			jQuery('.mfn-menu-li').removeClass('active');
-			jQuery('.mfn-submenu').slideUp('fast');
-			
-			jQuery(this).next('ul').stop().slideDown('fast');
-			jQuery(this).parent('li').addClass('active');
-			
-			jQuery('.mfn-submenu-li').removeClass('active');
-			jQuery('.mfn-section').hide();
-			
-			this.tabid = jQuery(this).next('ul').children('li:first').addClass('active').children('a').attr('data-rel');
-			jQuery('#'+this.tabid+'-mfn-section').stop().fadeIn(1200);
-			jQuery('#last_tab').val(this.tabid);
-		}
-		
-	});
-	
-	// submenu click
-	jQuery('.mfn-submenu-a').click(function(){
-		
-		if( ! jQuery(this).parent().hasClass('active') ) {
+  /* globals jQuery */
 
-			jQuery('.mfn-submenu-li').removeClass('active');
-			jQuery(this).parent('li').addClass('active');
-			
-			jQuery('.mfn-section').hide();
-			
-			this.tabid = jQuery(this).attr('data-rel');
-			jQuery('#'+this.tabid+'-mfn-section').stop().fadeIn(1200);
-			jQuery('#last_tab').val(this.tabid);
-		}
-		
-	});
-	
-	// last w menu
-	jQuery('.mfn-submenu .mfn-submenu-li:last-child').addClass('last');
+  "use strict";
 
-	
-	// reset
-	jQuery( '.reset-pre-confirm' ).click( function(){
-		jQuery( this ).closest( '.step-1' ).hide().next().fadeIn( 200 );
-	});
-	
-	jQuery( '.mfn-popup-reset' ).click(function(){
-		
-		if( jQuery( '.reset-security-code' ).val() != 'r3s3t' ){
-			alert( 'Please insert correct security code: r3s3t' );
-			return false;
-		}
-		
-		if( confirm( "Are you sure?\n\nClicking this button will reset all custom values across your entire Theme Options panel" ) ){
-			jQuery( this ).val( 'Resetting...' );
-			return true;
-	    } else {
-	    	return false;
-	    }
-	});
-	
-	
-	// import code button
-	jQuery('.mfn-import-imp-code-btn').click(function(){
-		jQuery('.mfn-import-imp-link-wrapper').hide();
-		jQuery('.mfn-import-imp-code-wrapper').stop().fadeIn(500);
-	});
-	
-	// import link button
-	jQuery('.mfn-import-imp-link-btn').click(function(){
-		jQuery('.mfn-import-imp-code-wrapper').hide();
-		jQuery('.mfn-import-imp-link-wrapper').stop().fadeIn(500);
-	});
-	
-	// export code button
-	jQuery('.mfn-import-exp-code-btn').click(function(){
-		jQuery('.mfn-import-exp-link').hide();
-		jQuery('.mfn-import-exp-code').stop().fadeIn(500);
-	});
-	
-	// export link button
-	jQuery('.mfn-import-exp-link-btn').click(function(){
-		jQuery('.mfn-import-exp-code').hide();
-		jQuery('.mfn-import-exp-link').stop().fadeIn(500);
-	});
-	
-}
-	
-jQuery(document).ready(function(){
-	new MfnOptions();
-});
+  function mfnOptions() {
+
+    var current = 'general';
+
+  	// show last open tab
+
+    if ($('#last_tab').val()) {
+      current = $('#last_tab').val();
+    }
+
+		// show active tab and menu
+
+    $('#' + current + '-mfn-section').show();
+    $('#' + current + '-mfn-submenu-li').addClass('active').parent('ul').show().parent('li').addClass('active');
+
+    // parent menu | click
+		// show childrens and select 1st
+
+    $('#mfn-wrapper').on('click', '.mfn-menu-a', function() {
+
+      if (!$(this).parent().hasClass('active')) {
+
+        $('.mfn-menu-li').removeClass('active');
+        $('.mfn-submenu').slideUp('fast');
+
+        $(this).next('ul').stop().slideDown('fast');
+        $(this).parent('li').addClass('active');
+
+        $('.mfn-submenu-li').removeClass('active');
+        $('.mfn-section').hide();
+
+        current = $(this).next('ul').children('li:first').addClass('active').children('a').attr('data-rel');
+        $('#' + current + '-mfn-section').stop().fadeIn(1200);
+        $('#last_tab').val(current);
+      }
+
+    });
+
+    // submenu click
+
+    $('#mfn-wrapper').on('click', '.mfn-submenu-a', function() {
+
+      if (!$(this).parent().hasClass('active')) {
+
+        $('.mfn-submenu-li').removeClass('active');
+        $(this).parent('li').addClass('active');
+
+        $('.mfn-section').hide();
+
+        current = $(this).attr('data-rel');
+        $('#' + current + '-mfn-section').stop().fadeIn(1200);
+        $('#last_tab').val(current);
+      }
+
+    });
+
+    // submenu | add last
+
+    $('.mfn-submenu .mfn-submenu-li:last-child').addClass('last');
+
+    // reset
+
+    $('#mfn-wrapper').on('click', '.reset-pre-confirm', function() {
+      $(this).closest('.step-1').hide().next().fadeIn(200);
+    });
+
+    $('#mfn-wrapper').on('click', '.mfn-popup-reset', function() {
+
+      if ($('.reset-security-code').val() != 'r3s3t') {
+        alert('Please insert correct security code: r3s3t');
+        return false;
+      }
+
+      if (confirm("Are you sure?\n\nClicking this button will reset all custom values across your entire Theme Options panel")) {
+        $(this).val('Resetting...');
+        return true;
+      } else {
+        return false;
+      }
+    });
+
+    // import code button
+
+		$('#mfn-wrapper').on('click', '.mfn-import-imp-code-btn', function() {
+      $('.mfn-import-imp-link-wrapper').hide();
+      $('.mfn-import-imp-code-wrapper').stop().fadeIn(500);
+    });
+
+    // import link button
+
+		$('#mfn-wrapper').on('click', '.mfn-import-imp-link-btn', function() {
+      $('.mfn-import-imp-code-wrapper').hide();
+      $('.mfn-import-imp-link-wrapper').stop().fadeIn(500);
+    });
+
+    // export code button
+
+		$('#mfn-wrapper').on('click', '.mfn-import-exp-code-btn', function() {
+      $('.mfn-import-exp-link').hide();
+      $('.mfn-import-exp-code').stop().fadeIn(500);
+    });
+
+    // export link button
+
+		$('#mfn-wrapper').on('click', '.mfn-import-exp-link-btn', function() {
+      $('.mfn-import-exp-code').hide();
+      $('.mfn-import-exp-link').stop().fadeIn(500);
+    });
+
+  }
+
+	/**
+	 * $(document).ready
+	 * Specify a function to execute when the DOM is fully loaded.
+	 */
+
+  $(function($) {
+    mfnOptions();
+  });
+
+})(jQuery);

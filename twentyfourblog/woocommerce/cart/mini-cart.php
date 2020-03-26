@@ -13,13 +13,11 @@
  * the readme will list any important changes.
  *
  * @see     https://docs.woocommerce.com/document/template-structure/
- * @author  WooThemes
  * @package WooCommerce/Templates
- * @version 3.3.0
+ * @version 3.7.0
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
-}
+
+defined( 'ABSPATH' ) || exit;
 
 do_action( 'woocommerce_before_mini_cart' ); ?>
 
@@ -49,21 +47,26 @@ do_action( 'woocommerce_before_mini_cart' ); ?>
 							$cart_remove_url = wc_get_cart_remove_url( $cart_item_key );
 						}
 
-						echo apply_filters( 'woocommerce_cart_item_remove_link', sprintf(
-							'<a href="%s" class="remove remove_from_cart_button" aria-label="%s" data-product_id="%s" data-cart_item_key="%s" data-product_sku="%s">&times;</a>',
-							esc_url( $cart_remove_url ),
-							__( 'Remove this item', 'woocommerce' ),
-							esc_attr( $product_id ),
-							esc_attr( $cart_item_key ),
-							esc_attr( $_product->get_sku() )
-						), $cart_item_key );
+						echo apply_filters( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+							'woocommerce_cart_item_remove_link',
+							sprintf(
+								'<a href="%s" class="remove remove_from_cart_button" aria-label="%s" data-product_id="%s" data-cart_item_key="%s" data-product_sku="%s">&times;</a>',
+								esc_url( $cart_remove_url ),
+								esc_html__( 'Remove this item', 'woocommerce' ),
+								esc_attr( $product_id ),
+								esc_attr( $cart_item_key ),
+								esc_attr( $_product->get_sku() )
+							),
+							$cart_item_key
+						);
+
 						?>
 
 						<?php if ( $_product->is_visible() ) : ?>
 							<a href="<?php echo esc_url( $product_permalink ); ?>">
 						<?php endif; ?>
 
-							<?php echo str_replace( array( 'http:', 'https:' ), '', $thumbnail ); ?>
+							<?php echo $thumbnail; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 
 							<div class="desc">
 								<?php echo '<h6>'. $product_name .'</h6>'; ?>
@@ -73,11 +76,11 @@ do_action( 'woocommerce_before_mini_cart' ); ?>
 								if( version_compare( WC_VERSION, '3.3', '<' ) ){
 									echo WC()->cart->get_item_data( $cart_item );
 								} else {
-									echo wc_get_formatted_cart_item_data( $cart_item );
+									echo wc_get_formatted_cart_item_data( $cart_item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								}
 								?>
 
-								<?php echo apply_filters( 'woocommerce_widget_cart_item_quantity', '<span class="quantity">' . sprintf( '%s &times; %s', $cart_item['quantity'], $product_price ) . '</span>', $cart_item, $cart_item_key ); ?>
+								<?php echo apply_filters( 'woocommerce_widget_cart_item_quantity', '<span class="quantity">' . sprintf( '%s &times; %s', $cart_item['quantity'], $product_price ) . '</span>', $cart_item, $cart_item_key ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 							</div>
 
 						<?php if ( $_product->is_visible() ) : ?>
@@ -95,13 +98,13 @@ do_action( 'woocommerce_before_mini_cart' ); ?>
 
 	<p class="woocommerce-mini-cart__total total">
 		<strong><?php _e( 'Subtotal', 'woocommerce' ); ?>:</strong> <?php echo WC()->cart->get_cart_subtotal(); ?>
-		<a href="<?php echo esc_url( wc_get_cart_url() ); ?>" class="button_cart"><i class="icon-layout"></i><?php _e( 'View Cart', 'woocommerce' ); ?></a>
+		<a href="<?php echo esc_url( wc_get_cart_url() ); ?>" class="button_cart"><i class="icon-layout"></i><?php _e( 'View cart', 'woocommerce' ); ?></a>
 	</p>
 
 	<?php do_action( 'woocommerce_widget_shopping_cart_before_buttons' ); ?>
 
 	<p class="woocommerce-mini-cart__buttons buttons">
-		<a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="button button_theme button_js checkout"><span class="button_icon"><i class="icon-layout"></i></span><span class="button_label"><?php _e( 'Checkout', 'woocommerce' ); ?></span></a>
+		<a href="<?php echo esc_url( wc_get_checkout_url() ); ?>" class="button button_theme button_left button_js checkout"><span class="button_icon"><i class="icon-layout"></i></span><span class="button_label"><?php _e( 'Checkout', 'woocommerce' ); ?></span></a>
 	</p>
 
 <?php else : ?>

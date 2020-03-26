@@ -9,10 +9,11 @@
  * @package TribeEventsCalendar
  * @since  3.0
  * @author Modern Tribe Inc.
- *
  */
 
-if ( !defined('ABSPATH') ) { die('-1'); }
+if (!defined('ABSPATH')) {
+	die('-1');
+}
 
 get_header();
 ?>
@@ -27,7 +28,7 @@ get_header();
 				<div class="section_wrapper">
 					<div class="the_content_wrapper">
 						<?php tribe_events_before_html(); ?>
-						<?php tribe_get_view(); ?>
+							<?php tribe_get_view(); ?>
 						<?php tribe_events_after_html(); ?>
 					</div>
 				</div>
@@ -35,10 +36,10 @@ get_header();
 		</div>
 
 		<!-- .four-columns - sidebar -->
-		<?php if( is_active_sidebar( 'events' ) ):  ?>
+		<?php if (is_active_sidebar('events')):  ?>
 			<div class="sidebar four columns">
-				<div class="widget-area clearfix <?php mfn_opts_show('sidebar-lines'); ?>">
-					<?php dynamic_sidebar( 'events' ); ?>
+				<div class="widget-area clearfix <?php echo esc_attr(mfn_opts_get('sidebar-lines')); ?>">
+					<?php dynamic_sidebar('events'); ?>
 				</div>
 			</div>
 		<?php endif; ?>
@@ -47,5 +48,3 @@ get_header();
 </div>
 
 <?php get_footer();
-
-// Omit Closing PHP Tags

@@ -6,7 +6,7 @@ if( ! defined( 'ABSPATH' ) ){
 
 <div id="mfn-dashboard" class="wrap about-wrap">
 
-	<?php include_once LIBS_DIR . '/admin/templates/parts/header.php'; ?>
+	<?php include_once get_theme_file_path('/functions/admin/templates/parts/header.php'); ?>
 
 	<div class="dashboard-tab register">
 
@@ -33,7 +33,7 @@ if( ! defined( 'ABSPATH' ) ){
 					<?php else: ?>
 
 						<p class="confirm deregister">
-							<a class="mfn-button mfn-button-primary mfn-button-fw"><?php esc_html_e( __( 'Deregister Theme', 'mfn-opts' ) ); ?></a>
+							<a class="mfn-button mfn-button-primary mfn-button-fw"><?php esc_html_e( 'Deregister Theme', 'mfn-opts' ); ?></a>
 						</p>
 
 					<?php endif; ?>
@@ -47,7 +47,7 @@ if( ! defined( 'ABSPATH' ) ){
 						<p class="question">
 							<span><?php esc_html_e( 'Are you sure you want to deregister the theme?', 'mfn-opts' ); ?></span>
 							<a class="mfn-button cancel" target="_blank" href="#"><?php esc_html_e( 'Cancel', 'mfn-opts' ); ?></a>
-							<input type="submit" class="mfn-button mfn-button-primary" name="deregister" value="<?php echo esc_attr( __( 'Deregister', 'mfn-opts' ) ); ?>" />
+							<input type="submit" class="mfn-button mfn-button-primary" name="deregister" value="<?php esc_attr_e( 'Deregister', 'mfn-opts' ); ?>" />
 						</p>
 
 					<?php endif; ?>
@@ -57,6 +57,20 @@ if( ! defined( 'ABSPATH' ) ){
 				<p class="check-licenses"><a target="_blank" href="http://api.muffingroup.com/licenses/">Check your licenses</a></p>
 
 				<?php if( ! WHITE_LABEL ): ?>
+
+					<div class="data-collection">
+
+						<p><strong>Data collection</strong></p>
+						<p>Betheme does not collect any personal data. However, we gather some basic information about your website to validate your license and product registration. These are:</p>
+
+						<ul>
+							<li>The purchase code that was used for product registration</li>
+							<li>The domain name that your website uses</li>
+						</ul>
+
+						<p>In order to serve and check for updates, from time to time, your WordPress installation establishes an anonymous connection to our servers.</p>
+
+					</div>
 
 					<h3><?php esc_html_e( 'Buy license', 'mfn-opts' ); ?></h3>
 
@@ -70,7 +84,7 @@ if( ! defined( 'ABSPATH' ) ){
 						}
 					?>
 
-					<a class="mfn-button mfn-button-secondary" target="_blank" href="<?php echo $purchase_link; ?>"><?php esc_html_e( 'Purchase new license', 'mfn-opts' ); ?></a>
+					<a class="mfn-button mfn-button-secondary" target="_blank" href="<?php echo esc_url($purchase_link); ?>"><?php esc_html_e( 'Purchase new license', 'mfn-opts' ); ?></a>
 
 				<?php endif; ?>
 
@@ -85,11 +99,11 @@ if( ! defined( 'ABSPATH' ) ){
 						<?php settings_fields( 'betheme_registration' ); ?>
 
 						<p>
-							<input type="text" placeholder="Paste your purchase code here" id="betheme_purchase_code" class="of-input" name="betheme_purchase_code" value="" size="36">
+							<input type="text" placeholder="Paste your purchase code here" id="envato_purchase_code_7758048" class="of-input" name="envato_purchase_code_7758048" value="" size="36">
 						</p>
 
 						<p>
-							<input type="submit" class="mfn-button mfn-button-primary mfn-button-fw" name="register" value="<?php echo esc_attr( __( 'Register Theme', 'mfn-opts' ) ); ?>" />
+							<input type="submit" class="mfn-button mfn-button-primary mfn-button-fw" name="register" value="<?php esc_attr_e( 'Register Theme', 'mfn-opts' ); ?>" />
 						</p>
 
 					</form>
@@ -98,10 +112,24 @@ if( ! defined( 'ABSPATH' ) ){
 
 					<ol>
 						<li>Please go to <a target="_blank" href="https://themeforest.net/downloads">ThemeForest.net/downloads</a></li>
-						<li>Click the <strong>Download</strong> button in BeTheme row</li>
+						<li>Click the <strong>Download</strong> button in Betheme row</li>
 						<li>Select <strong>License Certificate &amp; Purchase code</strong></li>
 						<li>Copy <strong>Item Purchase Code</strong></li>
 					</ol>
+
+					<div class="data-collection">
+
+						<p><strong>Data collection</strong></p>
+						<p>Betheme does not collect any personal data. However, we gather some basic information about your website to validate your license and product registration. These are:</p>
+
+						<ul>
+							<li>The purchase code that was used for product registration</li>
+							<li>The domain name that your website uses</li>
+						</ul>
+
+						<p>In order to serve and check for updates, from time to time, your WordPress installation establishes an anonymous connection to our servers.</p>
+
+					</div>
 
 					<h3>Buy license</h3>
 
@@ -134,7 +162,7 @@ if( ! defined( 'ABSPATH' ) ){
 
 				<h3><?php esc_html_e( 'System Status', 'mfn-opts' ); ?></h3>
 
-				<?php include_once LIBS_DIR . '/admin/templates/parts/mini-status.php'; ?>
+				<?php include_once get_theme_file_path('/functions/admin/templates/parts/mini-status.php'); ?>
 
 			<?php endif; ?>
 

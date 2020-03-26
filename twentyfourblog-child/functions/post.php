@@ -1,4 +1,16 @@
 <?php 
+function long_content($text){
+  if(strlen($text) >=110){
+    $cut= substr($text,0, 110);
+    return substr($cut,0, strrpos($cut," ")).'...';
+  }else return $text;
+}
+function long_content3 ($text, $number){
+  if(strlen($text) >=$number){
+    $cut= substr($text,0, $number);
+    return substr($cut,0, strrpos($cut," ")).'...';
+  }else return $text;
+}
 function new_home( $temp = '',$postPerPage= '',$format = '' ) {
   if ($postPerPage == '') {
         $postPerPage = 5;
@@ -98,3 +110,4 @@ function new_home( $temp = '',$postPerPage= '',$format = '' ) {
     }
     return $string;
 }
+?>

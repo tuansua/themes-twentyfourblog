@@ -4,17 +4,16 @@
  *
  * @package Betheme
  * @author Muffin group
- * @link http://muffingroup.com
+ * @link https://muffingroup.com
  */
 
-require_once( dirname( __FILE__ ) . '/fonts.php' );
-require_once( dirname( __FILE__ ) . '/options.php' );
+require_once(get_theme_file_path('/muffin-options/fonts.php'));
+require_once(get_theme_file_path('/muffin-options/options.php'));
 
 
-/*
+/**
  * Options Page | Helper Functions
  */
-
 
 if( ! function_exists( 'mfna_header_style' ) )
 {
@@ -22,6 +21,7 @@ if( ! function_exists( 'mfna_header_style' ) )
 	 * Header Style
 	 * @return array
 	 */
+
 	function mfna_header_style(){
 		return array(
 			'classic' => array('title' => 'Classic', 'img' => MFN_OPTIONS_URI.'img/select/header/classic.png'),
@@ -48,7 +48,6 @@ if( ! function_exists( 'mfna_header_style' ) )
 	}
 }
 
-
 if( ! function_exists( 'mfna_bg_position' ) )
 {
 	/**
@@ -57,6 +56,7 @@ if( ! function_exists( 'mfna_bg_position' ) )
 	 * @param string $body
 	 * @return array
 	 */
+
 	function mfna_bg_position( $element = false ){
 		$array = array(
 
@@ -70,11 +70,13 @@ if( ! function_exists( 'mfna_bg_position' ) )
 			'no-repeat;center top;;' => __( 'Center Top | no-repeat', 'mfn-opts' ),
 			'repeat;center top;;' => __( 'Center Top | repeat', 'mfn-opts' ),
 			'repeat-x;center top;;' => __( 'Center Top | repeat-x', 'mfn-opts' ),
+			'repeat-y;center top;;' => __( 'Center Top | repeat-y', 'mfn-opts' ),
 			'no-repeat;center;;' => __( 'Center Center | no-repeat', 'mfn-opts' ),
 			'repeat;center;;' => __( 'Center Center | repeat', 'mfn-opts' ),
 			'no-repeat;center bottom;;' => __( 'Center Bottom | no-repeat', 'mfn-opts' ),
 			'repeat;center bottom;;' => __( 'Center Bottom | repeat', 'mfn-opts' ),
 			'repeat-x;center bottom;;' => __( 'Center Bottom | repeat-x', 'mfn-opts' ),
+			'repeat-y;center bottom;;' => __( 'Center Bottom | repeat-y', 'mfn-opts' ),
 
 			'no-repeat;right top;;' => __( 'Right Top | no-repeat', 'mfn-opts' ),
 			'repeat;right top;;' => __( 'Right Top | repeat', 'mfn-opts' ),
@@ -118,7 +120,6 @@ if( ! function_exists( 'mfna_bg_position' ) )
 	}
 }
 
-
 if( ! function_exists( 'mfna_bg_size' ) )
 {
 	/**
@@ -126,6 +127,7 @@ if( ! function_exists( 'mfna_bg_size' ) )
 	 *
 	 * @return array
 	 */
+
 	function mfna_bg_size(){
 		return array(
 			'auto' => __('Auto', 'mfn-opts'),
@@ -136,7 +138,6 @@ if( ! function_exists( 'mfna_bg_size' ) )
 	}
 }
 
-
 if( ! function_exists( 'mfna_skin' ) )
 {
 	/**
@@ -144,6 +145,7 @@ if( ! function_exists( 'mfna_skin' ) )
 	 *
 	 * @return array
 	 */
+
 	function mfna_skin(){
 		return array(
 			'custom' => __('- Custom Skin -', 'mfn-opts'),
@@ -164,7 +166,6 @@ if( ! function_exists( 'mfna_skin' ) )
 	}
 }
 
-
 if( ! function_exists( 'mfna_utc' ) )
 {
 	/**
@@ -172,6 +173,7 @@ if( ! function_exists( 'mfna_utc' ) )
 	 *
 	 * @return array
 	 */
+
 	function mfna_utc(){
 		return array(
 			'-12' 	=> '-12:00',
@@ -217,7 +219,6 @@ if( ! function_exists( 'mfna_utc' ) )
 	}
 }
 
-
 if( ! function_exists( 'mfna_layout' ) )
 {
 	/**
@@ -225,6 +226,7 @@ if( ! function_exists( 'mfna_layout' ) )
 	 *
 	 * @return array
 	 */
+
 	function mfna_layout(){
 		$layouts = array( 0 => __( '-- Theme Options --', 'mfn-opts' ) );
 		$args = array(
@@ -243,7 +245,6 @@ if( ! function_exists( 'mfna_layout' ) )
 	}
 }
 
-
 if( ! function_exists( 'mfna_menu' ) )
 {
 	/**
@@ -251,6 +252,7 @@ if( ! function_exists( 'mfna_menu' ) )
 	 *
 	 * @return array
 	 */
+
 	function mfna_menu(){
 		$aMenus = array( 0 => __( '-- Default --', 'mfn-opts' ) );
 		$oMenus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
@@ -271,107 +273,124 @@ if( ! function_exists( 'mfna_menu' ) )
 	}
 }
 
-
-/*
+/**
  * Options Page | Main Functions
  */
-
 
 if( ! function_exists( 'mfn_opts_setup' ) )
 {
 	/**
 	 * Options Page | Fields & Args
 	 */
+
 	function mfn_opts_setup(){
 
-		// Navigation elements
+		global $MFN_Options;
+
+		// Navigation elements =====
+
 		$menu = array(
 
-			// Global --------------------------------------------
+			// Global
+
 			'global' => array(
 				'title' 	=> __('Global', 'mfn-opts'),
 				'sections' 	=> array( 'general', 'logo', 'sliders', 'advanced', 'hooks' ),
 			),
 
-			// Header & Subheader --------------------------------------------
+			// Header & Subheader
+
 			'header-subheader' => array(
 				'title' 	=> __('Header & Subheader', 'mfn-opts'),
 				'sections' 	=> array( 'header', 'subheader', 'extras' ),
 			),
 
-			// Menu & Action Bar --------------------------------------------
+			// Menu & Action Bar
+
 			'mab' => array(
 				'title' 	=> __('Menu & Action Bar', 'mfn-opts'),
 				'sections' 	=> array( 'menu', 'action-bar' ),
 			),
 
-			// Sidebars --------------------------------------------
+			// Sidebars
+
 			'sidebars' => array(
 				'title' 	=> __('Sidebars', 'mfn-opts'),
 				'sections' 	=> array( 'sidebars' ),
 			),
 
-			// Blog, Portfolio, Shop --------------------------------------------
+			// Blog, Portfolio, Shop
+
 			'bps' => array(
 				'title' 	=> __('Blog, Portfolio & Shop', 'mfn-opts'),
 				'sections' 	=> array( 'bps-general', 'blog', 'portfolio', 'shop', 'featured-image' ),
 			),
 
-			// Pages --------------------------------------------
+			// Pages
+
 			'pages' => array(
 				'title' 	=> __('Pages', 'mfn-opts'),
 				'sections' 	=> array( 'pages-general', 'pages-404', 'pages-under' ),
 			),
 
-			// Footer --------------------------------------------
+			// Footer
+
 			'footer' => array(
 				'title' 	=> __('Footer', 'mfn-opts'),
 				'sections' 	=> array( 'footer' ),
 			),
 
-			// Responsive --------------------------------------------
+			// Responsive
+
 			'responsive' => array(
 				'title' 	=> __('Responsive', 'mfn-opts'),
 				'sections' 	=> array( 'responsive', 'responsive-header' ),
 			),
 
-			// SEO --------------------------------------------
+			// SEO
+
 			'seo' => array(
 				'title' 	=> __('SEO', 'mfn-opts'),
 				'sections' 	=> array( 'seo' ),
 			),
 
-			// Social --------------------------------------------
+			// Social
+
 			'social' => array(
 				'title' 	=> __('Social', 'mfn-opts'),
 				'sections' 	=> array( 'social' ),
 			),
 
-			// Addons, Plugins --------------------------------------------
+			// Addons, Plugins
+
 			'addons-plugins' => array(
 				'title' 	=> __('Addons & Plugins', 'mfn-opts'),
 				'sections' 	=> array( 'addons', 'plugins' ),
 			),
 
-			// Colors --------------------------------------------
+			// Colors
+
 			'colors' => array(
 				'title' 	=> __('Colors', 'mfn-opts'),
 				'sections' 	=> array( 'colors-general', 'colors-header', 'colors-menu', 'colors-action', 'content', 'colors-footer', 'colors-sliding-top', 'headings', 'colors-shortcodes', 'colors-forms' ),
 			),
 
-			// Fonts --------------------------------------------
+			// Fonts
+
 			'font' => array(
 				'title' 	=> __('Fonts', 'mfn-opts'),
 				'sections' 	=> array( 'font-family', 'font-size', 'font-custom' ),
 			),
 
-			// Translate --------------------------------------------
+			// Translate
+
 			'translate' => array(
 				'title' 	=> __('Translate', 'mfn-opts'),
 				'sections'	=> array( 'translate-general', 'translate-blog', 'translate-404', 'translate-wpml' ),
 			),
 
-			// Custom CSS, JS --------------------------------------------
+			// Custom CSS, JS
+
 			'custom' => array(
 				'title' 	=> __('Custom CSS & JS', 'mfn-opts'),
 				'sections' 	=> array( 'css', 'js' ),
@@ -381,9 +400,9 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 
 		$sections = array();
 
-		// Global =================================================================================
+		// Global =====
 
-		// General -------------------------------------------
+		// General -----
 		$sections['general'] = array(
 			'title'		=> __('General', 'mfn-opts'),
 			'fields' 	=> array(
@@ -433,15 +452,16 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 				),
 
 				array(
-					'id'		=> 'button-style',
-					'type' 		=> 'radio_img',
-					'title' 	=> __('Style | Button', 'mfn-opts'),
-					'options' 	=> array(
-						'' 			=> array('title' => 'Default', 	'img' => MFN_OPTIONS_URI.'img/select/button/classic.png'),
-						'flat' 		=> array('title' => 'Flat', 	'img' => MFN_OPTIONS_URI.'img/select/button/flat.png'),
-						'stroke' 	=> array('title' => 'Stroke', 	'img' => MFN_OPTIONS_URI.'img/select/button/stroke.png'),
+					'id' => 'button-style',
+					'type' => 'radio_img',
+					'title' => __('Style | Button', 'mfn-opts'),
+					'options' => array(
+						'' => array('title' => 'Default', 'img' => MFN_OPTIONS_URI.'img/select/button/classic.png'),
+						'flat' => array('title' => 'Flat', 'img' => MFN_OPTIONS_URI.'img/select/button/flat.png'),
+						'round' => array('title' => 'Round', 'img' => MFN_OPTIONS_URI.'img/select/button/round.png'),
+						'stroke' => array('title' => 'Stroke', 'img' => MFN_OPTIONS_URI.'img/select/button/stroke.png'),
 					),
-					'class'		=> 'wide short',
+					'class' => 'wide short',
 				),
 
 				array(
@@ -494,10 +514,10 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 				),
 
 				array(
-					'id' 		=> 'img-page-bg',
+					'id' 			=> 'img-page-bg',
 					'type' 		=> 'upload',
-					'title' 	=> __('Image', 'mfn-opts'),
-					'desc' 		=> __('Recommended image size: <b>1920 x 1080 px</b>', 'mfn-opts'),
+					'title' 	=> __( 'Image', 'mfn-opts' ),
+					'desc' 		=> __( 'Recommended image size: <b>1920 x 1080 px</b>', 'mfn-opts' ),
 				),
 
 				array(
@@ -538,73 +558,77 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 				),
 
 				array(
-					'id'		=> 'favicon-img',
+					'id'			=> 'favicon-img',
 					'type'		=> 'upload',
-					'title'		=> __('Favicon', 'mfn-opts'),
-					'desc'		=> __('<b>.ico</b> 32x32 pixels', 'mfn-opts')
+					'title'		=> __( 'Favicon', 'mfn-opts' ),
+					'desc'		=> __( '<b>.ico</b> 32x32 pixels', 'mfn-opts' )
 				),
 
 				array(
-					'id'		=> 'apple-touch-icon',
+					'id'			=> 'apple-touch-icon',
 					'type'		=> 'upload',
-					'title'		=> __('Apple Touch Icon', 'mfn-opts'),
-					'desc'		=> __('<b>apple-touch-icon.png</b> 180x180 pixels', 'mfn-opts')
+					'title'		=> __( 'Apple Touch Icon', 'mfn-opts' ),
+					'desc'		=> __( '<b>apple-touch-icon.png</b> 180x180 pixels', 'mfn-opts' )
 				),
 
 			),
 		);
 
-		// Logo --------------------------------------------
+		// Logo ------
 		$sections['logo'] = array(
 			'title' 	=> __('Logo', 'mfn-opts'),
 			'fields' 	=> array(
 
 				// logo
 				array(
-					'id' 		=> 'logo-info',
+					'id' 			=> 'logo-info',
 					'type' 		=> 'info',
 					'title' 	=> '',
-					'desc' 		=> __('Logo', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'desc' 		=> __( 'Logo', 'mfn-opts' ),
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
-					'id'		=> 'logo-img',
+					'id'			=> 'logo-img',
 					'type'		=> 'upload',
-					'title'		=> __('Logo', 'mfn-opts'),
+					'title'		=> __( 'Logo', 'mfn-opts' ),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
-					'id'		=> 'retina-logo-img',
+					'id'			=> 'retina-logo-img',
 					'type'		=> 'upload',
-					'title'		=> __('Retina Logo', 'mfn-opts'),
-					'sub_desc'	=> __('optional', 'mfn-opts'),
-					'desc'		=> __('Retina Logo should be 2x larger than Custom Logo', 'mfn-opts'),
+					'title'		=> __( 'Retina Logo', 'mfn-opts' ),
+					'sub_desc'=> __( 'optional', 'mfn-opts' ),
+					'desc'		=> __( 'Retina Logo should be 2x larger than Custom Logo', 'mfn-opts' ),
+					'class'		=> 'mhb-opt',
 				),
 
 				// sticky
 				array(
-					'id' 		=> 'logo-info-sticky',
+					'id' 			=> 'logo-info-sticky',
 					'type' 		=> 'info',
 					'title' 	=> '',
-					'desc' 		=> __('Sticky Header Logo', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'desc' 		=> __( 'Sticky Header Logo', 'mfn-opts' ),
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
-					'id'		=> 'sticky-logo-img',
+					'id'			=> 'sticky-logo-img',
 					'type'		=> 'upload',
-					'title'		=> __('Logo', 'mfn-opts'),
-					'sub_desc'	=> __('optional', 'mfn-opts'),
-					'desc'		=> __('Use if you want different logo for Sticky Header.<br />This is Tablet Logo for Creative Header', 'mfn-opts'),
+					'title'		=> __( 'Logo', 'mfn-opts' ),
+					'sub_desc'=> __( 'optional', 'mfn-opts' ),
+					'desc'		=> __( 'Use if you want different logo for Sticky Header.<br />This is Tablet Logo for Creative Header', 'mfn-opts' ),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
-					'id'		=> 'sticky-retina-logo-img',
+					'id'			=> 'sticky-retina-logo-img',
 					'type'		=> 'upload',
-					'title'		=> __('Retina Logo', 'mfn-opts'),
-					'sub_desc'	=> __('optional', 'mfn-opts'),
-					'desc'		=> __('Retina Logo should be 2x larger than Sticky Header Logo', 'mfn-opts'),
+					'title'		=> __( 'Retina Logo', 'mfn-opts' ),
+					'sub_desc'=> __( 'optional', 'mfn-opts' ),
+					'desc'		=> __( 'Retina Logo should be 2x larger than Sticky Header Logo', 'mfn-opts' ),
+					'class'		=> 'mhb-opt',
 				),
 
 				// options
@@ -613,7 +637,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Options', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -626,6 +650,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						'h1-all'	=> __('Wrap into H1 tag on All other pages', 'mfn-opts'),
 					),
 					'std'		=> array( 'link' => 'link' ),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -634,7 +659,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'title'		=> __('Text Logo', 'mfn-opts'),
 					'sub_desc'	=> __('optional', 'mfn-opts'),
 					'desc'		=> __('Use text <b>instead</b> of graphic logo', 'mfn-opts'),
-					'class'		=> 'small-text',
+					'class'		=> 'small-text mhb-opt',
 				),
 
 				array(
@@ -643,7 +668,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'title'		=> __('SVG Logo Width', 'mfn-opts'),
 					'sub_desc'	=> __('optional', 'mfn-opts'),
 					'desc'		=> __('Use <b>only</b> with <b>svg</b> logo', 'mfn-opts'),
-					'class'		=> 'small-text',
+					'class'		=> 'small-text mhb-opt',
 				),
 
 				// advanced
@@ -652,7 +677,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Advanced', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -661,7 +686,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'title'		=> __('Height', 'mfn-opts'),
 					'sub_desc'	=> __('default: 60', 'mfn-opts'),
 					'desc'		=> __('px<br />Minimum height + padding = 60px', 'mfn-opts'),
-					'class'		=> 'small-text',
+					'class'		=> 'small-text mhb-opt',
 				),
 
 				array(
@@ -670,35 +695,37 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'title'		=> __('<small>Vertical</small> Padding', 'mfn-opts'),
 					'sub_desc'	=> __('default: 15', 'mfn-opts'),
 					'desc'		=> __('px', 'mfn-opts'),
-					'class'		=> 'small-text',
+					'class'		=> 'small-text mhb-opt',
 				),
 
 				array(
-					'id' 		=> 'logo-vertical-align',
+					'id' 			=> 'logo-vertical-align',
 					'type' 		=> 'select',
-					'title' 	=> __('<small>Vertical</small> Align', 'mfn-opts'),
-					'options' 	=> array(
-						'top' 		=> __('Top', 'mfn-opts'),
-						''			=> __('Middle', 'mfn-opts'),
-						'bottom'	=> __('Bottom', 'mfn-opts'),
+					'title' 	=> __( '<small>Vertical</small> Align', 'mfn-opts' ),
+					'options' => array(
+						'top' 		=> __( 'Top', 'mfn-opts' ),
+						''				=> __( 'Middle', 'mfn-opts' ),
+						'bottom'	=> __( 'Bottom', 'mfn-opts' ),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
-					'id' 		=> 'logo-advanced',
+					'id' 			=> 'logo-advanced',
 					'type' 		=> 'checkbox',
-					'title' 	=> __('Advanced', 'mfn-opts'),
-					'options' 	=> array(
-						'no-margin' 		=> __('Remove Left margin<span>Top margin for Header Creative</span>', 'mfn-opts'),
-						'overflow' 			=> __('Overflow Logo<span>For some header styles only</span>', 'mfn-opts'),
-						'no-sticky-padding'	=> __('Sticky Logo | Remove max-height & padding', 'mfn-opts'),
+					'title' 	=> __( 'Advanced', 'mfn-opts' ),
+					'options' => array(
+						'no-margin' => __( 'Remove Left margin<span>Top margin for Header Creative</span>', 'mfn-opts' ),
+						'overflow' => __( 'Overflow Logo<span>For some header styles only</span>', 'mfn-opts' ),
+						'no-sticky-padding' => __( 'Sticky Logo | Remove max-height & padding', 'mfn-opts' ),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 			),
 		);
 
-		// Sliders --------------------------------------------
+		// Sliders ------
 		$sections['sliders'] = array(
 			'title' 	=> __('Sliders', 'mfn-opts'),
 			'icon' 		=> MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -777,108 +804,123 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Advanced -------------------------------------------
+		// Advanced -----
+
 		$sections['advanced'] = array(
 			'title' => __('Advanced', 'mfn-opts'),
 			'icon' => MFN_OPTIONS_URI. 'img/icons/sub.png',
 			'fields' => array(
 
+				// layout
+
 				array(
-					'id' 		=> 'advanced-info-layout',
-					'type' 		=> 'info',
-					'title' 	=> '',
-					'desc' 		=> __('Layout', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'id' => 'advanced-info-layout',
+					'type' => 'info',
+					'title' => '',
+					'desc' => __('Layout', 'mfn-opts'),
+					'class' => 'mfn-info',
 				),
 
 				array(
-					'id' 		=> 'layout-boxed-padding',
-					'type' 		=> 'text',
-					'title' 	=> __('Boxed Layout | Side padding', 'mfn-opts'),
-					'desc' 		=> __('Use value with <b>px</b> or <b>%</b><br/>Example: <b>10px</b> or <b>2%</b>', 'mfn-opts'),
-					'class' 	=> 'small-text',
+					'id' => 'layout-boxed-padding',
+					'type' => 'text',
+					'title' => __('Boxed Layout | Side padding', 'mfn-opts'),
+					'desc' => __('Use value with <b>px</b> or <b>%</b><br/>Example: <b>10px</b> or <b>2%</b>', 'mfn-opts'),
+					'class' => 'small-text',
 				),
 
 				array(
-					'id' 		=> 'builder-visibility',
-					'type' 		=> 'select',
-					'title' 	=> __( 'Builder | Visibility', 'mfn-opts' ),
-					'options' 	=> array(
-						'' 						=> __( '-- Everyone --', 'mfn-opts' ),
-						'publish_posts'			=> __( 'Author', 'mfn-opts' ),
-						'edit_pages'			=> __( 'Editor', 'mfn-opts' ),
-						'edit_theme_options'	=> __( 'Administrator', 'mfn-opts' ),
-						'hide'					=> __( 'HIDE for Everyone', 'mfn-opts' ),
+					'id' => 'builder-visibility',
+					'type' => 'select',
+					'title' => __( 'Builder | Visibility', 'mfn-opts' ),
+					'options' => array(
+						'' => __( '-- Everyone --', 'mfn-opts' ),
+						'publish_posts' => __( 'Author', 'mfn-opts' ),
+						'edit_pages' => __( 'Editor', 'mfn-opts' ),
+						'edit_theme_options' => __( 'Administrator', 'mfn-opts' ),
+						'hide' => __( 'HIDE for Everyone', 'mfn-opts' ),
 					),
 				),
 
 				array(
-					'id' 		=> 'display-order',
-					'type' 		=> 'select',
-					'title' 	=> __( 'Content | Display Order', 'mfn-opts' ),
-					'options' 	=> array(
+					'id' => 'display-order',
+					'type' => 'select',
+					'title' => __( 'Content | Display Order', 'mfn-opts' ),
+					'options' => array(
 						0 => __( 'Muffin Builder - WordPress Editor', 'mfn-opts' ),
 						1 => __( 'WordPress Editor - Muffin Builder', 'mfn-opts' ),
 					),
 				),
 
 				array(
-					'id' 		=> 'content-remove-padding',
-					'type' 		=> 'switch',
-					'title' 	=> __('Content | Remove Padding', 'mfn-opts'),
-					'desc' 		=> __('Remove default Content Padding Top for <b>all</b> pages/posts', 'mfn-opts'),
-					'options' 	=> array( '0' => 'Off', '1' => 'On' ),
-					'std' 		=> '0'
+					'id' => 'content-remove-padding',
+					'type' => 'switch',
+					'title' => __('Content | Remove Padding', 'mfn-opts'),
+					'desc' => __('Remove default Content Padding Top for <b>all</b> pages/posts', 'mfn-opts'),
+					'options' => array( '0' => 'Off', '1' => 'On' ),
+					'std' => '0'
+				),
+
+				array(
+					'id' => 'no-hover',
+					'type' => 'select',
+					'title' => __('Hover Effects', 'mfn-opts'),
+					'options' => array(
+						'' => __('Enable', 'mfn-opts'),
+						'tablet' => __('Enable on desktop only', 'mfn-opts'),
+						'all' => __('Disable', 'mfn-opts'),
+					),
 				),
 
 				// options
+
 				array(
-					'id' 		=> 'advanced-info-options',
-					'type' 		=> 'info',
-					'title' 	=> '',
-					'desc' 		=> __('Options', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'id' => 'advanced-info-options',
+					'type' => 'info',
+					'title' => '',
+					'desc' => __('Options', 'mfn-opts'),
+					'class' => 'mfn-info',
 				),
 
 				array(
-					'id' 		=> 'google-maps-api-key',
-					'type' 		=> 'text',
-					'title' 	=> __('Google Maps API Key', 'mfn-opts'),
-					'sub_desc' 	=> __('optional', 'mfn-opts'),
-					'desc' 		=> __('If you are generating a large volume of queries to the Google Maps API please <a target="_blank" href="https://developers.google.com/maps/documentation/javascript/get-api-key#get-an-api-key">Get an API key</a>', 'mfn-opts'),
+					'id' => 'google-maps-api-key',
+					'type' => 'text',
+					'title' => __( 'Google Maps API Key', 'mfn-opts' ),
+					'desc' => __( 'Google Maps API key is required for Map Basic Embed or Map Advanced. If you do not have the key please visit <a target="_blank" href="https://cloud.google.com/maps-platform/">Google Maps Platform</a>', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'table-hover',
-					'type' 		=> 'select',
-					'title' 	=> __('HTML Table', 'mfn-opts'),
-					'options' 	=> array(
-						'' 				=> __('Default', 'mfn-opts'),
-						'hover' 		=> __('Rows Hover', 'mfn-opts'),
-						'responsive' 	=> __('Auto Responsive', 'mfn-opts'),
+					'id' => 'table-hover',
+					'type' => 'select',
+					'title' => __('HTML Table', 'mfn-opts'),
+					'options' => array(
+						'' => __('Default', 'mfn-opts'),
+						'hover' => __('Rows Hover', 'mfn-opts'),
+						'responsive' => __('Auto Responsive', 'mfn-opts'),
 					),
 				),
 
 				array(
-					'id' 		=> 'math-animations-disable',
-					'type' 		=> 'switch',
-					'title' 	=> __('Math Animate | Disable', 'mfn-opts'),
-					'sub_desc' 	=> __('Disable animations for Counter, Quick fact', 'mfn-opts'),
-					'options' 	=> array( '0' => 'Off', '1' => 'On' ),
-					'std' 		=> '0'
+					'id' => 'math-animations-disable',
+					'type' => 'switch',
+					'title' => __('Math Animate | Disable', 'mfn-opts'),
+					'sub_desc' => __('Disable animations for Counter, Quick fact', 'mfn-opts'),
+					'options' => array( '0' => 'Off', '1' => 'On' ),
+					'std' => '0'
 				),
 
 				array(
-					'id' 		=> 'layout-options',
-					'type' 		=> 'checkbox',
-					'title' 	=> __('Other', 'mfn-opts'),
-					'options' 	=> array(
-						'no-shadows'		=> __('Remove shadows<span>Boxed Layout (also disables overflow: hidden), Creative Header, Sticky Header, Subheader, etc.</span>', 'mfn-opts'),
-						'boxed-no-margin'	=> __('Boxed Layout: Remove margin<span>Remove top and bottom margin for Layout: Boxed</span>', 'mfn-opts'),
+					'id' => 'layout-options',
+					'type' => 'checkbox',
+					'title' => __('Other', 'mfn-opts'),
+					'options' => array(
+						'no-shadows' => __('Remove shadows<span>Boxed Layout, Creative Header, Sticky Header, Subheader, etc.</span>', 'mfn-opts'),
+						'boxed-no-margin' => __('Boxed Layout: Remove margin<span>Remove top and bottom margin for Layout: Boxed</span>', 'mfn-opts'),
 					),
 				),
 
 				// theme functions
+
 				array(
 					'id' 		=> 'advanced-info-functions',
 					'type' 		=> 'info',
@@ -926,6 +968,16 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 				),
 
 				array(
+					'id' => 'static-css',
+					'type' => 'switch',
+					'title' => __('Static CSS', 'mfn-opts'),
+					'sub_desc' => __('Static CSS file generation', 'mfn-opts'),
+					'desc' => __('Some changes in Theme Options are saved as CSS and inserted into the head of your website. You can enable the static CSS option and make them a separate file that will create itself, update, and minify each time you save Theme Options.', 'mfn-opts'),
+					'options' => array('0' => 'Off', '1' => 'On'),
+					'std' => '0'
+				),
+
+				array(
 					'id' 		=> 'builder-storage',
 					'type' 		=> 'select',
 					'title' 	=> __('Builder | Data Storage', 'mfn-opts'),
@@ -942,17 +994,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'text',
 					'title' 	=> __('Slider | Shortcode', 'mfn-opts'),
 					'sub_desc' 	=> __('Use this option to force slider for <b>all</b> pages', 'mfn-opts'),
-					'desc' 		=> __('This option can <strong>not</strong> be overriden and it is usefull for people who already have many pages and want to standardize their appearance.<br/>eg. [rev_slider alias="slider1"]', 'mfn-opts'),
-				),
-
-				array(
-					'id' 		=> 'static-css',
-					'type' 		=> 'switch',
-					'title' 	=> __('Static CSS', 'mfn-opts'),
-					'sub_desc' 	=> __('Use Static CSS files insted of Theme Options', 'mfn-opts'),
-					'desc' 		=> __('For more info please see <a href="http://themes.muffingroup.com/betheme/documentation/#static-css" target="_blank">http://themes.muffingroup.com/betheme/documentation/#static-css</a><br/>This file should be <b>regenerated</b> after every <b>theme update</b>', 'mfn-opts'),
-					'options' 	=> array('1' => 'On','0' => 'Off'),
-					'std' 		=> '0'
+					'desc' 		=> __('This option can <strong>not</strong> be overwritten and it is usefull for people who already have many pages and want to standardize their appearance.<br/>eg. [rev_slider alias="slider1"]', 'mfn-opts'),
 				),
 
 				array(
@@ -969,7 +1011,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Hooks --------------------------------------------
+		// Hooks ------
 		$sections['hooks'] = array(
 			'title' 	=> __('Hooks', 'mfn-opts'),
 			'icon' 		=> MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -1010,9 +1052,9 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Header, Subheader ======================================================================
+		// Header, Subheader =====
 
-		// Header --------------------------------------------
+		// Header ------
 		$sections['header'] = array(
 			'title' => __('Header', 'mfn-opts'),
 			'fields' => array(
@@ -1023,16 +1065,16 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Layout', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
-					'id' 		=> 'header-style',
+					'id' 			=> 'header-style',
 					'type' 		=> 'radio_img',
-					'title' 	=> __('Style', 'mfn-opts'),
+					'title' 	=> __( 'Style', 'mfn-opts' ),
 					'options'	=> mfna_header_style(),
-					'class'		=> 'wide',
-					'std'		=> 'classic',
+					'class'		=> 'wide mhb-opt',
+					'std'			=> 'classic',
 				),
 
 				array(
@@ -1043,6 +1085,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						'full-width'	=> __('Full Width (for layout: Full Width)', 'mfn-opts'),
 						'header-boxed'	=> __('Boxed Sticky Header (for layout: Boxed)', 'mfn-opts'),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -1055,6 +1098,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						'1' 		=> __('Minimalist | ON', 'mfn-opts'),
 						'no' 		=> __('Minimalist without Header space', 'mfn-opts'),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 				// background
@@ -1063,22 +1107,24 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Background', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
-					'id' 		=> 'img-subheader-bg',
+					'id' 			=> 'img-subheader-bg',
 					'type' 		=> 'upload',
-					'title' 	=> __('Image', 'mfn-opts'),
-					'desc' 		=> __('Pages without slider. May be overridden for single page.<br />Recommended image width: <b>1920px</b>', 'mfn-opts'),
+					'title' 	=> __( 'Image', 'mfn-opts' ),
+					'desc' 		=> __( 'Pages without slider. May be overwritten for single page.<br />Recommended image width: <b>1920px</b>', 'mfn-opts' ),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
-					'id' 		=> 'img-subheader-attachment',
+					'id' 			=> 'img-subheader-attachment',
 					'type' 		=> 'select',
-					'title' 	=> __('Position', 'mfn-opts'),
-					'desc' 		=> __('iOS does <b>not</b> support background-position: fixed', 'mfn-opts'),
+					'title' 	=> __( 'Position', 'mfn-opts' ),
+					'desc' 		=> __( 'iOS does <b>not</b> support background-position: fixed', 'mfn-opts' ),
 					'options'	=> mfna_bg_position( 'header' ),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -1087,6 +1133,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'title' 	=> __('Size', 'mfn-opts'),
 					'desc' 		=> __('Does <b>not</b> work with fixed position & parallax. Works only in modern browsers', 'mfn-opts'),
 					'options' 	=> mfna_bg_size(),
+					'class'		=> 'mhb-opt',
 				),
 
 				// top bar background
@@ -1095,13 +1142,14 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __( 'Top Bar background <span>also Header Creative background</span>', 'mfn-opts' ),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
 					'id' 			=> 'top-bar-bg-img',
 					'type' 		=> 'upload',
 					'title' 	=> __( 'Image', 'mfn-opts' ),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -1110,6 +1158,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'title' 	=> __( 'Position', 'mfn-opts' ),
 					'desc' 		=> __( 'iOS does <b>not</b> support background-position: fixed', 'mfn-opts' ),
 					'options'	=> mfna_bg_position(),
+					'class'		=> 'mhb-opt',
 				),
 
 				// sticky header
@@ -1118,33 +1167,34 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Sticky Header', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
-					'id'		=> 'sticky-header',
+					'id'			=> 'sticky-header',
 					'type'		=> 'switch',
-					'title'		=> __('Sticky', 'mfn-opts'),
-					'options'	=> array('1' => 'On','0' => 'Off'),
-					'std'		=> '1'
+					'title'		=> __( 'Sticky', 'mfn-opts' ),
+					'options'	=> array( '1' => 'On', '0' => 'Off' ),
+					'std'			=> '1',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
-					'id'		=> 'sticky-header-style',
+					'id'			=> 'sticky-header-style',
 					'type'		=> 'select',
-					'title'		=> __('Style', 'mfn-opts'),
+					'title'		=> __( 'Style', 'mfn-opts' ),
 					'options'	=> array(
-						'tb-color'	=> __('The same as Top Bar Left background', 'mfn-opts'),
-						'white'		=> __('White', 'mfn-opts'),
-						'dark'		=> __('Dark', 'mfn-opts'),
-
+						'tb-color'	=> __( 'The same as Top Bar Left background', 'mfn-opts' ),
+						'white'			=> __( 'White', 'mfn-opts' ),
+						'dark'			=> __( 'Dark', 'mfn-opts' ),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 			),
 		);
 
-		// Subheader --------------------------------------------
+		// Subheader ------
 		$sections['subheader'] = array(
 			'title' => __('Subheader', 'mfn-opts'),
 			'fields' => array(
@@ -1196,12 +1246,12 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'select',
 					'title' 	=> __('Title tag', 'mfn-opts'),
 					'options' 	=> array(
-						'h1'	=> 'h1',
-						'h2'	=> 'h2',
-						'h3'	=> 'h3',
-						'h4'	=> 'h4',
-						'h5'	=> 'h5',
-						'h6'	=> 'h6',
+						'h1'	=> 'H1',
+						'h2'	=> 'H2',
+						'h3'	=> 'H3',
+						'h4'	=> 'H4',
+						'h5'	=> 'H5',
+						'h6'	=> 'H6',
 						'span'	=> 'span',
 					),
 				),
@@ -1217,8 +1267,8 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 				array(
 					'id' 		=> 'subheader-image',
 					'type' 		=> 'upload',
-					'title' 	=> __('Image', 'mfn-opts'),
-					'desc' 		=> __('Recommended image width: <b>1920px</b>', 'mfn-opts'),
+					'title' 	=> __( 'Image', 'mfn-opts' ),
+					'desc' 		=> __( 'Recommended image width: <b>1920px</b>', 'mfn-opts' ),
 				),
 
 				array(
@@ -1272,45 +1322,47 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Extras --------------------------------------------
+		// Extras ------
 		$sections['extras'] = array(
-			'title' => __('Extras', 'mfn-opts'),
+			'title' => __( 'Extras', 'mfn-opts' ),
 			'fields' => array(
 
 				array(
-					'id' 		=> 'extras-info-top-bar-right',
+					'id' 			=> 'extras-info-top-bar-right',
 					'type' 		=> 'info',
 					'title' 	=> '',
-					'desc' 		=> __('Top Bar Right', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'desc' 		=> __( 'Top Bar Right', 'mfn-opts' ),
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
-					'id'		=> 'top-bar-right-hide',
+					'id'			=> 'top-bar-right-hide',
 					'type'		=> 'switch',
-					'title'		=> __('Hide', 'mfn-opts'),
+					'title'		=> __( 'Hide', 'mfn-opts' ),
 					'options'	=> array( '0' => 'Off', '1' => 'On' ),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
-					'id' 		=> 'extras-info-action-button',
+					'id' 			=> 'extras-info-action-button',
 					'type' 		=> 'info',
 					'title' 	=> '',
-					'desc' 		=> __('Action Button', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'desc' 		=> __( 'Action Button', 'mfn-opts' ),
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
 					'id'		=> 'header-action-title',
 					'type'		=> 'text',
 					'title'		=> __('Title', 'mfn-opts'),
-					'class'		=> 'small-text',
+					'class'		=> 'small-text mhb-opt',
 				),
 
 				array(
 					'id'		=> 'header-action-link',
 					'type'		=> 'text',
 					'title'		=> __('Link', 'mfn-opts'),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -1321,6 +1373,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						'target'	=> __('Open in new window', 'mfn-opts'),
 						'scroll'	=> __('Scroll to section (use #SectionID as Link)', 'mfn-opts'),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -1328,7 +1381,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Search', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -1341,6 +1394,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						'input' 	=> __('Search Field', 'mfn-opts'),
 						'0' 		=> __('Hide', 'mfn-opts'),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -1348,7 +1402,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('WPML', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -1363,6 +1417,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						'horizontal-code'	=> __('Horizontal | Language Code', 'mfn-opts'),
 						'hide'				=> __('Hide', 'mfn-opts'),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -1372,59 +1427,63 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'options' 	=> array(
 						'link-to-home'	=> __('Link to home of language for missing translations<span>Disable this option to skip languages with missing translation</span>', 'mfn-opts'),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
+				// other
 				array(
-					'id' 		=> 'extras-info-sliding-top',
+					'id' 			=> 'extras-info-other',
 					'type' 		=> 'info',
 					'title' 	=> '',
-					'desc' 		=> __('Sliding Top', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'desc' 		=> __( 'Other', 'mfn-opts' ),
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
-					'id'		=> 'sliding-top',
-					'type'		=> 'select',
-					'title'		=> __('Sliding Top', 'mfn-opts'),
-					'desc'		=> __('Widgetized Sliding Top position', 'mfn-opts'),
-					'options'	=> array(
-						'1' 		=> __('Right', 'mfn-opts'),
-						'center' 	=> __('Center', 'mfn-opts'),
-						'left' 		=> __('Left', 'mfn-opts'),
-						'0' 		=> __('Hide', 'mfn-opts'),
-					),
-					'std'		=> '0',
-				),
-
-				array(
-					'id'		=> 'sliding-top-icon',
-					'type'		=> 'icon',
-					'title'		=> __('Icon', 'mfn-opts'),
-					'std'		=> 'icon-down-open-mini',
-				),
-
-				array(
-					'id' 		=> 'extras-info-other',
-					'type' 		=> 'info',
-					'title' 	=> '',
-					'desc' 		=> __('Other', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
-				),
-
-				array(
-					'id' 		=> 'header-banner',
+					'id' 			=> 'header-banner',
 					'type' 		=> 'textarea',
-					'title' 	=> __('Banner', 'mfn-opts'),
-					'sub_desc' 	=> __('Header Magazine (468px x 60px) or Creative (250px x 250px) Banner code ', 'mfn-opts'),
-					'desc' 		=> '&lt;a href="#" target="_blank"&gt;&lt;img src="" alt="" /&gt;&lt;/a&gt;',
+					'title' 	=> __( 'Banner', 'mfn-opts' ),
+					'sub_desc'=> __( 'Header Magazine (468px x 60px) or Creative (250px x 250px) Banner code ', 'mfn-opts' ),
+					'desc' 		=> '&lt;a href="#" target="_blank"&gt;&lt;img src="" /&gt;&lt;/a&gt;',
+					'class'		=> 'mhb-opt',
+				),
+
+				// sliding top
+				array(
+					'id' 			=> 'extras-info-sliding-top',
+					'type' 		=> 'info',
+					'title' 	=> '',
+					'desc' 		=> __( 'Sliding Top', 'mfn-opts' ),
+					'class' 	=> 'mfn-info',
+				),
+
+				array(
+					'id'			=> 'sliding-top',
+					'type'		=> 'select',
+					'title'		=> __( 'Sliding Top', 'mfn-opts' ),
+					'desc'		=> __( 'Widgetized Sliding Top position', 'mfn-opts' ),
+					'options'	=> array(
+						'1' 			=> __( 'Right', 'mfn-opts' ),
+						'center' 	=> __( 'Center', 'mfn-opts' ),
+						'left' 		=> __( 'Left', 'mfn-opts' ),
+						'0' 			=> __( 'Hide', 'mfn-opts' ),
+					),
+					'std'			=> '0',
+				),
+
+				array(
+					'id'			=> 'sliding-top-icon',
+					'type'		=> 'icon',
+					'title'		=> __( 'Icon', 'mfn-opts' ),
+					'std'			=> 'icon-down-open-mini',
 				),
 
 			),
 		);
 
-		// Menu, Action Bar =======================================================================
+		// Menu, Action Bar ======
 
-		// Menu --------------------------------------------
+		// Menu ------
 		$sections['menu'] = array(
 			'title' => __('Menu', 'mfn-opts'),
 			'fields' => array(
@@ -1434,7 +1493,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Layout', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -1454,6 +1513,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						'hide'				=> __('HIDE Menu', 'mfn-opts'),
 					),
 					'std'		=> 'link-color',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -1468,6 +1528,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						// 'submenu-limit'		=> __( 'Submenu | Limit width', 'mfn-opts' ),
 						'last'						=> __( 'Submenu | Fold last 2 to the left<span>for Header Creative: fold to top</span>', 'mfn-opts' ),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -1475,7 +1536,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Creative <span>for creative header only</span>', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -1486,6 +1547,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						'scroll'	=> __('Scrollable <span>for menu with large amount of items <b>without submenus</b></span>', 'mfn-opts'),
 						'dropdown'	=> __('Dropdown submenu <span>use with scrollable</span>', 'mfn-opts'),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -1493,7 +1555,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Mega Menu', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -1504,29 +1566,34 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						''			=> __('Default', 'mfn-opts'),
 						'vertical'	=> __('Vertical Lines', 'mfn-opts'),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 			),
 		);
 
-		// Action Bar --------------------------------------------
+		// Action Bar ------
 		$sections['action-bar'] = array(
 			'title' => __('Action Bar', 'mfn-opts'),
 			'fields' => array(
 
 				array(
-					'id'		=> 'action-bar',
-					'type'		=> 'switch',
-					'title'		=> __( 'Action Bar', 'mfn-opts' ),
-					'desc'		=> __( 'Show Action Bar above the header', 'mfn-opts' ),
-					'options'	=> array( '0' => 'Off', '1' => 'On' ),
+					'id' => 'action-bar',
+					'type' => 'checkbox',
+					'title' => __('Action Bar', 'mfn-opts'),
+					'options' => array(
+						'show' => __('<b>Show</b> above the header<span>for most header styles</span>', 'mfn-opts'),
+						'creative' => __('Creative Header <span>show at the bottom</span>', 'mfn-opts'),
+						'side-slide' => __('Side Slide responsive menu <span>show at the bottom</span>', 'mfn-opts'),
+					),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
 					'id'		=> 'header-slogan',
 					'type'		=> 'text',
 					'title'		=> __('Slogan', 'mfn-opts'),
-					'class'		=> 'small-text',
+					'class'		=> 'small-text mhb-opt',
 				),
 
 				array(
@@ -1534,7 +1601,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type'		=> 'text',
 					'title'		=> __('Phone', 'mfn-opts'),
 					'sub_desc'	=> __('Phone number', 'mfn-opts'),
-					'class'		=> 'small-text',
+					'class'		=> 'small-text mhb-opt',
 				),
 
 				array(
@@ -1542,7 +1609,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type'		=> 'text',
 					'title'		=> __('2nd Phone', 'mfn-opts'),
 					'sub_desc'	=> __('Additional Phone number', 'mfn-opts'),
-					'class'		=> 'small-text',
+					'class'		=> 'small-text mhb-opt',
 				),
 
 				array(
@@ -1550,15 +1617,15 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type'		=> 'text',
 					'title'		=> __('Email', 'mfn-opts'),
 					'sub_desc'	=> __('Email address', 'mfn-opts'),
-					'class'		=> 'small-text',
+					'class'		=> 'small-text mhb-opt',
 				),
 
 			),
 		);
 
-		// Sidebars ===============================================================================
+		// Sidebars ==============
 
-		// Sidebars --------------------------------------------
+		// Sidebars ------
 		$sections['sidebars'] = array(
 			'title' => __('General', 'mfn-opts'),
 			'icon' => MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -1581,37 +1648,44 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 				),
 
 				array(
-					'id' 		=> 'sidebar-info-layout',
-					'type' 		=> 'info',
-					'title' 	=> '',
-					'desc' 		=> __('Layout', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'id' => 'sidebar-info-layout',
+					'type' => 'info',
+					'title' => '',
+					'desc' => __('Layout', 'mfn-opts'),
+					'class' => 'mfn-info',
 				),
 
 				array(
-					'id' 		=> 'sidebar-width',
-					'type' 		=> 'sliderbar',
-					'title' 	=> __('Width', 'mfn-opts'),
-					'sub_desc' 	=> __('default: 23%', 'mfn-opts'),
-					'desc' 		=> __('Recommended: 20%-30%. Too small or too large value may crash the layout', 'mfn-opts'),
-					'param'	 	=> array(
-						'min' 		=> 10,
-						'max' 		=> 50,
-					),
-					'std' 		=> '23',
+					'id' => 'sidebar-sticky',
+					'type' => 'switch',
+					'title' => __('Sticky', 'mfn-opts'),
+					'options' => array('0' => 'Off','1' => 'On'),
 				),
 
 				array(
-					'id' 		=> 'sidebar-lines',
-					'type' 		=> 'select',
-					'title' 	=> __('Lines', 'mfn-opts'),
-					'sub_desc' 	=> __('Sidebar Lines Style', 'mfn-opts'),
-					'options' 	=> array(
-						''				=> __('Default', 'mfn-opts'),
-						'lines-boxed'	=> __('Sidebar Width', 'mfn-opts'),
-						'lines-hidden'	=> __('Hide Lines', 'mfn-opts'),
+					'id' => 'sidebar-width',
+					'type' => 'sliderbar',
+					'title' => __('Width', 'mfn-opts'),
+					'sub_desc' => __('default: 23%', 'mfn-opts'),
+					'desc' => __('Recommended: 20%-30%. Too small or too large value may crash the layout', 'mfn-opts'),
+					'param' => array(
+						'min' => 10,
+						'max' => 50,
 					),
-					'std' 		=> '',
+					'std' => '23',
+				),
+
+				array(
+					'id' => 'sidebar-lines',
+					'type' => 'select',
+					'title' => __('Lines', 'mfn-opts'),
+					'sub_desc' => __('Sidebar Lines Style', 'mfn-opts'),
+					'options' => array(
+						'' => __('Default', 'mfn-opts'),
+						'lines-boxed' => __('Sidebar Width', 'mfn-opts'),
+						'lines-hidden' => __('Hide Lines', 'mfn-opts'),
+					),
+					'std' => '',
 				),
 
 				array(
@@ -1627,7 +1701,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'radio_img',
 					'title' 	=> __('Layout', 'mfn-opts'),
 					'sub_desc' 	=> __('Use this option to force layout for all pages', 'mfn-opts'),
-					'desc' 		=> __('This option can <strong>not</strong> be overriden and it is usefull for people who already have many pages and want to standardize their appearance.', 'mfn-opts'),
+					'desc' 		=> __('This option can <strong>not</strong> be overwritten and it is usefull for people who already have many pages and want to standardize their appearance.', 'mfn-opts'),
 					'options' 	=> array(
 						'' 				=> array('title' => 'Use Page Meta', 'img' => MFN_OPTIONS_URI.'img/question.png'),
 						'no-sidebar' 	=> array('title' => 'Full width without sidebar', 'img' => MFN_OPTIONS_URI.'img/1col.png'),
@@ -1668,7 +1742,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'radio_img',
 					'title' 	=> __('Layout', 'mfn-opts'),
 					'sub_desc' 	=> __('Use this option to force layout for all posts', 'mfn-opts'),
-					'desc' 		=> __('This option can <strong>not</strong> be overriden and it is usefull for people who already have many posts and want to standardize their appearance.', 'mfn-opts'),
+					'desc' 		=> __('This option can <strong>not</strong> be overwritten and it is usefull for people who already have many posts and want to standardize their appearance.', 'mfn-opts'),
 					'options' 	=> array(
 						'' 				=> array('title' => 'Use Post Meta', 'img' => MFN_OPTIONS_URI.'img/question.png'),
 						'no-sidebar' 	=> array('title' => 'Full width without sidebar', 'img' => MFN_OPTIONS_URI.'img/1col.png'),
@@ -1709,7 +1783,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'radio_img',
 					'title' 	=> __('Layout', 'mfn-opts'),
 					'sub_desc' 	=> __('Use this option to force layout for all portfolio projects', 'mfn-opts'),
-					'desc' 		=> __('This option can <strong>not</strong> be overriden and it is usefull for people who already have many portfolio projects and want to standardize their appearance.', 'mfn-opts'),
+					'desc' 		=> __('This option can <strong>not</strong> be overwritten and it is usefull for people who already have many portfolio projects and want to standardize their appearance.', 'mfn-opts'),
 					'options' 	=> array(
 						'' 				=> array('title' => 'Use Post Meta', 'img' => MFN_OPTIONS_URI.'img/question.png'),
 						'no-sidebar' 	=> array('title' => 'Full width without sidebar', 'img' => MFN_OPTIONS_URI.'img/1col.png'),
@@ -1737,12 +1811,34 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'class' 	=> 'small-text',
 				),
 
+				// search page
+
+				array(
+					'id' => 'sidebar-info-search-page',
+					'type' => 'info',
+					'title' => '',
+					'desc' => __('Search Page', 'mfn-opts'),
+					'class' => 'mfn-info',
+				),
+
+				array(
+					'id' => 'search-layout',
+					'type' => 'radio_img',
+					'title' => __('Layout', 'mfn-opts'),
+					'options' => array(
+						'no-sidebar' 	=> array('title' => 'Without sidebar', 'img' => MFN_OPTIONS_URI.'img/1col.png'),
+						'left-sidebar'	=> array('title' => 'Left Sidebar', 'img' => MFN_OPTIONS_URI.'img/2cl.png'),
+						'right-sidebar'	=> array('title' => 'Right Sidebar', 'img' => MFN_OPTIONS_URI.'img/2cr.png'),
+					),
+					'std' => 'no-sidebar',
+				),
+
 			),
 		);
 
 		// Blog, Portfolio, Shop ==================================================================
 
-		// General ---------------------------------------------
+		// General -------
 		$sections['bps-general'] = array(
 			'title' 	=> __('General', 'mfn-opts'),
 			'icon' 		=> MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -1873,24 +1969,24 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 				),
 
 				array(
-					'id' 		=> 'title-heading',
-					'type' 		=> 'select',
-					'title' 	=> __('Title Heading', 'mfn-opts'),
-					'options' 	=> array(
-						'1' => 'h1',
-						'2' => 'h2',
-						'3' => 'h3',
-						'4' => 'h4',
-						'5' => 'h5',
-						'6' => 'h6',
+					'id' => 'title-heading',
+					'type' => 'select',
+					'title' => __('Title tag', 'mfn-opts'),
+					'options' => array(
+						'1' => 'H1',
+						'2' => 'H2',
+						'3' => 'H3',
+						'4' => 'H4',
+						'5' => 'H5',
+						'6' => 'H6',
 					),
-					'std' 		=> '1'
+					'std' => '1'
 				),
 
 			),
 		);
 
-		// Blog --------------------------------------------
+		// Blog ------
 		$sections['blog'] = array(
 			'title' 	=> __('Blog', 'mfn-opts'),
 			'icon' 		=> MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -1916,54 +2012,69 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 				),
 
 				array(
-					'id' 		=> 'blog-layout',
-					'type' 		=> 'radio_img',
-					'title' 	=> __('Layout', 'mfn-opts'),
-					'sub_desc' 	=> __('Layout for Blog Page', 'mfn-opts'),
-					'desc' 		=> __('If you do not know what <b>image size</b> is being used for selected style, please navigate to the: Appearance > Theme Options > Blog, Portfolio & Shop > <b>Featured Images</b>', 'mfn-opts'),
-					'options'	=> array(
-						'grid'			=> array('title' => 'Grid', 'img' => MFN_OPTIONS_URI.'img/select/portfolio/grid.png'),
-						'classic'		=> array('title' => 'Classic',	'img' => MFN_OPTIONS_URI.'img/select/blog/classic.png'),
-						'masonry'		=> array('title' => 'Masonry Blog Style', 'img' => MFN_OPTIONS_URI.'img/select/blog/masonry-blog.png'),
-						'masonry tiles'	=> array('title' => 'Masonry Tiles (Vertical Images)', 'img' => MFN_OPTIONS_URI.'img/select/blog/masonry-tiles.png'),
-						'photo'			=> array('title' => 'Photo (Horizontal Images)', 	'img' => MFN_OPTIONS_URI.'img/select/blog/photo.png'),
-						'timeline'		=> array('title' => 'Timeline',	'img' => MFN_OPTIONS_URI.'img/select/blog/timeline.png'),
+					'id' => 'blog-layout',
+					'type' => 'radio_img',
+					'title' => __('Layout', 'mfn-opts'),
+					'sub_desc' => __('Layout for Blog Page', 'mfn-opts'),
+					'desc' => __('If you do not know what <b>image size</b> is being used for selected style, please navigate to the: Appearance > Theme Options > Blog, Portfolio & Shop > <b>Featured Images</b>', 'mfn-opts'),
+					'options' => array(
+						'grid' => array('title' => 'Grid<br /><b>2-4 columns</b>', 'img' => MFN_OPTIONS_URI.'img/select/portfolio/grid.png'),
+						'classic' => array('title' => 'Classic<br /><b>1 column</b>', 'img' => MFN_OPTIONS_URI.'img/select/blog/classic.png'),
+						'masonry' => array('title' => 'Masonry Blog Style<br /><b>2-4 columns</b>', 'img' => MFN_OPTIONS_URI.'img/select/blog/masonry-blog.png'),
+						'masonry tiles' => array('title' => 'Masonry Tiles (Vertical Images)<br /><b>2-4 columns</b>', 'img' => MFN_OPTIONS_URI.'img/select/blog/masonry-tiles.png'),
+						'photo' => array('title' => 'Photo (Horizontal Images)<br /><b>1 column</b>', 'img' => MFN_OPTIONS_URI.'img/select/blog/photo.png'),
+						'photo2' => array('title' => 'Photo 2<br /><b>1-3 columns</b>', 'img' => MFN_OPTIONS_URI.'img/select/blog/photo2.png'),
+						'timeline' => array('title' => 'Timeline<br /><b>1 column</b>', 'img' => MFN_OPTIONS_URI.'img/select/blog/timeline.png'),
 					),
-					'class'		=> 'wide',
-					'std'		=> 'grid',
+					'class' => 'wide',
+					'std' => 'grid',
 				),
 
 				array(
-					'id' 		=> 'blog-columns',
-					'type' 		=> 'sliderbar',
-					'title' 	=> __('Columns', 'mfn-opts'),
-					'sub_desc' 	=> __('default: 3', 'mfn-opts'),
-					'desc' 		=> __('Recommended: 2-4. Too large value may crash the layout.<br />This option works in layouts: <b>Grid, Masonry</b>', 'mfn-opts'),
-					'param'	 	=> array(
-						'min' 		=> 2,
-						'max' 		=> 6,
+					'id' => 'blog-columns',
+					'type' => 'sliderbar',
+					'title' => __('Columns', 'mfn-opts'),
+					'sub_desc' => __('Recommended: 2-3', 'mfn-opts'),
+					'desc' => __('This option works in: <b>Grid, Masonry, Photo 2</b>', 'mfn-opts'),
+					'param' => array(
+						'min' => 1,
+						'max' => 6,
 					),
-					'std' 		=> 3,
+					'std' => 3,
 				),
 
 				array(
-					'id' 		=> 'blog-full-width',
-					'type' 		=> 'switch',
-					'title' 	=> __('Full Width', 'mfn-opts'),
-					'desc' 		=> __('This option works in layout <b>Masonry</b>', 'mfn-opts'),
-					'options' 	=> array( '0' => 'Off', '1' => 'On' ),
-					'std' 		=> '0'
+					'id' => 'blog-title-tag',
+					'type' => 'select',
+					'title' => __('Title tag', 'mfn-opts'),
+					'options' => array(
+						'2' => 'H2',
+						'3' => 'H3',
+						'4' => 'H4',
+						'5' => 'H5',
+						'6' => 'H6',
+					),
+					'std' => '2'
 				),
 
 				array(
-					'id' 		=> 'blog-images',
-					'type' 		=> 'select',
-					'title' 	=> __('Post Image', 'mfn-opts'),
-					'desc' 		=> __('for all Blog styles except Masonry Tiles', 'mfn-opts'),
-					'options'	=> array(
-						'' 				=> 'Default',
-						'images-only' 	=> 'Featured Images only (replace sliders and videos with featured image)',
+					'id' => 'blog-images',
+					'type' => 'select',
+					'title' => __('Post Image', 'mfn-opts'),
+					'desc' => __('for all Blog styles <b>except</b> Masonry Tiles & Photo 2', 'mfn-opts'),
+					'options' => array(
+						'' => 'Default',
+						'images-only' => 'Featured Images only (replace sliders and videos with featured image)',
 					),
+				),
+
+				array(
+					'id' => 'blog-full-width',
+					'type' => 'switch',
+					'title' => __('Full Width', 'mfn-opts'),
+					'desc' => __('This option works in layout <b>Masonry</b>', 'mfn-opts'),
+					'options' => array( '0' => 'Off', '1' => 'On' ),
+					'std' => '0'
 				),
 
 				// options -----
@@ -2171,12 +2282,12 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 				),
 
 				array(
-					'id' 		=> 'blog-related-images',
-					'type' 		=> 'select',
-					'title' 	=> __('Post Image', 'mfn-opts'),
-					'options'	=> array(
-						'' 				=> 'Default',
-						'images-only' 	=> 'Featured Images only (replace sliders and videos with featured image)',
+					'id' => 'blog-related-images',
+					'type' => 'select',
+					'title' => __('Post Image', 'mfn-opts'),
+					'options' => array(
+						'' => 'Default',
+						'images-only' => 'Featured Images only (replace sliders and videos with featured image)',
 					),
 				),
 
@@ -2220,7 +2331,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Portfolio --------------------------------------------
+		// Portfolio ------
 		$sections['portfolio'] = array(
 			'title' 	=> __('Portfolio', 'mfn-opts'),
 			'icon' 		=> MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -2419,11 +2530,12 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 				),
 
 				array(
-					'id' 		=> 'portfolio-related',
-					'type' 		=> 'text',
-					'title' 	=> __('Related Projects | Count', 'mfn-opts'),
-					'class'		=> 'small-text',
-					'std'		=> 3,
+					'id' => 'portfolio-related',
+					'type' => 'text',
+					'title' => __('Related Projects | Count', 'mfn-opts'),
+					'desc' => __('<b>0 to disable</b> related projects', 'mfn-opts'),
+					'class' => 'small-text',
+					'std' => 3,
 				),
 
 				array(
@@ -2507,7 +2619,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Shop --------------------------------------------
+		// Shop ------
 		$sections['shop'] = array(
 			'title' 	=> __('Shop', 'mfn-opts'),
 			'icon' 		=> MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -2698,7 +2810,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Featured Image --------------------------------------------
+		// Featured Image ------
 		$sections['featured-image'] = array(
 			'title' 	=> __('Featured Image', 'mfn-opts'),
 			'icon' 		=> MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -2749,7 +2861,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'id' 		=> 'featured-desc-list',
 					'type' 		=> 'custom',
 					'title' 	=> 'Description',
-					'desc' 		=> '<ul><li><b>This size is being used for:</b></li><li>Blog: style Classic</li><li>Blog: style Grid</li><li>Blog: style Masonry</li><li>Blog: style Timeline</li><li>Blog: Related Posts</li><li>Portfolio: style Flat</li><li>Portfolio: style Grid</li><li>Portfolio: style Masonry Blog Style</li><li>Portfolio: Related Projects</li></ul><ul><li><b>Oryginal images:</b></li><li>Blog: style Masonry Tiles</li><li>Post format: Vertical Image in all blog styles</li><li>Portfolio: style Exposure</li><li>Portfolio: style Masonry Hover Details</li><li>Portfolio: style Masonry Minimal</li></ul><ul><li><b>Different sizes:</b></li><li>Blog: style Photo - the same size as Single Post</li><li>Portfolio: style List - size: 1920x750</li><li>Portfolio: style Masonry Flat - default, big: 1280x1000, wide: 1280x500, tall: 768x1200</li></ul>',
+					'desc' 		=> '<ul><li><b>This size is being used for:</b></li><li>Blog: style Classic</li><li>Blog: style Grid</li><li>Blog: style Masonry</li><li>Blog: style Timeline</li><li>Blog: Related Posts</li><li>Portfolio: style Flat</li><li>Portfolio: style Grid</li><li>Portfolio: style Masonry Blog Style</li><li>Portfolio: Related Projects</li></ul><ul><li><b>Original images:</b></li><li>Blog: style Masonry Tiles</li><li>Post format: Vertical Image in all blog styles</li><li>Portfolio: style Exposure</li><li>Portfolio: style Masonry Hover Details</li><li>Portfolio: style Masonry Minimal</li></ul><ul><li><b>Different sizes:</b></li><li>Blog: style Photo - the same size as Single Post</li><li>Portfolio: style List - size: 1920x750</li><li>Portfolio: style Masonry Flat - default, big: 1280x1000, wide: 1280x500, tall: 768x1200</li></ul>',
 					'action' 	=> 'description',
 				),
 
@@ -2797,7 +2909,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'id' 		=> 'featured-desc-single',
 					'type' 		=> 'custom',
 					'title' 	=> 'Description',
-					'desc' 		=> '<ul><li><b>This size is being used for:</b></li><li>Blog: single Post</li><li>Blog: style Photo</li><li>Portfolio: single Project</li></ul><ul><li><b>Oryginal images:</b></li><li>Post format: Vertical Image</li><li>Template: Intro Header</li></ul>',
+					'desc' 		=> '<ul><li><b>This size is being used for:</b></li><li>Blog: single Post</li><li>Blog: style Photo</li><li>Portfolio: single Project</li></ul><ul><li><b>Original images:</b></li><li>Post format: Vertical Image</li><li>Template: Intro Header</li></ul>',
 					'action' 	=> 'description',
 				),
 
@@ -2816,9 +2928,9 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 		);
 
 
-		// Pages ==================================================================================
+		// Pages =================
 
-		// General -------------------------------------------
+		// General -----
 		$sections['pages-general'] = array(
 			'title' 	=> __('General', 'mfn-opts'),
 			'icon'		=> MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -2837,7 +2949,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Error 404 -------------------------------------------
+		// Error 404 -----
 		$sections['pages-404'] = array(
 			'title' 	=> __('Error 404', 'mfn-opts'),
 			'icon'		=> MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -2864,7 +2976,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Under Construction --------------------------------------------
+		// Under Construction ------
 		$sections['pages-under'] = array(
 			'title' 	=> __('Under Construction', 'mfn-opts'),
 			'icon' 		=> MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -2928,9 +3040,9 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Footer =================================================================================
+		// Footer ================
 
-		// Footer --------------------------------------------
+		// Footer ------
 		$sections['footer'] = array(
 			'title'		=> __('General', 'mfn-opts'),
 			'fields' 	=> array(
@@ -3000,9 +3112,9 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 				),
 
 				array(
-					'id' 		=> 'footer-bg-img',
+					'id' 			=> 'footer-bg-img',
 					'type' 		=> 'upload',
-					'title' 	=> __('Image', 'mfn-opts'),
+					'title' 	=> __( 'Image', 'mfn-opts' ),
 				),
 
 				array(
@@ -3092,9 +3204,9 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Responsive =================================================================================
+		// Responsive ================
 
-		// General --------------------------------------------
+		// General ------
 		$sections['responsive'] = array(
 			'title'		=> __('General', 'mfn-opts'),
 			'fields' 	=> array(
@@ -3150,62 +3262,63 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 
 				// options
 				array(
-					'id' 		=> 'responsive-info-options',
-					'type' 		=> 'info',
-					'title' 	=> '',
-					'desc' 		=> __('Options', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'id' => 'responsive-info-options',
+					'type' => 'info',
+					'title' => '',
+					'desc' => __('Options', 'mfn-opts'),
+					'class' => 'mfn-info',
 				),
 
 				array(
-					'id'		=> 'responsive-boxed2fw',
-					'type'		=> 'switch',
-					'title'		=> __('Boxed to Full Width', 'mfn-opts'),
-					'sub_desc'	=> __('<b>< 768px</b>', 'mfn-opts'),
-					'desc'		=> __('Change layout from Boxed to Full Witdh on mobile', 'mfn-opts'),
+					'id' => 'responsive-boxed2fw',
+					'type' => 'switch',
+					'title' => __('Boxed to Full Width', 'mfn-opts'),
+					'sub_desc' => __('<b>< 768px</b>', 'mfn-opts'),
+					'desc' => __('Change layout from Boxed to Full Width on mobile', 'mfn-opts'),
 					'options'	=> array( '0' => 'Off', '1' => 'On' ),
-					'std'		=> '0',
+					'std' => '0',
 				),
 
 				array(
-					'id' 		=> 'no-hover',
-					'type' 		=> 'select',
-					'title' 	=> __('Hover Effects', 'mfn-opts'),
-					'options' 	=> array(
-						'' 			=> __('Always Enabled', 'mfn-opts'),
-						'tablet'	=> __('Enabled on Desktop only', 'mfn-opts')
+					'id' => 'no-section-bg',
+					'type' => 'select',
+					'title' => __( 'Section | Background Image', 'mfn-opts' ),
+					'options' => array(
+						'' => __( '-- Default --', 'mfn-opts' ),
+						'tablet' => __( 'Show on Desktop only', 'mfn-opts' ),
 					),
 				),
 
 				array(
-					'id' 		=> 'no-section-bg',
-					'type' 		=> 'select',
-					'title' 	=> __( 'Section | Background Image', 'mfn-opts' ),
-					'options' 	=> array(
-						'' 			=> __( '-- Default --', 'mfn-opts' ),
-						'tablet'	=> __( 'Show on Desktop only', 'mfn-opts' ),
-					),
-				),
-
-				array(
-					'id' 		=> 'responsive-parallax',
-					'type' 		=> 'select',
-					'title' 	=> __( 'Section | Parallax', 'mfn-opts' ),
-					'desc' 		=> __( 'Works only with <b>Translate3d</b> parallax. May run slowly on older devices', 'mfn-opts' ),
-					'options' 	=> array(
-						0 	=> __( 'Disable on mobile', 'mfn-opts' ),
+					'id' => 'responsive-parallax',
+					'type' => 'select',
+					'title' => __( 'Section | Parallax', 'mfn-opts' ),
+					'desc' => __( 'Works only with <b>Translate3d</b> parallax. May run slowly on older devices', 'mfn-opts' ),
+					'options' => array(
+						0 => __( 'Disable on mobile', 'mfn-opts' ),
 						1	=> __( 'Enable on mobile', 'mfn-opts' ),
 					),
 				),
 
 				array(
-					'id' 			=> 'builder-wrap-moveup',
-					'type' 		=> 'select',
-					'title' 	=> __( 'Wrap | Move Up', 'mfn-opts' ),
+					'id' => 'builder-section-padding',
+					'type' => 'select',
+					'title' => __( 'Section | Horizontal padding', 'mfn-opts' ),
 					'options' => array(
-						'' 					=> __( '-- Default --', 'mfn-opts' ),
-						'no-tablet'	=> __( 'Disable on tablet and mobile < 960px', 'mfn-opts' ),
-						'no-move'		=> __( 'Disable on mobile < 768px', 'mfn-opts' ),
+						'' => __( '-- Default --', 'mfn-opts' ),
+						'no-tablet' => __( 'Disable on tablet and mobile < 960px', 'mfn-opts' ),
+						'no-mobile' => __( 'Disable on mobile < 768px', 'mfn-opts' ),
+					),
+				),
+
+				array(
+					'id' => 'builder-wrap-moveup',
+					'type' => 'select',
+					'title' => __( 'Wrap | Move Up', 'mfn-opts' ),
+					'options' => array(
+						'' => __( '-- Default --', 'mfn-opts' ),
+						'no-tablet' => __( 'Disable on tablet and mobile < 960px', 'mfn-opts' ),
+						'no-move' => __( 'Disable on mobile < 768px', 'mfn-opts' ),
 					),
 				),
 
@@ -3215,23 +3328,25 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Logo <span><b>mobile</b> < 768px</span>', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
-					'id'		=> 'responsive-logo-img',
+					'id'			=> 'responsive-logo-img',
 					'type'		=> 'upload',
-					'title'		=> __('Logo', 'mfn-opts'),
-					'sub_desc'	=> __('<b>< 768px</b><br />optional', 'mfn-opts'),
-					'desc'		=> __('Use if you want different logo on mobile', 'mfn-opts'),
+					'title'		=> __( 'Logo', 'mfn-opts' ),
+					'sub_desc'=> __( '<b>< 768px</b><br />optional', 'mfn-opts' ),
+					'desc'		=> __( 'Use if you want different logo on mobile', 'mfn-opts' ),
+					'class' 	=> 'mhb-opt',
 				),
 
 				array(
-					'id'		=> 'responsive-retina-logo-img',
+					'id'			=> 'responsive-retina-logo-img',
 					'type'		=> 'upload',
-					'title'		=> __('Retina Logo', 'mfn-opts'),
-					'sub_desc'	=> __('optional', 'mfn-opts'),
-					'desc'		=> __('Retina Logo should be 2x larger than Logo', 'mfn-opts'),
+					'title'		=> __( 'Retina Logo', 'mfn-opts' ),
+					'sub_desc'=> __( 'optional', 'mfn-opts' ),
+					'desc'		=> __( 'Retina Logo should be 2x larger than Logo', 'mfn-opts' ),
+					'class' 	=> 'mhb-opt',
 				),
 
 				// logo sticky
@@ -3240,40 +3355,42 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Sticky Header Logo <span><b>mobile</b> < 768px</span>', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
-					'id'		=> 'responsive-sticky-logo-img',
+					'id'			=> 'responsive-sticky-logo-img',
 					'type'		=> 'upload',
-					'title'		=> __('Logo', 'mfn-opts'),
-					'sub_desc'	=> __('<b>< 768px</b><br />optional', 'mfn-opts'),
-					'desc'		=> __('Use if you want different logo for Sticky Header on mobile', 'mfn-opts'),
+					'title'		=> __(' Logo', 'mfn-opts' ),
+					'sub_desc'=> __( '<b>< 768px</b><br />optional', 'mfn-opts' ),
+					'desc'		=> __( 'Use if you want different logo for Sticky Header on mobile', 'mfn-opts' ),
+					'class' 	=> 'mhb-opt',
 				),
 
 				array(
-					'id'		=> 'responsive-sticky-retina-logo-img',
+					'id'			=> 'responsive-sticky-retina-logo-img',
 					'type'		=> 'upload',
-					'title'		=> __('Retina Logo', 'mfn-opts'),
-					'sub_desc'	=> __('optional', 'mfn-opts'),
-					'desc'		=> __('Retina Logo should be 2x larger than Sticky Header Logo', 'mfn-opts'),
+					'title'		=> __( 'Retina Logo', 'mfn-opts' ),
+					'sub_desc'=> __( 'optional', 'mfn-opts' ),
+					'desc'		=> __( 'Retina Logo should be 2x larger than Sticky Header Logo', 'mfn-opts' ),
+					'class' 	=> 'mhb-opt',
 				),
 
 			),
 		);
 
-		// Responsive | Header --------------------------------------------
+		// Responsive | Header ------
 		$sections['responsive-header'] = array(
-			'title'		=> __('Header', 'mfn-opts'),
+			'title'		=> __( 'Header', 'mfn-opts' ),
 			'fields' 	=> array(
 
 				// header
 				array(
-					'id' 		=> 'responsive-info-header',
+					'id' 			=> 'responsive-info-header',
 					'type' 		=> 'info',
 					'title' 	=> '',
-					'desc' 		=> __('Header', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'desc' 		=> __( 'Header', 'mfn-opts' ),
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -3284,6 +3401,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'options' 	=> array(
 						'sticky'		=> __('Sticky', 'mfn-opts'),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -3296,15 +3414,16 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						'sticky'		=> __('Sticky<span>works only with Sticky Header: ON</span>', 'mfn-opts'),
 						'transparent'	=> __('Transparent', 'mfn-opts'),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 				// header | minimal
 				array(
-					'id' 		=> 'responsive-info-header-minimal',
+					'id' 			=> 'responsive-info-header-minimal',
 					'type' 		=> 'info',
 					'title' 	=> '',
-					'desc' 		=> __('Header Minimal<span>for Mobile Header: Minimal</span>', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'desc' 		=> __( 'Header Minimal<span>for Mobile Header: Minimal</span>', 'mfn-opts' ),
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -3321,17 +3440,17 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						'ml-lc' 	=> array('title' => 'Menu left | Logo center', 'img' => MFN_OPTIONS_URI.'img/select/mobile-minimal/5.png'),
 						'ml-lr' 	=> array('title' => 'Menu left | Logo right', 'img' => MFN_OPTIONS_URI.'img/select/mobile-minimal/6.png'),
 					),
-					'class'		=> 'wide short',
+					'class'		=> 'wide short mhb-opt',
 					'std' 		=> 'mr-ll',
 				),
 
 				// top bar
 				array(
-					'id' 		=> 'responsive-info-top-bar',
+					'id' 			=> 'responsive-info-top-bar',
 					'type' 		=> 'info',
 					'title' 	=> '',
-					'desc' 		=> __('Top Bar', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'desc' 		=> __( 'Top Bar', 'mfn-opts' ),
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -3346,15 +3465,16 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						'right'		=> __('Align Right', 'mfn-opts'),
 						'hide'		=> __('HIDE Icons & Action Button', 'mfn-opts'),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 				// menu
 				array(
-					'id' 		=> 'responsive-info-menu',
+					'id' 			=> 'responsive-info-menu',
 					'type' 		=> 'info',
 					'title' 	=> '',
-					'desc' 		=> __('Menu', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'desc' 		=> __( 'Menu', 'mfn-opts' ),
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -3368,6 +3488,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						'max' 		=> 1240,
 					),
 					'std' 		=> 1240,
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -3377,19 +3498,21 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'sub_desc' 	=> __( 'Custom mobile main menu<br /><b>< 768px</b>', 'mfn-opts' ),
 					'desc' 		=> __( 'Overrides <b>all</b> other menu select options', 'mfn-opts' ),
 					'options'	=> mfna_menu(),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
-					'id' 		=> 'responsive-mobile-menu',
+					'id' 			=> 'responsive-mobile-menu',
 					'type' 		=> 'select',
-					'title' 	=> __('Style', 'mfn-opts'),
-					'sub_desc' 	=> __('Responsive Menu Style', 'mfn-opts'),
-					'desc' 		=> __('This option also <b>affects</b> Header Simple & Empty on desktop', 'mfn-opts'),
-					'options' 	=> array(
-						'side-slide'	=> __( 'Side Slide', 'mfn-opts' ),
-						'' 				=> __( 'Classic', 'mfn-opts' ),
+					'title' 	=> __( 'Style', 'mfn-opts' ),
+					'sub_desc'=> __( 'Responsive Menu Style', 'mfn-opts' ),
+					'desc' 		=> __( 'This option also <b>affects</b> Header Simple & Empty on desktop', 'mfn-opts' ),
+					'options' => array(
+						'side-slide' => __( 'Side Slide', 'mfn-opts' ),
+						'' => __( 'Classic', 'mfn-opts' ),
 					),
-					'std'		=> 'side-slide'
+					'std'			=> 'side-slide',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -3402,6 +3525,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						'max' 		=> 500,
 					),
 					'std' 		=> 250,
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -3414,6 +3538,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 						'icons'		=> __('Icons', 'mfn-opts'),
 						'social'	=> __('Social Icons', 'mfn-opts'),
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 				// menu | button
@@ -3422,7 +3547,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Menu | Button', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -3430,26 +3555,25 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type'		=> 'text',
 					'title'		=> __('Button | Text', 'mfn-opts'),
 					'desc'		=> __('This text will be used instead of the menu icon', 'mfn-opts'),
-					'class'		=> 'small-text',
+					'class'		=> 'small-text mhb-opt',
 				),
 
 				array(
-					'id'		=> 'header-menu-mobile-sticky',
+					'id'			=> 'header-menu-mobile-sticky',
 					'type'		=> 'switch',
-					'title'		=> __('Button | Sticky', 'mfn-opts'),
-					'desc'		=> __('Sticky Menu Button <b>on mobile</b> < 768px', 'mfn-opts'),
+					'title'		=> __( 'Button | Sticky', 'mfn-opts' ),
+					'desc'		=> __( 'Sticky Menu Button <b>on mobile</b> < 768px', 'mfn-opts' ),
 					'options'	=> array( '0' => 'Off', '1' => 'On' ),
-					'std'		=> '0',
+					'std'			=> '0',
+					'class'		=> 'mhb-opt',
 				),
-
-
 
 			),
 		);
 
-		// SEO ====================================================================================
+		// SEO ===================
 
-		// SEO -------------------------------------------
+		// SEO -----
 		$sections['seo'] = array(
 			'title' 	=> __( 'General', 'mfn-opts' ),
 			'icon' 		=> MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -3508,7 +3632,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'id' 		=> 'meta-description',
 					'type' 		=> 'text',
 					'title' 	=> __( 'Meta | Description', 'mfn-opts' ),
-					'desc' 		=> __( 'May be overridden for single posts, pages, portfolio', 'mfn-opts' ),
+					'desc' 		=> __( 'May be overwritten for single posts, pages, portfolio', 'mfn-opts' ),
 					'std' 		=> get_bloginfo( 'description' ),
 				),
 
@@ -3516,15 +3640,21 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'id' 		=> 'meta-keywords',
 					'type' 		=> 'text',
 					'title' 	=> __( 'Meta | Keywords', 'mfn-opts' ),
-					'desc' 		=> __( 'May be overridden for single posts, pages, portfolio', 'mfn-opts' ),
+					'desc' 		=> __( 'May be overwritten for single posts, pages, portfolio', 'mfn-opts' ),
 				),
 
 				array(
-					'id' 		=> 'mfn-seo-og-image',
+					'id' 			=> 'mfn-seo-og-image',
 					'type' 		=> 'upload',
 					'title' 	=> __( 'Open Graph | Image', 'mfn-opts' ),
-					'sub_desc' 	=> __( 'e.g. Facebook share image', 'mfn-opts' ),
-					'desc' 		=> __( 'May be overridden for single posts, pages, portfolio', 'mfn-opts' ),
+					'sub_desc'=> __( 'e.g. Facebook share image', 'mfn-opts' ),
+					'desc' 		=> __( 'May be overwritten for single posts, pages, portfolio', 'mfn-opts' ),
+				),
+
+				array(
+					'id' => 'seo-fb-app-id',
+					'type' => 'text',
+					'title' => __( 'Facebook App ID', 'mfn-opts' ),
 				),
 
 				array(
@@ -3547,177 +3677,185 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Social Icons ===========================================================================
+		// Social Icons ==========
 
-		// Social Icons --------------------------------------------
+		// Social Icons ------
 		$sections['social'] = array(
-			'title' 	=> __( 'General', 'mfn-opts' ),
-			'icon' 		=> MFN_OPTIONS_URI. 'img/icons/sub.png',
-			'fields' 	=> array(
+			'title' => __( 'General', 'mfn-opts' ),
+			'icon' => MFN_OPTIONS_URI. 'img/icons/sub.png',
+			'fields' => array(
 
 				array(
-					'id'			=> 'social-target',
-					'type'		=> 'switch',
-					'title'		=> __( 'Open links in new window', 'mfn-opts' ),
-					'desc'		=> __( 'Open social links in new window', 'mfn-opts' ),
-					'options'	=> array( '1' => 'On', '0' => 'Off' ),
-					'std'			=> '0'
+					'id' => 'social-attr',
+					'type' => 'checkbox',
+					'title' => __( 'Link attributes', 'mfn-opts' ),
+					'options' 	=> array(
+						'blank'	=> 'target="_blank"',
+						'nofollow' => 'rel="nofollow"',
+					),
 				),
 
 				array(
-					'id' 			=> 'social-skype',
-					'type' 		=> 'text',
-					'title' 	=> __( 'Skype', 'mfn-opts' ),
-					'desc' 		=> __( 'Skype login. You can use <strong>callto:</strong> or <strong>skype:</strong> prefix' , 'mfn-opts' ),
+					'id' => 'social-skype',
+					'type' => 'text',
+					'title' => '<i class="icon-skype"></i> Skype',
+					'desc' => __( 'Skype login. You can use <strong>callto:</strong> or <strong>skype:</strong> prefix' , 'mfn-opts' ),
 				),
 
 				array(
-					'id' 			=> 'social-whatsapp',
-					'type' 		=> 'text',
-					'title' 	=> __( 'WhatsApp', 'mfn-opts' ),
-					'desc' 		=> __( 'WhatsApp URL. You can use <strong>whatsapp:</strong> prefix' , 'mfn-opts' ),
+					'id' => 'social-whatsapp',
+					'type' => 'text',
+					'title' => '<i class="icon-whatsapp"></i> WhatsApp',
+					'desc' => __( 'WhatsApp URL. You can use <strong>whatsapp:</strong> prefix' , 'mfn-opts' ),
 				),
 
 				array(
-					'id' 		=> 'social-facebook',
-					'type' 		=> 'text',
-					'title' 	=> __('Facebook', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-facebook',
+					'type' => 'text',
+					'title' => '<i class="icon-facebook"></i> Facebook',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-googleplus',
-					'type' 		=> 'text',
-					'title' 	=> __('Google +', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-twitter',
+					'type' => 'text',
+					'title' => '<i class="icon-twitter"></i> Twitter',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-twitter',
-					'type' 		=> 'text',
-					'title' 	=> __('Twitter', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-vimeo',
+					'type' => 'text',
+					'title' => '<i class="icon-vimeo"></i> Vimeo',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-vimeo',
-					'type' 		=> 'text',
-					'title' 	=> __('Vimeo', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-youtube',
+					'type' => 'text',
+					'title' => '<i class="icon-play"></i> YouTube',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-youtube',
-					'type' 		=> 'text',
-					'title' 	=> __('YouTube', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-flickr',
+					'type' => 'text',
+					'title' => '<i class="icon-flickr"></i> Flickr',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-flickr',
-					'type' 		=> 'text',
-					'title' 	=> __('Flickr', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-linkedin',
+					'type' => 'text',
+					'title' => '<i class="icon-linkedin"></i> LinkedIn',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-linkedin',
-					'type' 		=> 'text',
-					'title' 	=> __('LinkedIn', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-pinterest',
+					'type' => 'text',
+					'title' => '<i class="icon-pinterest"></i> Pinterest',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-pinterest',
-					'type'		=> 'text',
-					'title' 	=> __('Pinterest', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-dribbble',
+					'type' => 'text',
+					'title' => '<i class="icon-dribbble"></i> Dribbble',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-dribbble',
-					'type' 		=> 'text',
-					'title' 	=> __('Dribbble', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-instagram',
+					'type' => 'text',
+					'title' => '<i class="icon-instagram"></i> Instagram',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-instagram',
-					'type' 		=> 'text',
-					'title' 	=> __('Instagram', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-snapchat',
+					'type' => 'text',
+					'title' => '<i class="icon-snapchat"></i> Snapchat',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-behance',
-					'type' 		=> 'text',
-					'title' 	=> __('Behance', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-behance',
+					'type' => 'text',
+					'title' => '<i class="icon-behance"></i> Behance',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-tumblr',
-					'type' 		=> 'text',
-					'title' 	=> __('Tumblr', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-tumblr',
+					'type' => 'text',
+					'title' => '<i class="icon-tumblr"></i> Tumblr',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-tripadvisor',
-					'type' 		=> 'text',
-					'title' 	=> __('TripAdvisor', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-tripadvisor',
+					'type' => 'text',
+					'title' => '<i class="icon-tripadvisor"></i>&nbsp; TripAdvisor',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-vkontakte',
-					'type' 		=> 'text',
-					'title' 	=> __('VKontakte', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-vkontakte',
+					'type' => 'text',
+					'title' => '<i class="icon-vkontakte"></i> VKontakte',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-viadeo',
-					'type' 		=> 'text',
-					'title' 	=> __('Viadeo', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-viadeo',
+					'type' => 'text',
+					'title' => '<i class="icon-viadeo"></i> Viadeo',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-xing',
-					'type' 		=> 'text',
-					'title' 	=> __('Xing', 'mfn-opts'),
-					'desc' 		=> __('Link to the profile page', 'mfn-opts'),
+					'id' => 'social-xing',
+					'type' => 'text',
+					'title' => '<i class="icon-xing"></i> Xing',
+					'desc' => __('Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id'		=> 'social-custom-icon',
-					'type'		=> 'icon',
-					'title'		=> __('Custom | Icon', 'mfn-opts'),
+					'id' => 'social-custom-icon',
+					'type' => 'icon',
+					'title' => __('Custom | Icon', 'mfn-opts'),
 				),
 
 				array(
-					'id' 		=> 'social-custom-link',
-					'type' 		=> 'text',
-					'title' 	=> __('Custom | Link', 'mfn-opts'),
-					'desc' 		=> __('To show Custom Social Icon select Icon and enter Link to the profile page', 'mfn-opts'),
+					'id' => 'social-custom-link',
+					'type' => 'text',
+					'title' => __('Custom | Link', 'mfn-opts'),
+					'desc' => __('To show Custom Social Icon select Icon and enter Link to the profile page', 'mfn-opts'),
 				),
 
 				array(
-					'id'		=> 'social-rss',
-					'type'		=> 'switch',
-					'title'		=> __('RSS', 'mfn-opts'),
-					'desc'		=> __('Show the RSS icon', 'mfn-opts'),
+					'id' => 'social-custom-title',
+					'type' => 'text',
+					'title' => __('Custom | Title', 'mfn-opts'),
+					'sub_desc' => __('Custom social icon title', 'mfn-opts'),
+				),
+
+				array(
+					'id' => 'social-rss',
+					'type' => 'switch',
+					'title' => __('RSS', 'mfn-opts'),
+					'desc' => __('Show the RSS icon', 'mfn-opts'),
 					'options'	=> array('1' => 'On','0' => 'Off'),
-					'std'		=> '0'
+					'std' => '0'
 				),
 
 			),
 		);
 
-		// Addons, Plugins ========================================================================
+		// Addons, Plugins =======
 
-		// Addons -------------------------------------------
+		// Addons -----
 		$sections['addons'] = array(
 			'title'		=> __('Addons', 'mfn-opts'),
 			'icon' 		=> MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -3763,37 +3901,6 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					),
 				),
 
-				// scroll
-				array(
-					'id' 		=> 'addons-info-scroll',
-					'type' 		=> 'info',
-					'title' 	=> '',
-					'desc' 		=> __('Scroll', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
-				),
-
-				array(
-					'id' 		=> 'nice-scroll',
-					'type' 		=> 'select',							// mfn-demo plugin uses nice scroll !!!
-					'title' 	=> __('Scroll | Plugin', 'mfn-opts'),
-					'desc' 		=> __('Nice Scroll does not support Ctrl+F properly', 'mfn-opts'),
-					'options' 	=> array(
-						'smooth' 	=> __('Smooth Scroll', 'mfn-opts'),
-						'0' 		=> __('Default Browser Scroll', 'mfn-opts'),
-						'1' 		=> __('Nice Scroll | Scrollbar with iOS/mobile style', 'mfn-opts'),
-					),
-					'std' 		=> 'smooth',
-				),
-
-				array(
-					'id' 		=> 'nice-scroll-speed',
-					'type' 		=> 'text',
-					'title' 	=> __('Nice Scroll | Speed', 'mfn-opts'),
-					'sub_desc' 	=> __('default: 40', 'mfn-opts'),
-					'class' 	=> 'small-text',
-					'std' 		=> '40',
-				),
-
 				// lightbox
 				array(
 					'id' 		=> 'addons-info-lightbox',
@@ -3837,27 +3944,14 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'std' 		=> '0'
 				),
 
-				array(
-					'id' 		=> 'retina-js',
-					'type' 		=> 'select',
-					'title' 	=> __('Retina.js', 'mfn-opts'),
-					'desc' 		=> __('More info: <a target="_blank" href="http://imulus.github.io/retinajs/">http://imulus.github.io/retinajs/</a><br />Retina.js disables responsive images in WP 4.4+<br />', 'mfn-opts'),
-					'options' 	=> array(
-						'' 	=> __('Default: only Retina Logo', 'mfn-opts'),
-						'1' => __('Enable Retina.js | please prepare @2x images', 'mfn-opts'),
-					),
-					'std' 		=> '0'
-				),
-
 			),
 		);
 
-		// Plugins --------------------------------------------
+		// Plugins ------
 		$sections['plugins'] = array(
 			'title' => __('Premium Plugins', 'mfn-opts'),
 			'icon' => MFN_OPTIONS_URI. 'img/icons/sub.png',
 			'fields' => array(
-
 
 				array(
 					'id' 		=> 'plugins-info',
@@ -3900,9 +3994,9 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Colors =================================================================================
+		// Colors ================
 
-		// General --------------------------------------------
+		// General ------
 		$sections['colors-general'] = array(
 			'title' => __('General', 'mfn-opts'),
 			'icon' => MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -3961,56 +4055,71 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Header --------------------------------------------
+		// Header ------
 		$sections['colors-header'] = array(
-			'title' => __('Header', 'mfn-opts'),
+			'title' => __( 'Header', 'mfn-opts' ),
 			'icon' => MFN_OPTIONS_URI. 'img/icons/sub.png',
 			'fields' => array(
 
 				array(
-					'id' 		=> 'background-header',
-					'type' 		=> 'color',
-					'title' 	=> __('Header background', 'mfn-opts'),
-					'std' 		=> '#000119',
+					'id' => 'background-header',
+					'type' => 'color',
+					'title' => __( 'Header background', 'mfn-opts' ),
+					'std' => '#000119',
+					'class' => 'mhb-opt',
 				),
 
 				// top bar
 				array(
-					'id' 		=> 'colors-info-top-bar',
-					'type' 		=> 'info',
-					'title' 	=> '',
-					'desc' 		=> __('Top Bar', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'id' => 'colors-info-top-bar',
+					'type' => 'info',
+					'title' => '',
+					'desc' => __('Top Bar', 'mfn-opts'),
+					'class' => 'mfn-info mhb-opt',
 				),
 
 				array(
-					'id' 		=> 'background-top-left',
-					'type' 		=> 'color',
-					'title' 	=> __('Top Bar Left | background', 'mfn-opts'),
-					'desc' 		=> __('This is also Mobile Header & Top Bar Background for some Header Styles', 'mfn-opts'),
-					'std' 		=> '#ffffff',
+					'id' => 'background-top-left',
+					'type' => 'color',
+					'title' => __('Top Bar Left | background', 'mfn-opts'),
+					'desc' => __('This is also Mobile Header & Top Bar Background for some Header Styles', 'mfn-opts'),
+					'std' => '#ffffff',
+					'class' => 'mhb-opt',
 				),
 
 				array(
-					'id' 			=> 'background-top-middle',
-					'type' 		=> 'color',
-					'title' 	=> __('Top Bar Middle | background', 'mfn-opts'),
-					'desc'		=> __('for <strong>Header Modern</strong>', 'mfn-opts'),
-					'std' 		=> '#e3e3e3',
+					'id' => 'background-top-middle',
+					'type' => 'color',
+					'title' => __('Top Bar Middle | background', 'mfn-opts'),
+					'desc' => __('for <strong>Header Modern</strong>', 'mfn-opts'),
+					'std' => '#e3e3e3',
+					'class' => 'mhb-opt',
 				),
 
 				array(
-					'id' 		=> 'background-top-right',
-					'type' 		=> 'color',
-					'title' 	=> __('Top Bar Right | background', 'mfn-opts'),
-					'std' 		=> '#f5f5f5',
+					'id' => 'background-top-right',
+					'type' => 'color',
+					'title' => __('Top Bar Right | background', 'mfn-opts'),
+					'std' => '#f5f5f5',
+					'class' => 'mhb-opt',
 				),
 
 				array(
-					'id' 		=> 'color-top-right-a',
-					'type' 		=> 'color',
-					'title' 	=> __('Top Bar Right | Icon color', 'mfn-opts'),
-					'std' 		=> '#333333',
+					'id' => 'color-top-right-a',
+					'type' => 'color',
+					'title' => __('Top Bar Right | icon color', 'mfn-opts'),
+					'std' => '#333333',
+					'class' => 'mhb-opt',
+				),
+
+				array(
+					'id' => 'border-top-bar',
+					'type' => 'color',
+					'title' => __('Top Bar | border bottom', 'mfn-opts'),
+					'sub_desc' => __('optional', 'mfn-opts'),
+					'std' => '',
+					'class' => 'mhb-opt',
+					'alpha' => true,
 				),
 
 				// action button
@@ -4019,7 +4128,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __( 'Action Button', 'mfn-opts' ),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -4027,6 +4136,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __( 'Background', 'mfn-opts' ),
 					'std' 		=> '#f7f7f7',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4034,6 +4144,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __( 'Color', 'mfn-opts' ),
 					'std' 		=> '#747474',
+					'class'		=> 'mhb-opt',
 				),
 
 				// search
@@ -4042,7 +4153,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Search', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -4050,6 +4161,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Background', 'mfn-opts'),
 					'std' 		=> '#0095eb',
+					'class'		=> 'mhb-opt',
 				),
 
 				// subheader
@@ -4078,7 +4190,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Menu --------------------------------------------
+		// Menu ------
 		$sections['colors-menu'] = array(
 			'title' => __('Menu', 'mfn-opts'),
 			'icon' => MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -4090,7 +4202,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Menu', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -4098,6 +4210,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Link color', 'mfn-opts'),
 					'std' 		=> '#444444',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4106,6 +4219,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'title' 	=> __('Active Link color', 'mfn-opts'),
 					'desc' 		=> __('This is also Active Link Border', 'mfn-opts'),
 					'std' 		=> '#0095eb',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4114,6 +4228,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'title' 	=> __('Active Link background', 'mfn-opts'),
 					'desc' 		=> __('Header Plain & Menu Highlight', 'mfn-opts'),
 					'std' 		=> '#F2F2F2',
+					'class'		=> 'mhb-opt',
 				),
 
 				// submenu
@@ -4122,7 +4237,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Submenu', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -4130,6 +4245,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Background', 'mfn-opts'),
 					'std' 		=> '#F2F2F2',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4137,6 +4253,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Link color', 'mfn-opts'),
 					'std' 		=> '#5f5f5f',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4144,6 +4261,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Hover Link color', 'mfn-opts'),
 					'std' 		=> '#2e2e2e',
+					'class'		=> 'mhb-opt',
 				),
 
 				// responsive
@@ -4152,7 +4270,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Menu Button <span>Responsive, Header Creative, Simple & Empty</span>', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -4160,14 +4278,16 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Button color', 'mfn-opts'),
 					'std' 		=> '#0095eb',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
-					'id' 		=> 'background-menu-responsive-icon',
+					'id' 			=> 'background-menu-responsive-icon',
 					'type' 		=> 'color',
-					'title' 	=> __('Button background', 'mfn-opts'),
-					'sub_desc' 	=> __('optional', 'mfn-opts'),
+					'title' 	=> __( 'Button background', 'mfn-opts' ),
+					'sub_desc'=> __( 'optional', 'mfn-opts' ),
 					'std' 		=> '',
+					'class'		=> 'mhb-opt',
 				),
 
 				// styles
@@ -4176,7 +4296,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Styles<span>for specific header styles</span>', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -4184,6 +4304,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Overlay Menu<br />Menu background', 'mfn-opts'),
 					'std' 		=> '#0095eb',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4191,6 +4312,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Overlay Menu<br />Link color', 'mfn-opts'),
 					'std' 		=> '#FFFFFF',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4198,13 +4320,16 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Overlay Menu<br />Active Link color', 'mfn-opts'),
 					'std' 		=> '#B1DCFB',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
-					'id' 		=> 'border-menu-plain',
-					'type' 		=> 'color',
-					'title' 	=> __('Plain<br />Border color', 'mfn-opts'),
-					'std' 		=> '#F2F2F2',
+					'id' => 'border-menu-plain',
+					'type' => 'color',
+					'title' => __('Plain<br />Border color', 'mfn-opts'),
+					'std' => '#F2F2F2',
+					'class' => 'mhb-opt',
+					'alpha' => true,
 				),
 
 				// side slide
@@ -4213,7 +4338,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Side Slide<span>responsive menu style</span>', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -4221,6 +4346,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Background', 'mfn-opts'),
 					'std' 		=> '#191919',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4229,19 +4355,21 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'title' 	=> __('Link color', 'mfn-opts'),
 					'sub_desc' 	=> __('Text, Link & Icon color', 'mfn-opts'),
 					'std' 		=> '#A6A6A6',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
-					'id' 		=> 'color-side-menu-a-hover',
+					'id' 			=> 'color-side-menu-a-hover',
 					'type' 		=> 'color',
-					'title' 	=> __('Active Link color', 'mfn-opts'),
+					'title' 	=> __( 'Active Link color', 'mfn-opts' ),
 					'std' 		=> '#FFFFFF',
+					'class'		=> 'mhb-opt',
 				),
 
 			),
 		);
 
-		// Colors | Action Bar --------------------------------------------
+		// Colors | Action Bar ------
 		$sections['colors-action'] = array(
 			'title' => __('Action Bar', 'mfn-opts'),
 			'icon' => MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -4253,7 +4381,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Desktop & Tablet<span>> 768px</span>', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -4262,6 +4390,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'title' 	=> __('Background', 'mfn-opts'),
 					'desc' 		=> __('For some Header Styles', 'mfn-opts'),
 					'std' 		=> '#292b33',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4269,6 +4398,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Text color', 'mfn-opts'),
 					'std' 		=> '#bbbbbb',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4276,6 +4406,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Link | Color', 'mfn-opts'),
 					'std' 		=> '#0095eb',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4283,6 +4414,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Link | Hover color', 'mfn-opts'),
 					'std' 		=> '#007cc3',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4291,6 +4423,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'title' 	=> __('Social Icon | Color', 'mfn-opts'),
 					'desc' 		=> __('This is also Social Menu Link color', 'mfn-opts'),
 					'std' 		=> '#bbbbbb',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4299,6 +4432,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'title' 	=> __('Social Icon | Hover color', 'mfn-opts'),
 					'desc' 		=> __('This is also Social Menu Link hover color', 'mfn-opts'),
 					'std' 		=> '#FFFFFF',
+					'class'		=> 'mhb-opt',
 				),
 
 				// mobile
@@ -4307,7 +4441,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'info',
 					'title' 	=> '',
 					'desc' 		=> __('Mobile<span>< 768px</span>', 'mfn-opts'),
-					'class' 	=> 'mfn-info',
+					'class' 	=> 'mfn-info mhb-opt',
 				),
 
 				array(
@@ -4315,6 +4449,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Background', 'mfn-opts'),
 					'std' 		=> '#FFFFFF',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4322,6 +4457,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Text color', 'mfn-opts'),
 					'std' 		=> '#222222',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4329,6 +4465,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Link | Color', 'mfn-opts'),
 					'std' 		=> '#0095eb',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4336,6 +4473,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title' 	=> __('Link | Hover color', 'mfn-opts'),
 					'std' 		=> '#007cc3',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4344,6 +4482,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'title' 	=> __('Social Icon | Color', 'mfn-opts'),
 					'desc' 		=> __('This is also Social Menu Link color', 'mfn-opts'),
 					'std' 		=> '#bbbbbb',
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -4352,12 +4491,13 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'title' 	=> __('Social Icon | Hover color', 'mfn-opts'),
 					'desc' 		=> __('This is also Social Menu Link hover color', 'mfn-opts'),
 					'std' 		=> '#777777',
+					'class'		=> 'mhb-opt',
 				),
 
 			),
 		);
 
-		// Content --------------------------------------------
+		// Content ------
 		$sections['content'] = array(
 			'title' => __('Content', 'mfn-opts'),
 			'icon' => MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -4572,48 +4712,56 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Footer --------------------------------------------
+		// Footer ------
 		$sections['colors-footer'] = array(
 			'title' => __('Footer', 'mfn-opts'),
-			'icon' => MFN_OPTIONS_URI. 'img/icons/sub.png',
+			'icon' => MFN_OPTIONS_URI .'img/icons/sub.png',
 			'fields' => array(
 
 				array(
-					'id' 		=> 'color-footer-theme',
-					'type' 		=> 'color',
-					'title' 	=> __('Footer Theme color', 'mfn-opts'),
-					'sub_desc' 	=> __('Color for icons and other small elements', 'mfn-opts'),
-					'desc' 		=> __('You can use <strong>.themecolor</strong> and <strong>.themebg</strong> classes in your footer content', 'mfn-opts'),
-					'std' 		=> '#0095eb'
+					'id' => 'color-footer-theme',
+					'type' => 'color',
+					'title' => __('Theme color', 'mfn-opts'),
+					'sub_desc' => __('Color for icons and other small elements', 'mfn-opts'),
+					'desc' => __('You can use <strong>.themecolor</strong> and <strong>.themebg</strong> classes in your footer content', 'mfn-opts'),
+					'std' => '#0095eb'
 				),
 
 				array(
-					'id' 		=> 'background-footer',
-					'type' 		=> 'color',
-					'title' 	=> __('Footer background', 'mfn-opts'),
-					'std' 		=> '#292b33',
+					'id' => 'background-footer',
+					'type' => 'color',
+					'title' => __('Background', 'mfn-opts'),
+					'std' => '#292b33',
 				),
 
 				array(
-					'id' 		=> 'color-footer',
-					'type' 		=> 'color',
-					'title' 	=> __('Footer Text color', 'mfn-opts'),
-					'std' 		=> '#cccccc',
+					'id' => 'color-footer',
+					'type' => 'color',
+					'title' => __('Text color', 'mfn-opts'),
+					'std' => '#cccccc',
 				),
 
 				array(
-					'id' 		=> 'color-footer-heading',
-					'type' 		=> 'color',
-					'title' 	=> __('Footer Heading color', 'mfn-opts'),
-					'std' 		=> '#ffffff',
+					'id' => 'color-footer-heading',
+					'type' => 'color',
+					'title' => __('Heading color', 'mfn-opts'),
+					'std' => '#ffffff',
 				),
 
 				array(
-					'id' 		=> 'color-footer-note',
-					'type' 		=> 'color',
-					'title' 	=> __('Footer Note color', 'mfn-opts'),
-					'desc' 		=> __('eg. Widget meta', 'mfn-opts'),
-					'std' 		=> '#a8a8a8',
+					'id' => 'color-footer-note',
+					'type' => 'color',
+					'title' => __('Note color', 'mfn-opts'),
+					'desc' => __('eg. Widget meta', 'mfn-opts'),
+					'std' => '#a8a8a8',
+				),
+
+				array(
+					'id' => 'border-copyright',
+					'type' => 'color',
+					'title' => __('Copyright border', 'mfn-opts'),
+					'std' => 'rgba(255,255,255,0.1)',
+					'alpha' => true,
 				),
 
 				// link
@@ -4691,7 +4839,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Sliding Top --------------------------------------------
+		// Sliding Top ------
 		$sections['colors-sliding-top'] = array(
 			'title' => __('Sliding Top', 'mfn-opts'),
 			'icon' => MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -4752,7 +4900,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Headings --------------------------------------------
+		// Headings ------
 		$sections['headings'] = array(
 			'title' => __('Headings', 'mfn-opts'),
 			'icon' => MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -4803,7 +4951,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Shortcodes --------------------------------------------
+		// Shortcodes ------
 		$sections['colors-shortcodes'] = array(
 			'title' => __('Shortcodes', 'mfn-opts'),
 			'icon' => MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -4824,11 +4972,19 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 				),
 
 				array(
-					'id' 		=> 'color-contentlink',
-					'type' 		=> 'color',
-					'title'		=> __('Content Link | Icon color', 'mfn-opts'),
-					'desc'		=> __('This is also Content Link Hover Border', 'mfn-opts'),
-					'std' 		=> '#0095eb',
+					'id' => 'background-getintouch',
+					'type' => 'color',
+					'title' => __('Contact Box | background', 'mfn-opts'),
+					'desc' => __('This is also Infobox background', 'mfn-opts'),
+					'std' => '#0095eb',
+				),
+
+				array(
+					'id' => 'color-contentlink',
+					'type' => 'color',
+					'title' => __('Content Link | icon color', 'mfn-opts'),
+					'desc' => __('This is also Content Link hover border', 'mfn-opts'),
+					'std' => '#0095eb',
 				),
 
 				array(
@@ -4836,14 +4992,6 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'color',
 					'title'		=> __('Counter Icon | color', 'mfn-opts'),
 					'desc'		=> __('This is also Chart Progress color', 'mfn-opts'),
-					'std' 		=> '#0095eb',
-				),
-
-				array(
-					'id' 		=> 'background-getintouch',
-					'type' 		=> 'color',
-					'title'		=> __('Get in Touch background', 'mfn-opts'),
-					'desc'		=> __('This is also Infobox background', 'mfn-opts'),
 					'std' 		=> '#0095eb',
 				),
 
@@ -4913,7 +5061,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Forms --------------------------------------------
+		// Forms ------
 		$sections['colors-forms'] = array(
 			'title'		=> __( 'Forms', 'mfn-opts' ),
 			'icon'		=> MFN_OPTIONS_URI. 'img/icons/sub.png',
@@ -4997,64 +5145,74 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 
 				// Advanced
 				array(
-					'id' 		=> 'form-info-advanced',
-					'type' 		=> 'info',
-					'title' 	=> '',
-					'desc' 		=> __( 'Advanced', 'mfn-opts' ),
-					'class' 	=> 'mfn-info',
+					'id' => 'form-info-advanced',
+					'type' => 'info',
+					'title' => '',
+					'desc' => __( 'Advanced', 'mfn-opts' ),
+					'class' => 'mfn-info',
 				),
 
 				array(
-					'id' 		=> 'form-border-width',
-					'type' 		=> 'text',
-					'title' 	=> __( 'Border width', 'mfn-opts' ),
-					'sub_desc' 	=> __( 'default: 1px', 'mfn-opts' ),
-					'desc' 		=> __( 'Use value with <b>px</b><br />Example: <b>1px 1px 2px 1px</b>', 'mfn-opts' ),
-					'class' 	=> 'small-text',
+					'id' => 'form-border-width',
+					'type' => 'text',
+					'title' => __( 'Border width', 'mfn-opts' ),
+					'sub_desc' => __( 'default: 1px', 'mfn-opts' ),
+					'desc' => __( 'Use value with <b>px</b><br />Example: <b>1px 1px 2px 1px</b>', 'mfn-opts' ),
+					'class' => 'small-text',
 				),
 
 				array(
-					'id' 		=> 'form-transparent',
-					'type' 		=> 'sliderbar',
-					'title' 	=> __( 'Background Transparency (alpha)', 'mfn-opts' ),
-					'sub_desc' 	=> __( '0 = transparent, 100 = solid', 'mfn-opts' ),
-					'param'	 	=> array(
-						'min' 		=> 0,
-						'max' 		=> 100,
+					'id' => 'form-border-radius',
+					'type' => 'text',
+					'title' => __( 'Border radius', 'mfn-opts' ),
+					'sub_desc' => __( 'default: 0', 'mfn-opts' ),
+					'desc' => __( 'Use value with <b>px</b><br />Example: <b>20px</b>', 'mfn-opts' ),
+					'class' => 'small-text',
+				),
+
+				array(
+					'id' => 'form-transparent',
+					'type' => 'sliderbar',
+					'title' => __( 'Background Transparency (alpha)', 'mfn-opts' ),
+					'sub_desc' => __( '0 = transparent, 100 = solid', 'mfn-opts' ),
+					'param' => array(
+						'min' => 0,
+						'max' => 100,
 					),
-					'std' 		=> '100',
+					'std' => '100',
 				),
 
 			),
 		);
 
-		// Font Family --------------------------------------------
+		// Font Family ------
 		$sections['font-family'] = array(
-			'title' => __('Family', 'mfn-opts'),
-			'fields' => array(
+			'title' 	=> __( 'Family', 'mfn-opts' ),
+			'fields' 	=> array(
 
 				array(
-					'id' 		=> 'font-info-family',
+					'id' 			=> 'font-info-family',
 					'type' 		=> 'info',
 					'title' 	=> '',
-					'desc' 		=> __('Font Family', 'mfn-opts'),
+					'desc' 		=> __( 'Font Family', 'mfn-opts' ),
 					'class' 	=> 'mfn-info',
 				),
 
 				array(
-					'id' 		=> 'font-content',
+					'id' 			=> 'font-content',
 					'type' 		=> 'font_select',
-					'title' 	=> __('Content', 'mfn-opts'),
-					'sub_desc'	=> __('All theme texts except headings and menu', 'mfn-opts'),
+					'title' 	=> __( 'Content', 'mfn-opts' ),
+					'sub_desc'=> __( 'All theme texts except headings and menu', 'mfn-opts' ),
 					'std' 		=> 'Roboto'
 				),
 
 				array(
-					'id' 		=> 'font-menu',
+					'id' 			=> 'font-menu',
 					'type' 		=> 'font_select',
-					'title' 	=> __('Main Menu', 'mfn-opts'),
-					'sub_desc' 	=> __('Header menu', 'mfn-opts'),
-					'std' 		=> 'Roboto'
+					'title' 	=> __( 'Main Menu', 'mfn-opts' ),
+					'sub_desc'=> __( 'Header menu', 'mfn-opts' ),
+					'std' 		=> 'Roboto',
+					'class'		=> 'mhb-opt'
 				),
 
 				array(
@@ -5109,7 +5267,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'checkbox',
 					'title' 	=> __('Google Fonts Weight & Style', 'mfn-opts'),
 					'sub_desc' 	=> __('Impact on page <b>load time</b>', 'mfn-opts'),
-					'desc' 		=> __('Some of the fonts in the Google Fonts Directory support multiple styles. For a complete list of available font subsets please see <a href="http://www.google.com/webfonts" target="_blank">Google Web Fonts</a>', 'mfn-opts'),
+					'desc' 		=> __('Some of the fonts in the Google Fonts Directory support multiple styles. For a complete list of available font subsets please see <a href="https://www.google.com/webfonts" target="_blank">Google Web Fonts</a>', 'mfn-opts'),
 					'options' 	=> array(
 						'100'		=> __( '100 Thin', 'mfn-opts' ),
 						'100italic'	=> __( '100 Thin Italic', 'mfn-opts' ),
@@ -5146,14 +5304,14 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'text',
 					'title' 	=> __('Google Fonts Subset', 'mfn-opts'),
 					'sub_desc' 	=> __('Specify which subsets should be downloaded. Multiple subsets should be separated with coma (,)', 'mfn-opts'),
-					'desc' 		=> __('Some of the fonts in the Google Fonts Directory support multiple scripts (like Latin and Cyrillic for example). For a complete list of available font subsets please see <a href="http://www.google.com/webfonts" target="_blank">Google Web Fonts</a>', 'mfn-opts'),
+					'desc' 		=> __('Some of the fonts in the Google Fonts Directory support multiple scripts (like Latin and Cyrillic for example). For a complete list of available font subsets please see <a href="https://www.google.com/webfonts" target="_blank">Google Web Fonts</a>', 'mfn-opts'),
 					'class' 	=> 'small-text'
 				),
 
 			),
 		);
 
-		// Content Font Size --------------------------------------------
+		// Content Font Size ------
 		$sections['font-size'] = array(
 			'title' => __('Size & Style', 'mfn-opts'),
 			'fields' => array(
@@ -5194,17 +5352,18 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 				),
 
 				array(
-					'id' 		=> 'font-size-menu',
+					'id' 			=> 'font-size-menu',
 					'type' 		=> 'typography',
 					'title' 	=> __( 'Main Menu', 'mfn-opts' ),
-					'sub_desc' 	=> __( 'First level of Main Menu<br/>default: 15', 'mfn-opts' ),
-					'disable' 	=> 'line_height',
+					'sub_desc'=> __( 'First level of Main Menu<br/>default: 15', 'mfn-opts' ),
+					'disable' => 'line_height',
 					'std' 		=> array(
-						'size' 				=> 15,
+						'size' 						=> 15,
 						'line_height' 		=> 0,
 						'weight_style' 		=> '400',
 						'letter_spacing' 	=> 0,
 					),
+					'class'		=> 'mhb-opt',
 				),
 
 				array(
@@ -5330,7 +5489,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Font Custom --------------------------------------------
+		// Font Custom ------
 		$sections['font-custom'] = array(
 			'title' => __( 'Custom', 'mfn-opts' ),
 			'fields' => array(
@@ -5339,7 +5498,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'id' 			=> 'fonts-info-custom',
 					'type' 		=> 'info',
 					'title' 	=> '',
-					'desc' 		=> __( 'Use below fields if you want to use webfonts directly from your server. For more info please see <a target="_blank" href="http://forum.muffingroup.com/betheme/discussion/38753/custom-fonts">this post</a>.', 'mfn-opts' ),
+					'desc' 		=> __( 'Use below fields if you want to use webfonts directly from your server. For more info please see <a target="_blank" href="https://forum.muffingroup.com/betheme/discussion/38753/custom-fonts">this post</a>.', 'mfn-opts' ),
 					'class' 	=> 'mfn-info desc',
 				),
 
@@ -5366,7 +5525,8 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'upload',
 					'title' 	=> __( '.woff', 'mfn-opts'),
 					'sub_desc'=> __( 'recommended', 'mfn-opts'),
-					'class'		=> 'font',
+					'desc'		=> __( 'WordPress 5.0 blocks .woff upload. Please use <a target="_blank" href="plugin-install.php?s=Disable+Real+MIME+Check&tab=search&type=term">Disable Real MIME Check</a> plugin.', 'mfn-opts' ),
+					'data'		=> 'font',
 				),
 
 				array(
@@ -5374,8 +5534,8 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'upload',
 					'title' 	=> __( '.ttf', 'mfn-opts' ),
 					'sub_desc'=> __( 'optional', 'mfn-opts' ),
-					'desc'		=> __( 'WordPress blocks .ttf upload by default. Please use <a target="_blank" href="plugin-install.php?s=Disable+Real+MIME+Check&tab=search&type=term">Disable Real MIME Check</a> plugin.', 'mfn-opts' ),
-					'class'		=> 'font',
+					'desc'		=> __( 'WordPress 5.0 blocks .ttf upload. Please use <a target="_blank" href="plugin-install.php?s=Disable+Real+MIME+Check&tab=search&type=term">Disable Real MIME Check</a> plugin.', 'mfn-opts' ),
+					'data'		=> 'font',
 				),
 
 				// font 2
@@ -5401,7 +5561,8 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'upload',
 					'title' 	=> __('.woff', 'mfn-opts'),
 					'sub_desc'=> __( 'recommended', 'mfn-opts'),
-					'class'		=> 'font',
+					'desc'		=> __( 'WordPress 5.0 blocks .woff upload. Please use <a target="_blank" href="plugin-install.php?s=Disable+Real+MIME+Check&tab=search&type=term">Disable Real MIME Check</a> plugin.', 'mfn-opts' ),
+					'data'		=> 'font',
 				),
 
 				array(
@@ -5409,15 +5570,15 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'type' 		=> 'upload',
 					'title' 	=> __( '.ttf', 'mfn-opts' ),
 					'sub_desc'=> __( 'optional', 'mfn-opts' ),
-					'desc'		=> __( 'WordPress blocks .ttf upload by default. Please use <a target="_blank" href="plugin-install.php?s=Disable+Real+MIME+Check&tab=search&type=term">Disable Real MIME Check</a> plugin.', 'mfn-opts' ),
-					'class'		=> 'font',
+					'desc'		=> __( 'WordPress 5.0 blocks .ttf upload. Please use <a target="_blank" href="plugin-install.php?s=Disable+Real+MIME+Check&tab=search&type=term">Disable Real MIME Check</a> plugin.', 'mfn-opts' ),
+					'data'		=> 'font',
 				),
 
 			),
 		);
 
 
-		// Translate / General --------------------------------------------
+		// Translate / General ------
 		$sections['translate-general'] = array(
 			'title' => __('General', 'mfn-opts'),
 			'fields' => array(
@@ -5576,7 +5737,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Translate / Blog  --------------------------------------------
+		// Translate / Blog  ------
 		$sections['translate-blog'] = array(
 			'title' => __('Blog & Portfolio', 'mfn-opts'),
 			'fields' => array(
@@ -5636,12 +5797,12 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 				),
 
 				array(
-					'id' 		=> 'translate-at',
+					'id'			=> 'translate-at',
 					'type' 		=> 'text',
-					'title' 	=> __('at', 'mfn-opts'),
-					'sub_desc' 	=> __('Published by .. at', 'mfn-opts'),
+					'title' 	=> __('on', 'mfn-opts'),
+					'sub_desc'=> __('Published by .. on', 'mfn-opts'),
 					'desc' 		=> __('Blog, Portfolio', 'mfn-opts'),
-					'std' 		=> 'at',
+					'std' 		=> 'on',
 					'class' 	=> 'small-text',
 				),
 
@@ -5735,10 +5896,18 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 					'class' 	=> 'small-text',
 				),
 
+				array(
+					'id' 		=> 'translate-commented-on',
+					'type' 		=> 'text',
+					'title' 	=> __( 'Commented on', 'mfn-opts' ),
+					'desc' 		=> __( 'Muffin Recent Comments widget', 'mfn-opts' ),
+					'std' 		=> 'commented on',
+					'class' 	=> 'small-text',
+				),
 			),
 		);
 
-		// Translate Error 404 --------------------------------------------
+		// Translate Error 404 ------
 		$sections['translate-404'] = array(
 			'title' => __('Error 404 & Search', 'mfn-opts'),
 			'fields' => array(
@@ -5811,7 +5980,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Translate WPML --------------------------------------------
+		// Translate WPML ------
 		$sections['translate-wpml'] = array(
 			'title' => __('WPML Installer', 'mfn-opts'),
 			'fields' => array(
@@ -5835,9 +6004,9 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// Custom CSS & JS ========================================================================
+		// Custom CSS & JS =======
 
-		// CSS --------------------------------------------
+		// CSS ------
 		$sections['css'] = array(
 			'title' => __('CSS', 'mfn-opts'),
 			'fields' => array(
@@ -5853,7 +6022,7 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		// JS --------------------------------------------
+		// JS ------
 		$sections['js'] = array(
 			'title' => __('JS', 'mfn-opts'),
 			'fields' => array(
@@ -5869,52 +6038,38 @@ if( ! function_exists( 'mfn_opts_setup' ) )
 			),
 		);
 
-		global $MFN_Options;
+		$sections = apply_filters('mfn-theme-options-sections', $sections);
+
 		$MFN_Options = new MFN_Options( $menu, $sections );
 	}
 }
-// add_action('init', 'mfn_opts_setup', 0);
 mfn_opts_setup();
 
-
-/**
- * This is used to return option value from the options array
- */
 if( ! function_exists( 'mfn_opts_get' ) )
 {
+	/**
+	 * This is used to return option value from the options array
+	 */
+
 	function mfn_opts_get( $opt_name, $default = null ){
 		global $MFN_Options;
 		return $MFN_Options->get( $opt_name, $default );
 	}
 }
 
-
-/**
- * This is used to echo option value from the options array
- */
-if( ! function_exists( 'mfn_opts_show' ) )
-{
-	function mfn_opts_show( $opt_name, $default = null ){
-		global $MFN_Options;
-		$option = $MFN_Options->get( $opt_name, $default );
-		if( ! is_array( $option ) ){
-			echo $option;
-		}
-	}
-}
-
-
-/**
- * Add new mimes for custom font upload
- */
 if( ! function_exists( 'mfn_upload_mimes' ) )
 {
-	function mfn_upload_mimes( $existing_mimes = array() ){
-		$existing_mimes['woff'] = 'font/woff';
-		$existing_mimes['ttf'] 	= 'font/ttf';
-		$existing_mimes['svg'] 	= 'font/svg';
-		$existing_mimes['eot'] 	= 'font/eot';
-		return $existing_mimes;
+	/**
+	 * Add new mimes for custom font upload
+	 */
+
+	function mfn_upload_mimes( $mimes = array() ){
+
+		$mimes['svg'] = 'font/svg';
+		$mimes['woff'] = 'font/woff';
+		$mimes['ttf'] = 'font/ttf';
+
+		return $mimes;
 	}
 }
 add_filter( 'upload_mimes', 'mfn_upload_mimes' );

@@ -1,330 +1,323 @@
-(function($){
+(function($) {
 
-	"use strict";
+	/* globals jQuery */
 
-	$(document).ready(function(){
+  "use strict";
 
-		var importer	= $( '#mfn-wrapper.mfn-demo-data' );
-		var overlay 	= $( '#mfn-overlay' );
-		var popup 		= $( '#mfn-demo-popup' );
+  $(function() {
 
+    var importer = $('.mfn-demo-data'),
+			overlay = $('#mfn-overlay'),
+			popup = $('#mfn-demo-popup'),
+			searchTimer;
 
-		/**
-		 * Filters
-		 *
-		 * Filter demos by Category
-		 *
-		 * @param el object
-		 */
-		function filter( el ){
+    /**
+     * Filters
+     * Filter demos by Category
+     *
+     * @param el object
+     */
 
-			var filter 	= el.attr( 'data-filter' );
-			var demos	= $( '.demos', importer );
+    function filter(el) {
 
-			$( '.demo-search input', importer ).val('');
+      var filter = el.attr('data-filter');
+      var demos = $('.demos', importer);
 
-			el.addClass( 'active' )
-				.siblings().removeClass( 'active' );
+      $('.demo-search input', importer).val('');
 
-			if( filter == '*' ){
+      el.addClass('active')
+        .siblings().removeClass('active');
 
-				$( '.item', demos ).hide().stop(true,true).fadeIn();
+      if (filter == '*') {
 
-			} else {
+        $('.item', demos).hide().stop(true, true).fadeIn();
 
-				$( '.item', demos ).hide();
-				$( '.item.category-' + filter, demos ).stop( true, true ).fadeIn();
+      } else {
 
-			}
-		}
+        $('.item', demos).hide();
+        $('.item.category-' + filter, demos).stop(true, true).fadeIn();
 
-		$( '.filters', importer ).on( 'click', 'li', function(){
-			filter( $(this) );
-		});
+      }
+    }
 
+    $('.filters', importer).on('click', 'li', function() {
+      filter($(this));
+    });
 
-		/**
-		 * Search
-		 *
-		 * @param el object
-		 */
-		function search( el ){
+    /**
+     * Search
+     *
+     * @param el object
+     */
 
-			var filter 	= el.val().replace('&','').replace(/ /g,'').toLowerCase();
-			var demos	= $( '.demos', importer );
+    function search(el) {
 
-			if( filter.length ){
+      var filter = el.val().replace('&', '').replace(/ /g, '').toLowerCase();
+      var demos = $('.demos', importer);
 
-				$( '.item', demos ).hide();
-				$( '.item[data-id *= '+ filter +']', demos ).stop(true,true).fadeIn();
+      if (filter.length) {
 
-				$( '.filters li.active', importer ).removeClass('active');
+        $('.item', demos).hide();
+        $('.item[data-id *= ' + filter + ']', demos).stop(true, true).fadeIn();
 
-			} else {
+        $('.filters li.active', importer).removeClass('active');
 
-				$( '.item', demos ).hide().stop(true,true).fadeIn( 200 );
+      } else {
 
-				$( '.filters li:first', importer ).addClass('active');
+        $('.item', demos).hide().stop(true, true).fadeIn(200);
+        $('.filters li:first', importer).addClass('active');
 
-			}
+      }
 
-		}
+    }
 
-		$( '.demo-search input', importer ).bindWithDelay( 'keyup', function(){
-			search( $(this) );
-		}, 300);
+    $('.demo-search input', importer).on('keyup', function() {
 
+			var input = $(this);
 
-		/**
-		 * Item | Open
-		 *
-		 * Open item details on click
-		 */
-		$( '.demos', importer ).on( 'click', '.item', function(e){
+			clearTimeout(searchTimer);
+			searchTimer = setTimeout(function(){
+				search(input);
+			}, 400, input);
 
-			overlay.fadeIn( 200 );
+    });
 
-			$( this ).addClass( 'active' )
-				.siblings().removeClass( 'active' );
+    /**
+     * Item | Open
+     * Open item details on click
+     */
 
-			var el = $( '.item-inner', this );
+    $('.demos', importer).on('click', '.item', function(e) {
 
-			// scroll if active item is not fully visible
+      overlay.fadeIn(200);
 
-		    setTimeout( function(){
+      $(this).addClass('active')
+        .siblings().removeClass('active');
 
-		    	var elT = el.offset().top;
-			    var elB = el.offset().top + el.outerHeight();
+      var el = $('.item-inner', this);
 
-			    var scrT = $(window).scrollTop() + $( '#wpadminbar' ).height();
-			    var scrB = $(window).scrollTop() + $(window).height();
+      // scroll if active item is not fully visible
 
-		    	if( elT < scrT ){
+      setTimeout(function() {
 
-		    		// offset top
+        var elT = el.offset().top;
+        var elB = el.offset().top + el.outerHeight();
 
-		    		jQuery( 'html, body' ).animate({
-		    			scrollTop: elT - $( '#wpadminbar' ).height() - 5
-		    		}, 300);
+        var scrT = $(window).scrollTop() + $('#wpadminbar').height();
+        var scrB = $(window).scrollTop() + $(window).height();
 
-		    	} else if( elB > scrB ) {
+        if (elT < scrT) {
 
-		    		// offset bottom
+          // offset top
 
-		    		var diff = elB - scrB;
-		    		var scroll = scrT + diff + 5
+          jQuery('html, body').animate({
+            scrollTop: elT - $('#wpadminbar').height() - 5
+          }, 300);
 
-		    		if( scroll > elT ){
-		    			scroll = elT;
-		    		}
+        } else if (elB > scrB) {
 
-		    		jQuery( 'html, body' ).animate({
-		    			scrollTop: scroll - $( '#wpadminbar' ).height() -5
-		    		}, 200);
+          // offset bottom
 
-		    	}
+          var diff = elB - scrB;
+          var scroll = scrT + diff + 5;
 
-    		}, 400);
+          if (scroll > elT) {
+            scroll = elT;
+          }
 
-		});
+          jQuery('html, body').animate({
+            scrollTop: scroll - $('#wpadminbar').height() - 5
+          }, 200);
 
+        }
 
-		/**
-		 * Item | Close
-		 *
-		 * Close item detail on close button click
-		 */
-		$( '.demos', importer ).on( 'click', '.close', function(e){
+      }, 400);
 
-			overlay.fadeOut( 200 );
+    });
 
-			$( '.demos .item.active' ).removeClass( 'active' );
+    /**
+     * Item | Close
+     *
+     * Close item detail on close button click
+     */
 
-			e.stopPropagation();
-		});
+    $('.demos', importer).on('click', '.close', function(e) {
 
+      overlay.fadeOut(200);
 
-		/**
-		 * Item | Import
-		 * Popup | Open
-		 *
-		 * Open import popup on import button click
-		 */
-		$( '.demos', importer ).on( 'click', '.mfn-button-import', function(e){
+      $('.demos .item.active').removeClass('active');
 
-			var item = $( this ).closest( '.item' );
+      e.stopPropagation();
+    });
 
-			$( '#input-demo', importer ).val( item.data( 'id' ) );
+    /**
+     * Item | Import
+     * Popup | Open
+     * Open import popup on import button click
+     */
 
-			$( '.item-image', popup ).css( 'background-position', item.find( '.item-image' ).css( 'background-position' ) );
-			$( '.item-title', popup ).text( item.data( 'name' ) );
+    $('.demos', importer).on('click', '.mfn-button-import', function(e) {
 
-			// animations
+      var item = $(this).closest('.item');
 
-			$( '.demos .item.active' ).removeClass( 'active' );
-			e.stopPropagation();
+      $('#input-demo', importer).val(item.data('id'));
 
-			// reset to default
+      $('.item-image', popup).css('background-position', item.find('.item-image').css('background-position'));
+      $('.item-title', popup).text(item.data('name'));
 
-			$( popup ).removeClass( 'slider slider-active' );
-			$( '.popup-step', popup ).hide().first().show();
+      // animations
 
-			$( '.popup-step.step-2 input', popup ).removeAttr( 'checked' )
-			$( '.popup-step.step-2 input.checked', popup ).attr( 'checked', 'checked' );
+      $('.demos .item.active').removeClass('active');
+      e.stopPropagation();
 
-			// revolution slider demo installer
+      // reset to default
 
-			var slider = $( '.plugin-rev', item );
-			if( slider.length ){
-				if( $( 'span.is-active' ).length ){
-					popup.addClass( 'slider-active' );
-				} else {
-					popup.addClass( 'slider' );
-				}
+      $(popup).removeClass('slider slider-active');
+      $('.popup-step', popup).hide().first().show();
 
-			}
+      $('.popup-step.step-2 input', popup).removeAttr('checked');
+      $('.popup-step.step-2 input.checked', popup).attr('checked', 'checked');
 
-			// open popup
+      // revolution slider demo installer
 
-			popup.addClass('active');
-		});
+      var slider = $('.plugin-rev', item);
+      if (slider.length) {
+        if ($('span.is-active').length) {
+          popup.addClass('slider-active');
+        } else {
+          popup.addClass('slider');
+        }
 
+      }
 
-		/**
-		 * Popup | Close
-		 *
-		 * Close popup on cakcel button click
-		 */
-		popup.on( 'click', '.mfn-button-cancel', function(){
+      // open popup
 
-			popup.removeClass( 'active' );
-			overlay.fadeOut( 200 );
+      popup.addClass('active');
+    });
 
-		});
+    /**
+     * Popup | Close
+     * Close popup on cakcel button click
+     */
 
+    popup.on('click', '.mfn-button-cancel', function() {
 
-		/**
-		 * Popup | Next screen
-		 *
-		 * Change step screen
-		 */
-		popup.on( 'click', '.mfn-button-next', function(){
+      popup.removeClass('active');
+      overlay.fadeOut(200);
 
-			var step = $( this ).closest( '.popup-step' );
-			step.hide().next().fadeIn(200);
+    });
 
-		});
+    /**
+     * Popup | Next screen
+     * Change step screen
+     */
 
+    popup.on('click', '.mfn-button-next', function() {
 
-		/**
-		 * Popup | Import Options
-		 *
-		 * Activate checkboxes for selected radiobox, etc.
-		 */
-		$( '.import-options', popup ).on( 'click', 'label', function(){
+      var step = $(this).closest('.popup-step');
+      step.hide().next().fadeIn(200);
 
-			var parent = $( this ).closest( '.import-options' );
+    });
 
-			parent.addClass( 'active' )
-				.siblings().removeClass( 'active' );
+    /**
+     * Popup | Import Options
+     * Activate checkboxes for selected radiobox, etc.
+     */
 
-			$( 'input.radio-type', parent ).attr( 'checked', 'checked' );
+    $('.import-options', popup).on('click', 'label', function() {
 
-		});
+      var parent = $(this).closest('.import-options');
 
+      parent.addClass('active')
+        .siblings().removeClass('active');
 
-		/**
-		 * Popup | Submit
-		 *
-		 * Submit form
-		 */
-		popup.on( 'click', '.mfn-button-submit', function(){
+      $('input.radio-type', parent).attr('checked', 'checked');
 
-			var parent = $( this ).closest( '.popup-step' );
+    });
 
-			var type = $( '.radio-type:checked', parent ).val();
-			$( '#input-type', importer ).val( type );
+    /**
+     * Popup | Submit
+     * Submit form
+     */
 
-			var data = $( '.radio-data:checked', parent ).val();
-			$( '#input-data', importer ).val( data );
+    popup.on('click', '.mfn-button-submit', function() {
 
-			var attachments = $( '.checkbox-attachments:checked', parent ).val();
-			$( '#input-attachments', importer ).val( attachments );
+      var parent = $(this).closest('.popup-step');
 
-			var slider = $( '.checkbox-slider:checked', parent ).val();
-			$( '#input-slider', importer ).val( slider );
+      var type = $('.radio-type:checked', parent).val();
+      $('#input-type', importer).val(type);
 
-			// next step
-			$( this ).closest( '.popup-step' ).hide().next().fadeIn( 200 );
+      var data = $('.radio-data:checked', parent).val();
+      $('#input-data', importer).val(data);
 
-			// disable popup close
-			overlay.unbind( 'click' );
+      var attachments = $('.checkbox-attachments:checked', parent).val();
+      $('#input-attachments', importer).val(attachments);
 
-			// form submit
-			$( '#form-submit', importer ).click();
+      var slider = $('.checkbox-slider:checked', parent).val();
+      $('#input-slider', importer).val(slider);
 
-		});
+      // next step
+      $(this).closest('.popup-step').hide().next().fadeIn(200);
 
+      // disable popup close
+      overlay.unbind('click');
 
-		/**
-		 * Item / Popup | Close
-		 *
-		 * Close overlay, item details, popup on overlay click
-		 */
-		overlay.on( 'click', function(){
+      // form submit
+      $('#form-submit', importer).trigger('click');
 
-			$( this ).fadeOut( 200 );
+    });
 
-			popup.removeClass( 'active' );
-			$( '.demos .item.active' ).removeClass( 'active' );
+    /**
+     * Item / Popup | Close
+     * Close overlay, item details, popup on overlay click
+     */
 
-		});
+    overlay.on('click', function() {
 
+      $(this).fadeOut(200);
 
-		/**
-		 * Keyboard navigation
-		 *
-		 * Previous / next item. Use keyboard left & right arrows
-		 */
-		$( 'body' ).keydown( function( event ){
-			if( $( '.item.active', importer ).length ){
+      popup.removeClass('active');
+      $('.demos .item.active').removeClass('active');
 
-				// <- arrow
-				if( event.keyCode == 37 ){
-					var prev = $( '.item.active', importer ).prev();
-					if( prev.length ){
-						$( '.item.active', importer ).removeClass( 'active' );
-						prev.addClass( 'active' );
-					}
-				}
+    });
 
-				// -> arrow
-				if( event.keyCode == 39 ){
-					var next = $( '.item.active', importer ).next();
-					if( next.length ){
-						$( '.item.active', importer ).removeClass( 'active' );
-						next.addClass( 'active' );
-					}
-				}
 
-				// ESC
-				if( event.keyCode == 27 ){
-					overlay.click();
-				}
+    /**
+     * Keyboard navigation
+     * Previous / next item. Use keyboard left & right arrows
+     */
 
-			}
+    $('body').on('keydown', function(event) {
+      if ($('.item.active', importer).length) {
 
-		});
+        // <- arrow
+        if (event.keyCode == 37) {
+          var prev = $('.item.active', importer).prev();
+          if (prev.length) {
+            $('.item.active', importer).removeClass('active');
+            prev.addClass('active');
+          }
+        }
 
+        // -> arrow
+        if (event.keyCode == 39) {
+          var next = $('.item.active', importer).next();
+          if (next.length) {
+            $('.item.active', importer).removeClass('active');
+            next.addClass('active');
+          }
+        }
 
-	});
+        // ESC
+        if (event.keyCode == 27) {
+          overlay.trigger('click');
+        }
+
+      }
+
+    });
+
+
+  });
 
 })(jQuery);
-
-
-/**
- * bindWithDelay jQuery plugin
- *
- * Brian Grinstead | http://github.com/bgrins/bindWithDelay | http://briangrinstead.com/files/bindWithDelay | MIT license
- */
-!function(i){i.fn.bindWithDelay=function(n,u,t,e,d){return i.isFunction(u)&&(d=e,e=t,t=u,u=void 0),t.guid=t.guid||i.guid&&i.guid++,this.each(function(){function l(){var n=i.extend(!0,{},arguments[0]),u=this,l=function(){o=null,t.apply(u,[n])};d||(clearTimeout(o),o=null),o||(o=setTimeout(l,e))}var o=null;l.guid=t.guid,i(this).bind(n,u,l)})}}(jQuery);

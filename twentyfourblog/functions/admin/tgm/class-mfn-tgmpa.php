@@ -9,65 +9,65 @@ if( ! class_exists( 'TGM_Plugin_Activation' ) ){
 	 * Plugin installation and activation for WordPress themes.
 	 */
 	class Mfn_TGMPA extends Mfn_API {
-	
+
 		protected $code = '';
-		
+
 		public $plugins = array(
-	
+
 			array(
 				'name'     	=> 'Contact Form 7',
 				'slug'     	=> 'contact-form-7',
 				'required' 	=> false,
 			),
-	
+
 			array(
-				'name'		=> 'Duplicate Post',
+				'name'			=> 'Duplicate Post',
 				'slug'     	=> 'duplicate-post',
 				'required' 	=> false,
 			),
-	
+
 			array(
 				'name'     	=> 'Force Regenerate Thumbnails',
 				'slug'     	=> 'force-regenerate-thumbnails',
 				'required' 	=> false,
 			),
-		
+
 		);
-	
+
 		/**
 		 * Constructor
 		 */
 		public function __construct(){
-	
+
 			if( class_exists( 'TGM_Plugin_Activation' ) ){
 				return false;
 			}
-	
+
 			include_once 'class-tgm-plugin-activation.php';
-			
+
 			// TGMPA registraton and configuration
 			add_action( 'tgmpa_register', array( $this, 'tgmpa_register' ) );
-	
+
 			$this->code = mfn_get_purchase_code();
-			
+
 			$this->plugins = $this->get_plugins_list();
 		}
-		
+
 		/**
 		 * TGMPA register action
 		 */
 		public function tgmpa_register(){
-			
+
 			$config = array(
-			
-				'id'           	=> 'be-tgmpa',        			// Unique ID for hashing notices for multiple instances of TGMPA.
-				'menu'         	=> 'be-plugins', 				// Menu slug.
-				'parent_slug'  	=> 'betheme',					// Parent menu slug.
-				'capability'   	=> 'edit_theme_options',    	// Capability needed to view plugin install page, should be a capability associated with the parent menu used.
-				'has_notices'  	=> true,                    	// Show admin notices or not.
-				'dismissable'  	=> true,                    	// If false, a user cannot dismiss the nag message.
-				'is_automatic'	=> false,                   	// Automatically activate plugins after installation or not.
-				'message' 		=> '<div class="mfn-tgm-message">'. __( 'If you are not sure about server\'s settings and limits, please activate <u>necessary plugins ONLY</u>', 'tgmpa' ) .'</div>',	// Message to output right before the plugins table
+
+				'id'           	=> 'be-tgmpa',        		// Unique ID for hashing notices for multiple instances of TGMPA.
+				'menu'         	=> 'be-plugins', 					// Menu slug.
+				'parent_slug'  	=> 'betheme',							// Parent menu slug.
+				'capability'   	=> 'edit_theme_options',  // Capability needed to view plugin install page, should be a capability associated with the parent menu used.
+				'has_notices'  	=> true,                  // Show admin notices or not.
+				'dismissable'  	=> true,                  // If false, a user cannot dismiss the nag message.
+				'is_automatic'	=> false,									// Automatically activate plugins after installation or not.
+				'message' 			=> '<div class="notice notice-warning"><p><strong>Important:</strong> before updating, please <a href="https://codex.wordpress.org/WordPress_Backups">back up your database and files</a>.</p></div><div class="notice notice-info"><p><strong>Server limits:</strong> if you are not sure about server`s settings and limits, please activate necessary plugins only.</p></div>',
 				'strings'      	=> array(
 					'page_title'                      	=> __( 'Install Plugins', 'tgmpa' ),
 					'menu_title'                     	=> __( 'Install Plugins', 'tgmpa' ),
@@ -88,71 +88,71 @@ if( ! class_exists( 'TGM_Plugin_Activation' ) ){
 					'complete'                        	=> __( 'All plugins installed and activated successfully. %s', 'tgmpa' ), // %s = dashboard link.
 					'nag_type'                        	=> 'updated' // Determines admin notice type - can only be 'updated', 'update-nag' or 'error'.
 				),
-			
+
 			);
-			
+
 			tgmpa( $this->plugins, $config );
-			
+
 		}
-		
+
 		public function get_plugins_list(){
-			
+
 			// get transient
 			$plugins = get_site_transient( 'betheme_plugins' );
 			if( ! $plugins ){
 				$plugins = $this->update_plugins_list();
 			}
-			
+
 			if( ! $plugins ){
 				return $this->plugins;
 			}
-	
+
 			return array_merge( $this->plugins, $plugins );
 		}
-		
+
 		/**
-		 * Get premium plugins list and download links 
+		 * Get premium plugins list and download links
 		 */
 		public function update_plugins_list(){
-			
+
 			// if there was a check in last 1 hour, skip this check
 			if( get_site_transient( 'betheme_update_plugins' ) ){
 				return false;
 			}
-			
+
 			// set transient
 			set_site_transient( 'betheme_update_plugins', 1, HOUR_IN_SECONDS );
 			// end: if there was a check in last 1 hour, skip this check
-			
+
 			$plugins = $this->remote_get( 'plugins_version' );
-		
+
 			if( is_wp_error( $plugins ) || ! $plugins ){
 				return false;
 			}
-			
+
 			$args = array(
 				'code' => $this->code,
 			);
-				
+
 			if( mfn_is_hosted() ){
 				$args[ 'ish' ] = mfn_get_ish();
 			}
-			
+
 			foreach( $plugins as $key => $plugin ){
-				
+
 				$args[ 'plugin' ] = $plugin[ 'slug' ];
 				$plugins[ $key ]['source'] = add_query_arg( $args, $this->get_url( 'plugins_download' ) );
-				
+
 			}
-			
+
 			// set transient
 			set_site_transient( 'betheme_plugins', $plugins, HOUR_IN_SECONDS );
-			
+
 			return $plugins;
 		}
-	
+
 	}
 
 	$Mfn_TGMPA = new Mfn_TGMPA();
-	
+
 }

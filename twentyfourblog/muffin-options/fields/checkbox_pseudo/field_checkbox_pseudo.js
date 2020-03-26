@@ -1,50 +1,58 @@
-/**
- * @param  {Object} $     - jQuery reference
- * @return {Object} .init - Method to start the closure
- */
-var Mfn_Checkbox_Pseudo = ( function( $ ){
+(function($) {
 
-	/**
-	 * Attach events to buttons. Runs whole script.
-	 */
-	function init() {
+  /* globals jQuery */
 
-		check();
+  "use strict";
 
-	}
+  var MfnFieldCheckboxPseudo = (function() {
 
-	/**
-	 *
-	 */
-	function check() {
+    /**
+     * Attach events to buttons. Runs whole script.
+     */
 
-		$( '.mfnf-checkbox.pseudo input[type="checkbox"]' ).change( function(){
+    function init() {
+      check();
+    }
 
-			var el = $( this ).closest( '.mfnf-checkbox.pseudo' ),
-					value = '';
+    /**
+     * Checkbox click.
+     */
 
-			$( 'input:checked', el ).each( function(){
+    function check() {
 
-				value = value + ' ' + $( this ).val();
+      $('body').on('change', '.mfnf-checkbox.pseudo input[type="checkbox"]', function() {
 
-			});
+        var el = $(this).closest('.mfnf-checkbox.pseudo'),
+          value = '';
 
-			$( 'input.value', el ).val( value );
+        $('input:checked', el).each(function() {
+          value = value + ' ' + $(this).val();
+        });
 
-		});
+        $('input.value', el).val(value);
 
-	}
+      });
 
-	/**
-	 * Return
-	 * Method to start the closure
-	 */
-	return {
-		init: init
-	};
+    }
 
-})( jQuery );
+    /**
+     * Return
+     * Method to start the closure
+     */
 
-jQuery( document ).ready( function(){
-	var mfn_checkbox_pseudo = Mfn_Checkbox_Pseudo.init();
-});
+    return {
+      init: init
+    };
+
+  })();
+
+  /**
+   * $(document).ready
+   * Specify a function to execute when the DOM is fully loaded.
+   */
+
+  $(function() {
+    MfnFieldCheckboxPseudo.init();
+  });
+
+})(jQuery);

@@ -46,14 +46,14 @@ class Mfn_Status extends Mfn_API {
 	 * Status template
 	 */
 	public function template(){
-		include_once LIBS_DIR . '/admin/templates/status.php';
+		include_once get_theme_file_path('/functions/admin/templates/status.php');
 	}
 
 	/**
 	 * Enqueue styles and scripts
 	 */
 	public function enqueue(){
-		wp_enqueue_style( 'mfn-dashboard', LIBS_URI. '/admin/assets/dashboard.css', array(), THEME_VERSION );
+		wp_enqueue_style( 'mfn-dashboard', get_theme_file_uri('/functions/admin/assets/dashboard.css'), array(), MFN_THEME_VERSION );
 	}
 
 	/**
@@ -64,7 +64,6 @@ class Mfn_Status extends Mfn_API {
 		global $wpdb;
 
 		$data 	= array(
-			'server'					=> $_SERVER[ 'SERVER_SOFTWARE' ],
 			'php'							=> phpversion(),
 			'mysql'						=> $wpdb->db_version(),
 			'memory_limit' 		=> wp_convert_hr_to_bytes( @ini_get( 'memory_limit' ) ),
@@ -72,7 +71,7 @@ class Mfn_Status extends Mfn_API {
 			'max_input_vars' 	=> ini_get( 'max_input_vars' ),
 			'max_upload_size'	=> size_format( wp_max_upload_size() ),
 
-			'home'						=> get_option( 'home' ),
+			'home'						=> home_url(),
 			'siteurl'					=> get_option( 'siteurl' ),
 			'wp_version'			=> get_bloginfo( 'version' ),
 			'language'				=> get_locale(),
