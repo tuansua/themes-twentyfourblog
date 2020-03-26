@@ -1,0 +1,14 @@
+.mobile-header-mini #Top_bar #logo{
+	display: inline-block;
+}
+.clear-fix {
+	&:before {
+		content: " ";
+		display: table;
+	}
+	&:after {
+		content: " ";
+		display: table;
+		clear: both;
+	}
+}

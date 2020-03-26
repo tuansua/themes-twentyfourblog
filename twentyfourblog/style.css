@@ -1,0 +1,18 @@
+/*
+Theme Name: twentyfourblog
+Theme URI: http://24hdev.com
+Author: Tuan Sua
+Author URI: NULL
+Description: Custom by Nguyen Trong Tuan
+License: Themeforest Split Licence
+License URI: -
+Version: 20.9.4
+
+All css files are placed in /css/ folder
+*/
+#Header {
+    min-height: 0px !important;
+}
+.single-post .section_wrapper {
+    width: 750px;
+}
