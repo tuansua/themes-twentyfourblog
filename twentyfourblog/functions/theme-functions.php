@@ -97,45 +97,45 @@ if (! function_exists('mfn_add_image_size')) {
 	function mfn_add_image_size()
 	{
 		// featured image in wp-admin
-		set_post_thumbnail_size(260, 146, false);
+		//set_post_thumbnail_size(260, 146, false);
 
 		// thumbnails in wp-admin lists
-		add_image_size('50x50', 50, 50, false);
+		//add_image_size('50x50', 20, 20, false);
 
 		// clients
-		add_image_size('clients-slider', 150, 75, false);
+		//add_image_size('clients-slider', 150, 75, false);
 
 		// slider (builder items)
-		add_image_size('slider-content', 1630, 860, true);
+		//add_image_size('slider-content', 1630, 860, true);
 
 		// testimonials
-		add_image_size('testimonials', 85, 85, true);
+		//add_image_size('testimonials', 85, 85, true);
 
 		// sticky navigation * widget: recent posts
-		add_image_size('blog-navi', 80, 80, true);
+		//add_image_size('blog-navi', 80, 80, true);
 
 		// portfolio | style: masonry flat
-		add_image_size('portfolio-mf', 1280, 1000, true);
-		add_image_size('portfolio-mf-w', 1280, 500, true);	/* Wide */
-		add_image_size('portfolio-mf-t', 768, 1200, true);	/* Tall	*/
+		//add_image_size('portfolio-mf', 1280, 1000, true);
+		//add_image_size('portfolio-mf-w', 1280, 500, true);	/* Wide */
+		//add_image_size('portfolio-mf-t', 768, 1200, true);	/* Tall	*/
 
 		// portfolio | style: list
-		add_image_size('portfolio-list', 1920, 750, true);
+		//add_image_size('portfolio-list', 1920, 750, true);
 
 		// blog & portfolio: dynamic sizes
-		$archivesW = mfn_opts_get('featured-blog-portfolio-width', 960);
+		/*$archivesW = mfn_opts_get('featured-blog-portfolio-width', 960);
 		$archivesH = mfn_opts_get('featured-blog-portfolio-height', 750);
 		$archivesC = mfn_opts_get('featured-blog-portfolio-crop', 'crop');
-		$archivesC = ($archivesC == 'resize') ? false : true;
+		$archivesC = ($archivesC == 'resize') ? false : true;*/
 
-		add_image_size('blog-portfolio', $archivesW, $archivesH, $archivesC);
+		//add_image_size('blog-portfolio', $archivesW, $archivesH, $archivesC);
 
-		$singleW = mfn_opts_get('featured-single-width', 1200);
-		$singleH = mfn_opts_get('featured-single-height', 480);
+		/*$singleW = mfn_opts_get('featured-single-width', 400);
+		$singleH = mfn_opts_get('featured-single-height', 200);
 		$singleC = mfn_opts_get('featured-single-crop', 'crop');
 		$singleC = ($singleC == 'resize') ? false : true;
 
-		add_image_size('blog-single', $singleW, $singleH, $singleC);
+		add_image_size('blog-single', $singleW, $singleH, $singleC);*/
 	}
 }
 add_action('after_setup_theme', 'mfn_add_image_size', 11);
