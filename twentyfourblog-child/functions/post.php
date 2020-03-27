@@ -37,7 +37,7 @@ function new_home( $temp = '',$postPerPage= '',$format = '' ) {
                           $string .= '<div class="item-fomat-1 item-'.$count.'">
                             <a href="'.$permalink.'" title="'.$posttitle.'">';
                               if ( has_post_thumbnail($idpos) ) { 
-                                $string .= get_the_post_thumbnail( $idpos, 'large', array( 'class' => 'blog-wp-post-image' ) ); 
+                                $string .= get_the_post_thumbnail( $idpos,'large', array( 'class' => 'blog-wp-post-image' ) ); 
                             }
                 $string .= '</a>
                             <div class="blog-desc">
@@ -49,7 +49,7 @@ function new_home( $temp = '',$postPerPage= '',$format = '' ) {
                           $string .= '<div class="item-fomat-1 item-'.$count.'">
                             <a href="'.$permalink.'" title="'.$posttitle.'">';
                               if ( has_post_thumbnail($idpos) ) { 
-                                $string .= get_the_post_thumbnail( $idpos, 'medium', array( 'class' => 'blog-wp-post-image' ) ); 
+                                $string .= get_the_post_thumbnail( $idpos, 'thumbnail', array( 'class' => 'blog-wp-post-image' ) ); 
                             }
                 $string .= '</a>
                             <div class="blog-desc">
@@ -81,7 +81,7 @@ function new_home( $temp = '',$postPerPage= '',$format = '' ) {
                                             $string .= '<div class="blog-photo">';
                                               $string .= '<a href="'.$permalink.'" title="'.$posttitle.'">';
                                             if ( has_post_thumbnail($idpos) ) { 
-                                                $string .= get_the_post_thumbnail( $idpos, 'medium', array( 'class' => 'blog-wp-post-image' ) ); 
+                                                $string .= get_the_post_thumbnail( $idpos, 'thumbnail', array( 'class' => 'blog-wp-post-image' ) ); 
                                             }
                                   $string .= '</a>';
                                             $string .= '</div>';

@@ -23,7 +23,7 @@
 			<a href="<?php echo $permalink; ?>" title="<?php echo $posttitle; ?>">
 				<?php  
 					if ( has_post_thumbnail($idpos) ) { 
-	                    echo  get_the_post_thumbnail( $idpos, 'medium', array( 'class' => 'blog-wp-post-image' ) ); 
+	                    echo  get_the_post_thumbnail( $idpos, 'thumbnail', array( 'class' => 'blog-wp-post-image' ) ); 
 	                }
 				?>
 			</a>
